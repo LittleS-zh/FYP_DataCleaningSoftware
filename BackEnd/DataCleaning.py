@@ -51,4 +51,5 @@ writeDataFile(NewDataFrame, "DataSet_Write/1 XAGUSD_QPR_NewDataFrame.csv")
 FiltedData = FilterAccordingToCondiction(DataFrame,"Return")
 writeDataFile(FiltedData, "DataSet_Write/1 XAGUSD_QPR_FiltedData.csv")
 
+writeDataFile(DataFrame.describe(), "DataSet_Write/1 XAGUSD_QPR_Describe.csv")
 

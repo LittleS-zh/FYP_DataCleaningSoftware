@@ -26,6 +26,14 @@
                 <td>{{ line.pwd }}</td>
             </tr>
             {% endfor %}
+
+            {% for line in data %}
+            <tr>
+                <td>{{ line.user }}</td>
+                <td>{{ line.pwd }}</td>
+            </tr>
+            {% endfor %}
+
         </tbody>
     </table>
 </body>
