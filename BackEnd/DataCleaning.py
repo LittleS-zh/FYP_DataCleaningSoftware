@@ -23,6 +23,12 @@ def selectColumn_heading(DataFrame,headerOfColumn_input):
     column = DataFrame[headerOfColumn_input]
     return column
 
+# Max
+def blockSelection(DataFrame, columnStart_input, columnEnd_input, headerOfColumn_input):
+    BlockData = DataFrame.ix[columnStart_input:columnEnd_input, headerOfColumn_input]
+    return BlockData
+#
+
 def operationOnBlocks(DataFrame):
     DataFrame['newColumn'] = DataFrame['Day'] * DataFrame['Return']
     return DataFrame
@@ -30,6 +36,25 @@ def operationOnBlocks(DataFrame):
 def FilterAccordingToCondiction(DataFrame,Column_input):
     FiltedData = DataFrame[(DataFrame[Column_input] > 1)]
     return FiltedData
+
+#Max
+def dataReduction(DataFrame, Header, DropHeader, GroupHeader, SumOrMean, CombineName):
+    ReductionData = DataFrame.set_index(Header).sortlevel(0)
+    if SumOrMean == 1:
+        ReductiveData = DataFrame.drop(DropHeader, axis=1).groupby(GroupHeader).sum().sort_values(CombineName, ascending=False)
+    else:
+        ReductiveData = DataFrame.drop(DropHeader, axis=1).groupby(GroupHeader).mean().sort_values(CombineName, ascending=False)
+    return ReductiveData
+
+
+#
+
+#———————————————————— 数据清理功能 ————————————————————#
+
+
+#———————————————————— END ————————————————————#
+
+
 
 #Test Codes
 DataFrame = readDataFile("DataSet_Read/1 XAGUSD_QPR.csv", ",", "utf8", 0)
@@ -45,10 +70,19 @@ writeDataFile(columns, "DataSet_Write/1 XAGUSD_QPR_columns_position.csv")
 columns = selectColumn_heading(DataFrame,['Day','Return'])
 writeDataFile(columns, "DataSet_Write/1 XAGUSD_QPR_columns_heading.csv")
 
+#Max test
+blocks = blockSelection(DataFrame, 0, 3, ['Day', 'Return'])
+writeDataFile(blocks, "DataSet_Write/test.csv")
+#
+
 NewDataFrame = operationOnBlocks(DataFrame)
 writeDataFile(NewDataFrame, "DataSet_Write/1 XAGUSD_QPR_NewDataFrame.csv")
 
 FiltedData = FilterAccordingToCondiction(DataFrame,"Return")
 writeDataFile(FiltedData, "DataSet_Write/1 XAGUSD_QPR_FiltedData.csv")
 
+#Max test
+#Data = dataReduction(DataFrame, "Year", ['Open', 'High', 'Low'], "Year", 1, "RSI")
+#writeDataFile(Data, "DataSet_Write/test2.csv")
+#
 
