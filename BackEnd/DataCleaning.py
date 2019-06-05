@@ -46,16 +46,21 @@ def dataReduction(DataFrame, Header, DropHeader, GroupHeader, SumOrMean, Combine
         ReductiveData = DataFrame.drop(DropHeader, axis=1).groupby(GroupHeader).mean().sort_values(CombineName, ascending=False)
     return ReductiveData
 
+def dataDeduplication(DataFrame,Column_input):
+    deduplicatedData = DataFrame.drop_duplicates(Column_input)
+    return deduplicatedData
 
-#
+def CalculateMeans(DataFrame,columnNeedtoBeGrouped_input,columnGroupBy):
+    grouped = DataFrame[columnNeedtoBeGrouped_input].groupby(DataFrame[columnGroupBy])
+    return grouped.mean()
 
-#———————————————————— 数据清理功能 ————————————————————#
+#———————————————————— Data Cleaning Function ————————————————————#
 
 
 #———————————————————— END ————————————————————#
 
 
-
+#TODO: revert operation, you need to define a global dataframe variables
 #Test Codes
 DataFrame = readDataFile("DataSet_Read/1 XAGUSD_QPR.csv", ",", "utf8", 0)
 
