@@ -19,5 +19,6 @@ from FYP_codes import views
 
 urlpatterns = [
    # path('admin/', admin.site.urls),
+    path(r'', views.index),
     path(r'index/', views.index),
 ]

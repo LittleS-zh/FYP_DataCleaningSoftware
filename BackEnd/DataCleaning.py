@@ -1,15 +1,15 @@
 import pandas as pd
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-
+import numpy as np
 
 # read datafile from csv
 def read_data_file(
         file_location, delimiter_input,
         encoding_input, header_input):
     data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input, header=header_input)
+    data_frame_array = np.array(data_frame)
+    data_frame_list = data_frame_array.tolist()
     # print(data_frame)
-    return data_frame
+    return data_frame_list
 
 
 # write datafile to an csv file
@@ -117,7 +117,7 @@ DataFrame = read_data_file("static/DataSet_Read/1 XAGUSD_QPR.csv", ",", "utf8", 
 # DataFrame = read_data_file("DataSet_Read/1 XAGUSD_QPR.csv", ",", "utf8", 0)
 # hzWeather = pd.read_csv("DataSet_Read/hz_weather.csv")
 
-write_data_file(DataFrame, "DataSet_Write/1 XAGUSD_QPR_Result.csv")
+# write_data_file(DataFrame, "static/DataSet_Write/1 XAGUSD_QPR_Result.csv")
 #
 # rows = select_rows(DataFrame, 0, 3)
 # write_data_file(rows, "DataSet_Write/1 XAGUSD_QPR_rows.csv")
