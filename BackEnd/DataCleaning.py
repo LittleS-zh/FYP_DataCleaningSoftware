@@ -55,7 +55,25 @@ def CalculateMeans(DataFrame,columnNeedtoBeGrouped_input,columnGroupBy):
     return grouped.mean()
 
 #———————————————————— Data Cleaning Function ————————————————————#
+def checkMissing(fileName, values, index, columns):
+    df = pd.pivot_table(fileName, values=values, index=index, columns=columns)
+    return df.isnull()
 
+def deal_with_missing_value(fileName, choice):
+    # delete the row
+    if choice == 1:
+        return fileName.dropna(axis=0)
+    elif choice == 2:
+        return fileName.dropna(axis=1)
+    elif choice == 3:
+        insteadWord = input("Please input a string to instead missing value!\n")
+        return fileName.fillna(insteadWord)
+    elif choice == 4:
+        return fileName.fillna(method='pad')
+    elif choice == 5:
+        return fileName.fillna(method='bfill', limit=1)
+    elif choice == 6:
+        return fileName.fillna(fileName.mean())
 
 #———————————————————— END ————————————————————#
 
@@ -63,6 +81,7 @@ def CalculateMeans(DataFrame,columnNeedtoBeGrouped_input,columnGroupBy):
 #TODO: revert operation, you need to define a global dataframe variables
 #Test Codes
 DataFrame = readDataFile("DataSet_Read/1 XAGUSD_QPR.csv", ",", "utf8", 0)
+hzWeather = pd.read_csv("DataSet_Read/hz_weather.csv")
 
 writeDataFile(DataFrame, "DataSet_Write/1 XAGUSD_QPR_Result.csv")
 
@@ -89,5 +108,19 @@ writeDataFile(FiltedData, "DataSet_Write/1 XAGUSD_QPR_FiltedData.csv")
 #Max test
 #Data = dataReduction(DataFrame, "Year", ['Open', 'High', 'Low'], "Year", 1, "RSI")
 #writeDataFile(Data, "DataSet_Write/test2.csv")
+#
+
+#Max test
+CheckMissing = checkMissing(hzWeather, "最高气温", "天气", "风向")
+writeDataFile(CheckMissing, "DataSet_Write/CheckMissing.csv")
+
+df = pd.pivot_table(hzWeather, values=['最高气温'], index=['天气'], columns=['风向'])
+#dealFile = deal_with_missing_value(df, 1)
+#dealFile = deal_with_missing_value(df, 2)
+#dealFile = deal_with_missing_value(df, 3)
+#dealFile = deal_with_missing_value(df, 4)
+#dealFile = deal_with_missing_value(df, 5)
+dealFile = deal_with_missing_value(df, 6)
+writeDataFile(dealFile, "DataSet_Write/DealMissing.csv")
 #
 
