@@ -1,32 +1,53 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>首页</title>
 </head>
 <body>
-    <h1>用户输入：</h1>
-    <form action="/index/" method="post">
-        {% csrf_token %}   <!--加入这行 -->
-        <input type="text" name="username" />
-        <input type="password" name="password" />
-        <input type="submit" value="提交" />
-    </form>
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">Data Cleaning</span>
+    </nav>
 
-    <h1>用户展示：</h1>
-    <table border="1">
-        <thead>
-            <th>用户名</th>
-            <th>密码</th>
-        </thead>
-        <tbody>
-            {% for line in data %}
-            <tr>
-                <td>{{ line.user }}</td>
-                <td>{{ line.pwd }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="card" style="width: 18rem;">
+          <img src="{% static 'images/1.jpg' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">普通Excel功能</h5>
+            <p class="card-text">一些跟Excel表格很像的功能</p>
+            <a href="#" class="btn btn-primary">Enter</a>
+          </div>
+        </div>
+        </div>
+        <div class="col-sm">
+          <div class="card" style="width: 18rem;">
+          <img src="{% static 'images/2.jpg' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">数据清洗功能</h5>
+            <p class="card-text">跟数据清理有关的功能</p>
+            <a href="#" class="btn btn-primary">Enter</a>
+          </div>
+        </div>
+        </div>
+        <div class="col-sm">
+          <div class="card" style="width: 18rem;">
+          <img src="{% static 'images/3.jpg' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">额外功能</h5>
+            <p class="card-text">看看能不能做得出来的功能</p>
+            <a href="#" class="btn btn-primary">待会儿试一下</a>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </html>
