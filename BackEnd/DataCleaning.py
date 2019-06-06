@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 
 
 # read datafile from csv
@@ -6,7 +8,7 @@ def read_data_file(
         file_location, delimiter_input,
         encoding_input, header_input):
     data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input, header=header_input)
-    print(data_frame)
+    # print(data_frame)
     return data_frame
 
 
@@ -68,6 +70,18 @@ def calculate_means(data_frame, column_need_to_be_grouped_input, column_group_by
     return grouped.mean()
 
 
+def detect_outlier(data_frame,column_input):
+    d = data_frame[column_input]
+    z_score = (d - d.mean()) / d.std()
+    data_frame['isOutlier'] = z_score.abs() > 3
+    return data_frame
+
+
+def detect_outlier_quantile(data_frame,column_input):
+    d = data_frame[column_input]
+    data_frame['isOutlier'] = d > d.quantitile(0.75)
+    return data_frame
+
 # ———————————————————— Data Cleaning Function ————————————————————#
 def check_missing(file_name, values, index, column):
     data_frame = pd.pivot_table(file_name, values=values, index=index, columns=column)
@@ -93,11 +107,10 @@ def deal_with_missing_value(file_name, choice):
 
 # ———————————————————— END ————————————————————#
 
-
 # TODO: revert operation, you need to define a global dataframe variables
 # Test Codes
 DataFrame = read_data_file("DataSet_Read/1 XAGUSD_QPR.csv", ",", "utf8", 0)
-hzWeather = pd.read_csv("DataSet_Read/hz_weather.csv")
+# hzWeather = pd.read_csv("DataSet_Read/hz_weather.csv")
 
 write_data_file(DataFrame, "DataSet_Write/1 XAGUSD_QPR_Result.csv")
 
@@ -111,14 +124,21 @@ columns = select_column_heading(DataFrame, ['Day', 'Return'])
 write_data_file(columns, "DataSet_Write/1 XAGUSD_QPR_columns_heading.csv")
 
 # Max test
-blocks = block_selection(DataFrame, 0, 3, ['Day', 'Return'])
-write_data_file(blocks, "DataSet_Write/test.csv")
+# blocks = block_selection(DataFrame, 0, 3, ['Day', 'Return'])
+# write_data_file(blocks, "DataSet_Write/test.csv")
+#
+# NewDataFrame = algorithm_operation_on_blocks(DataFrame)
+# write_data_file(NewDataFrame, "DataSet_Write/1 XAGUSD_QPR_NewDataFrame.csv")
+#
+# FilteredData = conditional_filter(DataFrame, "Return")
+# write_data_file(FilteredData, "DataSet_Write/1 XAGUSD_QPR_FiltedData.csv")
 
-NewDataFrame = algorithm_operation_on_blocks(DataFrame)
-write_data_file(NewDataFrame, "DataSet_Write/1 XAGUSD_QPR_NewDataFrame.csv")
+data_frame_with_outlier = detect_outlier(DataFrame,"Return")
+write_data_file(data_frame_with_outlier, "DataSet_Write/1 XAGUSD_QPR_Outlier.csv")
 
-FilteredData = conditional_filter(DataFrame, "Return")
-write_data_file(FilteredData, "DataSet_Write/1 XAGUSD_QPR_FiltedData.csv")
+# detect outlier using box diagram
+data_frame_with_outlier = detect_outlier(DataFrame,"Return")
+write_data_file(data_frame_with_outlier, "DataSet_Write/1 XAGUSD_QPR_Outlier_quantile.csv")
 
 # Max test
 # Data = dataReduction(DataFrame, "Year", ['Open', 'High', 'Low'], "Year", 1, "RSI")
@@ -126,15 +146,15 @@ write_data_file(FilteredData, "DataSet_Write/1 XAGUSD_QPR_FiltedData.csv")
 #
 
 # Max test
-CheckMissing = check_missing(hzWeather, "最高气温", "天气", "风向")
-write_data_file(CheckMissing, "DataSet_Write/CheckMissing.csv")
-
-df = pd.pivot_table(hzWeather, values=['最高气温'], index=['天气'], columns=['风向'])
+# CheckMissing = check_missing(hzWeather, "最高气温", "天气", "风向")
+# write_data_file(CheckMissing, "DataSet_Write/CheckMissing.csv")
+#
+# df = pd.pivot_table(hzWeather, values=['最高气温'], index=['天气'], columns=['风向'])
 # dealFile = deal_with_missing_value(df, 1)
 # dealFile = deal_with_missing_value(df, 2)
 # dealFile = deal_with_missing_value(df, 3)
 # dealFile = deal_with_missing_value(df, 4)
 # dealFile = deal_with_missing_value(df, 5)
-dealFile = deal_with_missing_value(df, 6)
-write_data_file(dealFile, "DataSet_Write/DealMissing.csv")
+# dealFile = deal_with_missing_value(df, 6)
+# write_data_file(dealFile, "DataSet_Write/DealMissing.csv")
 #
