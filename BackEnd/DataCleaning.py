@@ -23,11 +23,9 @@ def selectColumn_heading(DataFrame,headerOfColumn_input):
     column = DataFrame[headerOfColumn_input]
     return column
 
-# Max
 def blockSelection(DataFrame, columnStart_input, columnEnd_input, headerOfColumn_input):
     BlockData = DataFrame.ix[columnStart_input:columnEnd_input, headerOfColumn_input]
     return BlockData
-#
 
 def operationOnBlocks(DataFrame):
     DataFrame['newColumn'] = DataFrame['Day'] * DataFrame['Return']
@@ -97,7 +95,6 @@ writeDataFile(columns, "DataSet_Write/1 XAGUSD_QPR_columns_heading.csv")
 #Max test
 blocks = blockSelection(DataFrame, 0, 3, ['Day', 'Return'])
 writeDataFile(blocks, "DataSet_Write/test.csv")
-#
 
 NewDataFrame = operationOnBlocks(DataFrame)
 writeDataFile(NewDataFrame, "DataSet_Write/1 XAGUSD_QPR_NewDataFrame.csv")
