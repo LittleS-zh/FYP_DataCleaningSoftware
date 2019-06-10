@@ -1,5 +1,5 @@
-import BackEnd
-from BackEnd import DataCleaning
+import data_cleaning_function
+from data_cleaning_function import data_cleaning
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
 
@@ -9,7 +9,7 @@ user_list = [
     {"user": "tom", "pwd": "ABC"},
 ]
 
-data_frame_list = DataCleaning.read_data_file("static/DataSet_Read/1 XAGUSD_QPR.csv", ",", "utf8", 0)
+data_frame_list = data_cleaning.read_data_file("static/DataSet_Read/1 XAGUSD_QPR.csv", ",", "utf8", 0)
 
 
 def index(request):

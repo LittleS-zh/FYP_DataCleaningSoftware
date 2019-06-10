@@ -46,14 +46,16 @@
       </div>
     </div>
 
+<!-- Test Table -->
+
     <table border="1">
         <tbody>
             {% for line in data %}
-                {% for line_data in line %}
                 <tr>
-                    <td>{{ line }}</td>
-                </tr>
+                {% for line_piece in line %}
+                    <td>{{ line_piece }}</td>
                 {% endfor %}
+                </tr>
             {% endfor %}
         </tbody>
     </table>
