@@ -11,14 +11,14 @@
         <span class="navbar-brand mb-0 h1">Data Cleaning Tool</span>
     </nav>
 
-    <form action="/select_row/" method="post">
+    <form action="/select_rows/" method="post">
         {% csrf_token %}
         <input type="text" name="row_ceiling" />
         <input type="text" name="row_floor" />
         <input type="submit" value="select row" name = "submit" />
     </form>
 
-    <form action="/select_row/" method="post">
+    <form action="/revert/" method="post">
         {% csrf_token %}
         <input type="submit" value="revert" name = "submit" />
     </form>
