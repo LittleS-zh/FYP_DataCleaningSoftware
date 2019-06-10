@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-class DataCleaning:
+class DataCleaning(object):
     __current_data_frame = pd.read_csv("static/DataSet_Read/basic.csv")
 
     # this attribute is for reverting the operations
@@ -13,10 +13,10 @@ class DataCleaning:
 
     # read datafile from csv
     def read_data_file(self, file_location,
-                       delimiter_input, encoding_input,
-                       header_input):
-        self.__current_data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input, header=header_input)
-        return self.get_frame()
+                       delimiter_input=",", encoding_input="utf-8",
+                       header_input=0):
+        self.__current_data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input,
+                                                header=header_input)
 
     # write datafile to an csv file
     def write_data_file(self, path):
@@ -24,64 +24,56 @@ class DataCleaning:
 
     # TODO: add more parameters in it
 
-    def select_rows(data_file, row_start_input, row_end_input):
-        rows_output = data_file[row_start_input:row_end_input]
-        return rows_output
+    def select_rows(self, row_start_input, row_end_input):
+        self.__current_data_frame = self.__current_data_frame[row_start_input:row_end_input]
 
-    def select_column_position(data_frame, column_start_input, column_end_input):
-        column = data_frame.iloc[:, [column_start_input, column_end_input]]
-        return column
+    def select_column_position(self, column_start_input, column_end_input):
+        self.__current_data_frame = self.__current_data_frame.iloc[:, [column_start_input, column_end_input]]
 
-    def select_column_heading(data_frame, header_of_column_input):
-        column = data_frame[header_of_column_input]
-        return column
+    def select_column_heading(self, header_of_column_input):
+        self.__current_data_frame = self.__current_data_frame[header_of_column_input]
 
-    def block_selection(data_frame, column_start_input, column_end_input, header_of_column_input):
-        block_data = data_frame.ix[column_start_input:column_end_input, header_of_column_input]
-        return block_data
+    def block_selection(self, column_start_input, column_end_input, header_of_column_input):
+        self.__current_data_frame = self.__current_data_frame.ix[column_start_input:column_end_input,
+                                    header_of_column_input]
 
-    def algorithm_operation_on_blocks(data_frame):
-        data_frame['newColumn'] = data_frame['Day'] * data_frame['Return']
-        return data_frame
+    def algorithm_operation_on_blocks(self):
+        self.__current_data_frame['newColumn'] = self.__current_data_frame['Day'] * self.__current_data_frame['Return']
 
-    def conditional_filter(data_frame, column_input):
-        filtered_data = data_frame[(data_frame[column_input] > 1)]
-        return filtered_data
+    def conditional_filter(self, data_frame, column_input):
+        self.__current_data_frame = self.__current_data_frame[(data_frame[column_input] > 1)]
 
     # Max
-    def data_reduction(data_frame, header, drop_header, group_header, sum_or_mean, combine_name):
+    def data_reduction(self, drop_header, group_header, sum_or_mean, combine_name):
         if sum_or_mean == 1:
-            reductive_data = data_frame.drop(drop_header, axis=1).groupby(group_header).sum().sort_values(combine_name,
+            self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(group_header).sum().sort_values(combine_name,
                                                                                                           ascending=False)
         else:
-            reductive_data = data_frame.drop(drop_header, axis=1).groupby(group_header).mean().sort_values(combine_name,
+            self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(group_header).mean().sort_values(combine_name,
                                                                                                            ascending=False)
-        return reductive_data
 
-    def data_de_duplication(data_frame, column_input):
-        deduplicated_data = data_frame.drop_duplicates(column_input)
-        return deduplicated_data
+    def data_de_duplication(self, column_input):
+        self.__current_data_frame = self.__current_data_frame.drop_duplicates(column_input)
 
-    def calculate_means(data_frame, column_need_to_be_grouped_input, column_group_by):
-        grouped = data_frame[column_need_to_be_grouped_input].groupby(data_frame[column_group_by])
-        return grouped.mean()
+    def calculate_means(self, column_need_to_be_grouped_input, column_group_by):
+        self.__current_data_frame = self.__current_data_frame[column_need_to_be_grouped_input].groupby(self.__current_data_frame[column_group_by])
+        return self.__current_data_frame.mean()
 
-    def detect_outlier(data_frame, column_input):
-        d = data_frame[column_input]
+    def detect_outlier_three_sigma(self, column_input):
+        d = self.__current_data_frame[column_input]
         z_score = (d - d.mean()) / d.std()
-        data_frame['isOutlier'] = z_score.abs() > 3
-        return data_frame
+        self.__current_data_frame['isOutlier'] = z_score.abs() > 3
 
-    def detect_outlier_quantile(data_frame, column_input):
-        d = data_frame[column_input]
-        data_frame['isOutlier'] = d > d.quantitile(0.75)
-        return data_frame
+    def detect_outlier_quantitile(self, column_input):
+        d = self.__current_data_frame[column_input]
+        self.__current_data_frame['isOutlier'] = d > d.quantitile(0.75)
 
-    def check_missing(file_name, values, index, column):
+    # TODO: to know how to change it to oo
+    def check_missing(self, file_name, values, index, column):
         data_frame = pd.pivot_table(file_name, values=values, index=index, columns=column)
         return data_frame.isnull()
 
-    def deal_with_missing_value(file_name, choice):
+    def deal_with_missing_value(self, file_name, choice):
         # delete the row
         if choice == 1:
             return file_name.dropna(axis=0)
