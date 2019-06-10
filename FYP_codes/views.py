@@ -58,6 +58,8 @@ def detect_outlier_three_sigma(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
 
 
+
+
 def revert(request):
     dc.revert_data_frame()
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
