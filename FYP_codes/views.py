@@ -17,10 +17,6 @@ def index(request):
 
 def uploadFile(request):
     return render(request, "uploadFile.html",)
-    if request.method == "POST":
-        username = request.POST.get("username", None)
-        password = request.POST.get("password", None)
-        temp = {"user": username, "pwd": password}
-        user_list.append(temp)
-        # DataCleaning.readDataFile()
-    return render(request, "index.html", {"data": dc.get_frame()})
+
+def dataCleaningOperation(request):
+    return render(request, "dataCleaningOperation.html",)
