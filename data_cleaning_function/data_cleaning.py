@@ -6,7 +6,7 @@ class DataCleaning(object):
     __current_data_frame = pd.read_csv("static/DataSet_Read/basic.csv")
 
     # this attribute is for reverting the operations
-    __last_data_frame = pd.read_csv("static/DataSet_Read/basic.csv")
+    __original_data_frame = pd.read_csv("static/DataSet_Read/basic.csv")
 
     def __init__(self):
         print("class initialization")
@@ -17,6 +17,7 @@ class DataCleaning(object):
                        header_input=0):
         self.__current_data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input,
                                                 header=header_input)
+        self.__original_data_frame = self.__current_data_frame
 
     # write datafile to an csv file
     def write_data_file(self, path):
@@ -93,6 +94,9 @@ class DataCleaning(object):
         data_frame_array = np.array(self.__current_data_frame)
         data_frame_list = data_frame_array.tolist()
         return data_frame_list
+
+    def revert_data_frame(self):
+        self.__current_data_frame = self.__original_data_frame
 
 # Test Codes
 

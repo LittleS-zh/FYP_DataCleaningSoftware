@@ -20,8 +20,12 @@ def uploadFile(request):
 
 
 def data_cleaning_operation(request):
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+
+
+def select_rows(request):
     if request.method == "POST":
         row_ceiling = int(request.POST.get("row_ceiling", None))
         row_floor = int(request.POST.get("row_floor", None))
-        dc.select_rows(row_ceiling,row_floor)
+        dc.select_rows(row_ceiling, row_floor)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
