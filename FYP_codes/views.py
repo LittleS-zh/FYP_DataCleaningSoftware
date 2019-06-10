@@ -2,6 +2,8 @@ from data_cleaning_function.data_cleaning import DataCleaning
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
 
+from django.core.files.storage import FileSystemStorage
+
 user_list = [
     {"user": "jack", "pwd": "abc"},
     {"user": "tom", "pwd": "ABC"},
@@ -16,11 +18,9 @@ def index(request):
 
 
 def uploadFile(request):
-    return render(request, "uploadFile.html",)
     if request.method == "POST":
-        username = request.POST.get("username", None)
-        password = request.POST.get("password", None)
-        temp = {"user": username, "pwd": password}
-        user_list.append(temp)
-        # DataCleaning.readDataFile()
-    return render(request, "index.html", {"data": dc.get_frame()})
+        uploaded_file = request.FILES['document']
+        fs = FileSystemStorage()
+        fs.save(uploaded_file.name, uploaded_file)
+        # print(uploaded_file.name)
+    return render(request, "uploadFile.html",)
