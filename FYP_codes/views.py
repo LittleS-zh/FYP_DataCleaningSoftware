@@ -12,11 +12,16 @@ dc.read_data_file("static/DataSet_Read/1 XAGUSD_QPR.csv")
 
 
 def index(request):
-    return render(request, "index.html",)
+    return render(request, "index.html", )
 
 
 def uploadFile(request):
-    return render(request, "uploadFile.html",)
+    return render(request, "uploadFile.html", )
 
-def dataCleaningOperation(request):
-    return render(request, "dataCleaningOperation.html",)
+
+def data_cleaning_operation(request):
+    if request.method == "POST":
+        row_ceiling = int(request.POST.get("row_ceiling", None))
+        row_floor = int(request.POST.get("row_floor", None))
+        dc.select_rows(row_ceiling,row_floor)
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})

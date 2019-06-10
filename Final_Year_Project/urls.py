@@ -22,5 +22,5 @@ urlpatterns = [
     path(r'', views.index),
     path(r'index/', views.index),
     path(r'uploadFile/', views.uploadFile, name="uploadFile"),
-    path(r'dataCleaningOperation/', views.dataCleaningOperation, name="dataCleaningOperation")
+    path(r'dataCleaningOperation/', views.data_cleaning_operation, name="dataCleaningOperation")
 ]

@@ -11,7 +11,22 @@
         <span class="navbar-brand mb-0 h1">Data Cleaning Tool</span>
     </nav>
 
+    <form action="/dataCleaningOperation/" method="post">
+        {% csrf_token %}
+        <input type="text" name="row_ceiling" />
+        <input type="text" name="row_floor" />
+        <input type="submit" value="select row" />
+    </form>
 
+    <table>
+        {% for line in data %}
+             <tr>
+            {% for line_piece in line %}
+                    <td>{{ line_piece }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
 
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
