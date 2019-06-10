@@ -12,6 +12,11 @@ dc.read_data_file("static/DataSet_Read/1 XAGUSD_QPR.csv")
 
 
 def index(request):
+    return render(request, "index.html",)
+
+
+def uploadFile(request):
+    return render(request, "uploadFile.html",)
     if request.method == "POST":
         username = request.POST.get("username", None)
         password = request.POST.get("password", None)

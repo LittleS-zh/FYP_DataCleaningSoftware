@@ -8,57 +8,48 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1">Data Cleaning</span>
+        <span class="navbar-brand mb-0 h1">Data Cleaning Tool</span>
     </nav>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-sm">
-          <div class="card" style="width: 18rem;">
-          <img src="{% static 'images/1.jpg' %}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">普通Excel功能</h5>
-            <p class="card-text">一些跟Excel表格很像的功能</p>
-            <a href="#" class="btn btn-primary">Enter</a>
-          </div>
-        </div>
-        </div>
-        <div class="col-sm">
-          <div class="card" style="width: 18rem;">
-          <img src="{% static 'images/2.jpg' %}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">数据清洗功能</h5>
-            <p class="card-text">跟数据清理有关的功能</p>
-            <a href="#" class="btn btn-primary">Enter</a>
-          </div>
-        </div>
-        </div>
-        <div class="col-sm">
-          <div class="card" style="width: 18rem;">
-          <img src="{% static 'images/3.jpg' %}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">额外功能</h5>
-            <p class="card-text">看看能不能做得出来的功能</p>
-            <a href="#" class="btn btn-primary">待会儿试一下</a>
-          </div>
-        </div>
+    <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3">Welcome!</h1>
+          <p>This is a template for a simple data cleaning tool website. It includes amounts of data cleaning methods for you to modify your data set.</p>
+          <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
         </div>
       </div>
-    </div>
 
-<!-- Test Table -->
+      <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-4">
+            <h2>基础Excel</h2>
+            <p>这里会实现基础的表格功能，包括但不限于：合并，删除等操作</p>
+            <p><a class="btn btn-secondary" href="{% url 'uploadFile' %}" role="button">进入 &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>数据清洗</h2>
+            <p>这里会实现基本的数据清洗功能，包括但不限于：缺失值检测，去噪等功能</p>
+            <p><a class="btn btn-secondary" href="#" role="button">进入 &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>更多功能</h2>
+            <p>这里会有一些额外的文件处理功能，包括但不限于：OCR识别等功能</p>
+            <p><a class="btn btn-secondary" href="#" role="button">进入 &raquo;</a></p>
+          </div>
+        </div>
+        <hr>
+      </div> <!-- /container -->
 
-    <table border="1">
-        <tbody>
-            {% for line in data %}
-                <tr>
-                {% for line_piece in line %}
-                    <td>{{ line_piece }}</td>
-                {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{#    <table border="1">#}
+{#        <tbody>#}
+{#            {% for line in data %}#}
+{#                <tr>#}
+{#                    <td>{{ line }}</td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
 
 
 </body>
