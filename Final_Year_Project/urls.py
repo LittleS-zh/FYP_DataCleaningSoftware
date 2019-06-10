@@ -27,7 +27,12 @@ urlpatterns = [
     path(r'uploadFile/', views.uploadFile, name="uploadFile"),
     path(r'dataCleaningOperation/', views.data_cleaning_operation, name="dataCleaningOperation"),
     path(r'select_rows/', views.select_rows, name="select_rows"),
-    path(r'revert/', views.revert, name="revert")
+    path(r'select_columns/', views.select_columns, name="select_columns"),
+    path(r'revert/', views.revert, name="revert"),
+    path(r'de_duplication/', views.data_de_duplication, name="de_duplication"),
+    path(r'detect_outlier_three_sigma/', views.detect_outlier_three_sigma, name="detect_outlier_three_sigma"),
+
+
 ]
 
 if settings.DEBUG:

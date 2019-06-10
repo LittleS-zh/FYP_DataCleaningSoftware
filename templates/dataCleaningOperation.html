@@ -18,12 +18,30 @@
         <input type="submit" value="select row" name = "submit" />
     </form>
 
+    <form action="/select_columns/" method="post">
+        {% csrf_token %}
+        <input type="text" name="column_left" />
+        <input type="text" name="column_right" />
+        <input type="submit" value="select column" name = "submit" />
+    </form>
+
+    <form action="/de_duplication/" method="post">
+        {% csrf_token %}
+        <input type="submit" value="de duplication" name = "submit" />
+    </form>
+
+    <form action="/detect_outlier_three_sigma/" method="post">
+        {% csrf_token %}
+        <input type="text" name="column_input" />
+        <input type="submit" value="detect_outlier_three_sigma" name = "submit" />
+    </form>
+
     <form action="/revert/" method="post">
         {% csrf_token %}
         <input type="submit" value="revert" name = "submit" />
     </form>
 
-    <table>
+    <table border = "1">
         {% for line in data %}
              <tr>
             {% for line_piece in line %}

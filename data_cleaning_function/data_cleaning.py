@@ -42,7 +42,7 @@ class DataCleaning(object):
         self.__current_data_frame['newColumn'] = self.__current_data_frame['Day'] * self.__current_data_frame['Return']
 
     def conditional_filter(self, data_frame, column_input):
-        self.__current_data_frame = self.__current_data_frame[(data_frame[column_input] > 1)]
+        self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame[column_input] > 1)]
 
     # Max
     def data_reduction(self, drop_header, group_header, sum_or_mean, combine_name):
@@ -53,8 +53,8 @@ class DataCleaning(object):
             self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(group_header).mean().sort_values(combine_name,
                                                                                                            ascending=False)
 
-    def data_de_duplication(self, column_input):
-        self.__current_data_frame = self.__current_data_frame.drop_duplicates(column_input)
+    def data_de_duplication(self):
+        self.__current_data_frame = self.__current_data_frame.drop_duplicates()
 
     def calculate_means(self, column_need_to_be_grouped_input, column_group_by):
         self.__current_data_frame = self.__current_data_frame[column_need_to_be_grouped_input].groupby(self.__current_data_frame[column_group_by])
