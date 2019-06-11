@@ -21,13 +21,15 @@
           <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="file" name="document" id="reportXML" style="margin: 15px;">
-                <button class="btn btn-primary" id="submitButton" type="submit" >Upload</button>
+                <button class="btn btn-primary" id="submitButton" type="submit">Upload</button>
           </form>
 
-          <button class="btn btn-primary" id="checkButton" onclick="submitXML()" >check</button>
+          <button class="btn btn-primary" id="checkButton" onclick="submitXML()" >Check</button>
 
-          {% if url %}
-              <p class="card-text" style="margin-top: 15px; margin-bottom: 15px">Current File: <a href="{{ url }}">{{ name }}</a></p>
+
+          {% if name %}
+              <p class="card-text" style="margin-top: 15px; margin-bottom: 15px">Current File: {{ name }}</p>
+              <button class="btn btn-primary"><a href="{% url 'dataCleaningOperation' %}" style="text-decoration: none; color: white">Next</a></button>
           {% endif %}
 
       </div>
@@ -43,15 +45,15 @@
 <script>
     document.getElementById("submitButton").style.visibility="hidden";
 
-function submitXML(){
-	var fileInput = $('#reportXML').get(0).files[0];
-	if(fileInput){
-        document.getElementById("submitButton").style.visibility="visible";
-        document.getElementById("checkButton").style.display="none";
-	}else{
-		alert("Please Upload Files");
-	}
-}
+    function submitXML(){
+        var fileInput = $('#reportXML').get(0).files[0];
+        if(fileInput){
+            document.getElementById("submitButton").style.visibility="visible";
+            document.getElementById("checkButton").style.display="none";
+        }else{
+            alert("Please Upload Files");
+        }
+    }
 </script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
