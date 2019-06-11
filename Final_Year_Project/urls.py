@@ -21,7 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-   # path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path(r'', views.index),
     path(r'index/', views.index),
     path(r'uploadFile/', views.upload_file, name="uploadFile"),
@@ -31,8 +31,9 @@ urlpatterns = [
     path(r'revert/', views.revert, name="revert"),
     path(r'de_duplication/', views.data_de_duplication, name="de_duplication"),
     path(r'detect_outlier_three_sigma/', views.detect_outlier_three_sigma, name="detect_outlier_three_sigma"),
-
-
+    path(r'check_missing/', views.check_missing, name="check_missing"),
+    path(r'deal_with_missing_value/', views.deal_with_missing_value, name="deal_with_missing_value"),
+    path(r'generate_a_file/', views.generate_a_file, name="generate_a_file"),
 ]
 
 if settings.DEBUG:

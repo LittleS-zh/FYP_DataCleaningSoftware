@@ -56,6 +56,22 @@ def detect_outlier_three_sigma(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
 
 
+def check_missing(request):
+    return render(request, "dataCleaningOperation.html", {"data": dc.check_missing()})
+
+
+def deal_with_missing_value(request):
+    selection = request.GET['deal_with_missing_value']
+    print(selection)
+    dc.deal_with_missing_value(selection)
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+
+
+def generate_a_file(request):
+    dc.write_data_file()
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+
+
 def revert(request):
     dc.revert_data_frame()
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})

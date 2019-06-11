@@ -33,8 +33,32 @@
     <form action="/detect_outlier_three_sigma/" method="post">
         {% csrf_token %}
         <input type="text" name="column_input" />
-        <input type="submit" value="detect_outlier_three_sigma" name = "submit" />
+        <input type="submit" value="detect outlier three sigma" name = "submit" />
     </form>
+
+    <form action="/check_missing/" method="post">
+        {% csrf_token %}
+        <input type="submit" value="check_missing" name = "submit" />
+    </form>
+
+    <form action="/deal_with_missing_value/" method="get">
+        {% csrf_token %}
+            <select name="deal_with_missing_value">
+                <option value="1">delete rows</option>
+                <option value="2">delete columns</option>
+                <option value="3">fill with missing value</option>
+                <option value="4">pad</option>
+                <option value="5">fillna</option>
+                <option value="6">mean</option>
+            </select>
+        <input type="submit" value="deal with missing value" name = "submit" />
+    </form>
+
+    <form action="/generate_a_file/" method="post">
+        {% csrf_token %}
+        <input type="submit" value="generate a file" name = "submit" />
+    </form>
+
 
     <form action="/revert/" method="post">
         {% csrf_token %}
