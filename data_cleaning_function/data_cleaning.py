@@ -39,23 +39,26 @@ class DataCleaning(object):
     def algorithm_operation_on_blocks(self):
         self.__current_data_frame['newColumn'] = self.__current_data_frame['Day'] * self.__current_data_frame['Return']
 
-    def conditional_filter(self, data_frame, column_input):
+    def conditional_filter(self, column_input):
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame[column_input] > 1)]
 
     # Max
     def data_reduction(self, drop_header, group_header, sum_or_mean, combine_name):
         if sum_or_mean == 1:
-            self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(group_header).sum().sort_values(combine_name,
-                                                                                                          ascending=False)
+            self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(
+                group_header).sum().sort_values(combine_name,
+                                                ascending=False)
         else:
-            self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(group_header).mean().sort_values(combine_name,
-                                                                                                           ascending=False)
+            self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(
+                group_header).mean().sort_values(combine_name,
+                                                 ascending=False)
 
     def data_de_duplication(self):
         self.__current_data_frame = self.__current_data_frame.drop_duplicates()
 
     def calculate_means(self, column_need_to_be_grouped_input, column_group_by):
-        self.__current_data_frame = self.__current_data_frame[column_need_to_be_grouped_input].groupby(self.__current_data_frame[column_group_by])
+        self.__current_data_frame = self.__current_data_frame[column_need_to_be_grouped_input].groupby(
+            self.__current_data_frame[column_group_by])
         return self.__current_data_frame.mean()
 
     def detect_outlier_three_sigma(self, column_input):
@@ -67,10 +70,7 @@ class DataCleaning(object):
         d = self.__current_data_frame[column_input]
         self.__current_data_frame['isOutlier'] = d > d.quantitile(0.75)
 
-
     # def deal_with_outlier(self, column_input):
-
-
 
     def check_missing(self):
         data_frame_array = np.array(self.__current_data_frame.isnull())
@@ -99,5 +99,3 @@ class DataCleaning(object):
 
     def revert_data_frame(self):
         self.__current_data_frame = self.__original_data_frame
-
-
