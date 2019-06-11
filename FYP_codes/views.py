@@ -61,6 +61,11 @@ def detect_outlier_three_sigma(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
 
 
+def deal_with_outlier(request):
+    dc.deal_with_outlier()
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+
+
 def check_missing(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.check_missing()})
 
