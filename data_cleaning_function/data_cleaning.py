@@ -42,7 +42,7 @@ class DataCleaning(object):
     def conditional_filter(self, column_input):
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame[column_input] > 1)]
 
-    # Max
+
     def data_reduction(self, drop_header, group_header, sum_or_mean, combine_name):
         if sum_or_mean == 1:
             self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(
@@ -69,6 +69,9 @@ class DataCleaning(object):
     def detect_outlier_quantitile(self, column_input):
         d = self.__current_data_frame[column_input]
         self.__current_data_frame['isOutlier'] = d > d.quantitile(0.75)
+
+    def deal_with_outlier(self):
+        self.__current_data_frame = self.__current_data_frame.drop()
 
     # def deal_with_outlier(self, column_input):
 
