@@ -28,15 +28,7 @@
                     <input type="text" name="row_floor" />
                 </form>
           </li>
-          <li class="nav-item">
-              <form action="/select_rows/" method="post">
-                {% csrf_token %}
-                  <input type="submit" value="select row" name = "submit" />
-                <input type="text" name="row_ceiling" />
-                <input type="text" name="row_floor" />
 
-            </form>
-          </li>
           <li class="nav-item">
             <form action="/select_columns/" method="post">
                 {% csrf_token %}
@@ -57,7 +49,12 @@
                 {% csrf_token %}
                 <input type="submit" value="detect outlier three sigma" name = "submit" />
                 <input type="text" name="column_input" />
-
+            </form>
+          </li>
+          <li class="nav-item">
+            <form action="/deal_with_outlier/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="delete rows of outlier" name = "submit" />
             </form>
           </li>
           <li class="nav-item">
@@ -112,30 +109,6 @@
 
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
