@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path(r'', views.index),
-    path(r'index/', views.index),
+    path(r'index/', views.index, name="index"),
     path(r'uploadFile/', views.upload_file, name="uploadFile"),
     path(r'dataCleaningOperation/', views.data_cleaning_operation, name="dataCleaningOperation"),
     path(r'select_rows/', views.select_rows, name="select_rows"),
