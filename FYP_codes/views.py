@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse
+import os, sys
 
 dc = DataCleaning()
 
@@ -18,12 +19,13 @@ def upload_file(request):
         fs = FileSystemStorage()
         name = fs.save(uploaded_file.name, uploaded_file)
         url = fs.url(name)
-        context['url'] = url
+        # context['url'] = url
         context['name'] = uploaded_file.name
         global file_name
         file_name = uploaded_file.name
         path = "static/DataSet_Read/" + file_name
         dc.read_data_file(path)
+        os.remove(path)
     return render(request, "uploadFile.html", context)
 
 
