@@ -20,10 +20,8 @@ class DataCleaning(object):
         self.__original_data_frame = self.__current_data_frame
 
     # write datafile to an csv file
-    def write_data_file(self, path):
-        self.__current_data_frame.to_csv(path)
-
-    # TODO: add more parameters in it
+    def write_data_file(self):
+        self.__current_data_frame.to_csv("static/DataSet_Write/1 XAGUSD_QPR_Result.csv")
 
     def select_rows(self, row_start_input, row_end_input):
         self.__current_data_frame = self.__current_data_frame[row_start_input:row_end_input]
@@ -69,26 +67,25 @@ class DataCleaning(object):
         d = self.__current_data_frame[column_input]
         self.__current_data_frame['isOutlier'] = d > d.quantitile(0.75)
 
-    # TODO: to know how to change it to oo
-    def check_missing(self, file_name, values, index, column):
-        data_frame = pd.pivot_table(file_name, values=values, index=index, columns=column)
-        return data_frame.isnull()
+    def check_missing(self):
+        data_frame_array = np.array(self.__current_data_frame.isnull())
+        data_frame_list = data_frame_array.tolist()
+        return data_frame_list
 
-    def deal_with_missing_value(self, file_name, choice):
+    def deal_with_missing_value(self, choice):
         # delete the row
         if choice == 1:
-            return file_name.dropna(axis=0)
+            self.__current_data_frame.dropna(axis=0)
         elif choice == 2:
-            return file_name.dropna(axis=1)
+            self.__current_data_frame.dropna(axis=1)
         elif choice == 3:
-            instead_word = input("Please input a string to instead missing value!\n")
-            return file_name.fillna(instead_word)
+            self.__current_data_frame.fillna("missing")
         elif choice == 4:
-            return file_name.fillna(method='pad')
+            self.__current_data_frame.fillna(method='pad')
         elif choice == 5:
-            return file_name.fillna(method='bfill', limit=1)
+            self.__current_data_frame.fillna(method='bfill', limit=1)
         elif choice == 6:
-            return file_name.fillna(file_name.mean())
+            self.__current_data_frame.fillna(self.__current_data_frame.mean())
 
     def get_frame(self):
         data_frame_array = np.array(self.__current_data_frame)

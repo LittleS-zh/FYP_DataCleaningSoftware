@@ -19,7 +19,7 @@ def index(request):
 
 def upload_file(request):
     context = {}
-    if request.method == "POST" and request.FILES['document']:
+    if request.method == "POST":
         uploaded_file = request.FILES['document']
         fs = FileSystemStorage()
         name = fs.save(uploaded_file.name, uploaded_file)
@@ -61,6 +61,20 @@ def detect_outlier_three_sigma(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
 
 
+def check_missing(request):
+    return render(request, "dataCleaningOperation.html", {"data": dc.check_missing()})
+
+
+def deal_with_missing_value(request):
+    selection = request.GET['deal_with_missing_value']
+    print(selection)
+    dc.deal_with_missing_value(selection)
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+
+
+def generate_a_file(request):
+    dc.write_data_file()
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
 
 
 def revert(request):

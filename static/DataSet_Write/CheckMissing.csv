@@ -1,9 +1,0 @@
-天气,东北风,东南风,东风,北风,南风,西北风,西南风
-中雨,False,True,False,False,True,True,True
-多云,False,False,False,False,False,False,False
-小到中雨,True,True,True,False,True,True,True
-小雨,False,False,False,False,True,False,False
-晴,False,False,False,False,False,False,False
-阴,False,False,False,False,False,False,True
-阵雨,True,False,False,False,False,False,False
-雨夹雪,True,True,True,False,True,True,True

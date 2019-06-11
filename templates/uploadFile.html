@@ -19,15 +19,14 @@
         <h5 class="card-title">Upload File</h5>
 {#         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>#}
 
-          <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="document" style="margin: 15px;">
-                <button class="btn btn-primary" type="submit">Upload</button>
-                {% if url %}
-                    <p class="card-text" style="margin-top: 15px; margin-bottom: 15px">Current File: <a href="{{ url }}">{{ name }}</a></p>
-                {% endif %}
-
-          </form>
+      <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="document" style="margin: 15px;">
+            <button class="btn btn-primary" type="submit">Upload</button>
+            {% if url %}
+                <p class="card-text" style="margin-top: 15px; margin-bottom: 15px">Current File: <a href="{{ url }}">{{ name }}</a></p>
+            {% endif %}
+      </form>
 
       </div>
       <div class="card-footer text-muted">
