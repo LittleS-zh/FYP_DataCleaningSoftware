@@ -2,6 +2,7 @@ from data_cleaning_function.data_cleaning import DataCleaning
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from django.core.files.storage import FileSystemStorage
+from django.http import FileResponse
 
 dc = DataCleaning()
 
@@ -72,7 +73,13 @@ def deal_with_missing_value(request):
 def generate_a_file(request):
     path = "static/DataSet_Write/" + file_name
     dc.write_data_file(path)
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    file = open(path, 'rb')
+    response = FileResponse(file)
+    ContentDisposition = 'attachment;filename=' + '"' + file_name + '"'
+    response['Content-Type'] = 'application/form-data'
+    response['Content-Disposition'] = ContentDisposition
+    return response
+    # return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()}, )
 
 
 def revert(request):

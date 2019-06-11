@@ -58,8 +58,9 @@
         {% csrf_token %}
         <input type="submit" value="generate a file" name = "submit" />
     </form>
-    {% if path %}
-        <p class="card-text" style="margin-top: 15px; margin-bottom: 15px">Result File: <a href="{{ path }}">{{ path }}</a></p>
+
+    {% if url %}
+        <p class="card-text" style="margin-top: 15px; margin-bottom: 15px">Result File: <a href="{{ url }}">{{ url }}</a></p>
     {% endif %}
 
 
