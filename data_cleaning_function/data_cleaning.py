@@ -96,8 +96,10 @@ class DataCleaning(object):
             self.__current_data_frame.fillna(self.__current_data_frame.mean())
 
     def get_frame(self):
+        data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame)
         data_frame_list = data_frame_array.tolist()
+        data_frame_list.insert(0,data_frame_column)
         return data_frame_list
 
     def revert_data_frame(self):
