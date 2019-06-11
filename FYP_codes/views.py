@@ -22,7 +22,8 @@ def upload_file(request):
         context['name'] = uploaded_file.name
         global file_name
         file_name = uploaded_file.name
-        dc.read_data_file(file_name)
+        path = "static/DataSet_Read/" + file_name
+        dc.read_data_file(path)
     return render(request, "uploadFile.html", context)
 
 
