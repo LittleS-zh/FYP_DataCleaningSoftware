@@ -70,9 +70,9 @@ def deal_with_missing_value(request):
 
 
 def generate_a_file(request):
-    path = "DataSet_Write/" + file_name + "_Result"
+    path = "static/DataSet_Write/" + file_name
     dc.write_data_file(path)
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()}, path)
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
 
 
 def revert(request):
