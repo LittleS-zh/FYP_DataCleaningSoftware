@@ -20,8 +20,8 @@ class DataCleaning(object):
         self.__original_data_frame = self.__current_data_frame
 
     # write datafile to an csv file
-    def write_data_file(self):
-        self.__current_data_frame.to_csv("static/DataSet_Write/1 XAGUSD_QPR_Result.csv")
+    def write_data_file(self, path):
+        self.__current_data_frame.to_csv(path)
 
     def select_rows(self, row_start_input, row_end_input):
         self.__current_data_frame = self.__current_data_frame[row_start_input:row_end_input]

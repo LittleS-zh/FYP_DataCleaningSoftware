@@ -5,7 +5,6 @@ from django.core.files.storage import FileSystemStorage
 
 
 dc = DataCleaning()
-dc.read_data_file("static/DataSet_Read/1 XAGUSD_QPR.csv")
 
 
 def index(request):
@@ -21,6 +20,9 @@ def upload_file(request):
         url = fs.url(name)
         context['url'] = url
         context['name'] = uploaded_file.name
+        global file_name
+        file_name = uploaded_file.name
+        dc.read_data_file(file_name)
     return render(request, "uploadFile.html", context)
 
 
@@ -68,7 +70,8 @@ def deal_with_missing_value(request):
 
 
 def generate_a_file(request):
-    dc.write_data_file()
+    path = "static/DataSet_Write/" + file_name + "_Result"
+    dc.write_data_file(path)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
 
 
