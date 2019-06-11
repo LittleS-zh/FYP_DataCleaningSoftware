@@ -24,7 +24,7 @@ urlpatterns = [
    # path('admin/', admin.site.urls),
     path(r'', views.index),
     path(r'index/', views.index),
-    path(r'uploadFile/', views.uploadFile, name="uploadFile"),
+    path(r'uploadFile/', views.upload_file, name="uploadFile"),
     path(r'dataCleaningOperation/', views.data_cleaning_operation, name="dataCleaningOperation"),
     path(r'select_rows/', views.select_rows, name="select_rows"),
     path(r'select_columns/', views.select_columns, name="select_columns"),

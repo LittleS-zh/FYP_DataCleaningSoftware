@@ -17,13 +17,16 @@ def index(request):
     return render(request, "index.html", )
 
 
-def uploadFile(request):
-    if request.method == "POST":
+def upload_file(request):
+    context = {}
+    if request.method == "POST" and request.FILES['document']:
         uploaded_file = request.FILES['document']
         fs = FileSystemStorage()
-        fs.save(uploaded_file.name, uploaded_file)
-        # print(uploaded_file.name)
-    return render(request, "uploadFile.html", )
+        name = fs.save(uploaded_file.name, uploaded_file)
+        url = fs.url(name)
+        context['url'] = url
+        context['name'] = uploaded_file.name
+    return render(request, "uploadFile.html", context)
 
 
 def data_cleaning_operation(request):
