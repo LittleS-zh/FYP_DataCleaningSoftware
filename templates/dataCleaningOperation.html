@@ -11,78 +11,131 @@
         <span class="navbar-brand mb-0 h1"><a href="{% url 'index' %}" style="text-decoration: none; color: black">Data Cleaning Tool</a></span>
     </nav>
 
-    <form action="/select_rows/" method="post">
-        {% csrf_token %}
-        <input type="text" name="row_ceiling" />
-        <input type="text" name="row_floor" />
-        <input type="submit" value="select row" name = "submit" />
-    </form>
-
-    <form action="/select_columns/" method="post">
-        {% csrf_token %}
-        <input type="text" name="column_left" />
-        <input type="text" name="column_right" />
-        <input type="submit" value="select column" name = "submit" />
-    </form>
-
-    <form action="/de_duplication/" method="post">
-        {% csrf_token %}
-        <input type="submit" value="de duplication" name = "submit" />
-    </form>
-
-    <form action="/detect_outlier_three_sigma/" method="post">
-        {% csrf_token %}
-        <input type="text" name="column_input" />
-        <input type="submit" value="detect outlier three sigma" name = "submit" />
-    </form>
-
-    <form action="/deal_with_outlier/" method="post">
-        {% csrf_token %}
-        <input type="submit" value="delete rows of outlier" name = "submit" />
-    </form>
-
-    <form action="/check_missing/" method="post">
-        {% csrf_token %}
-        <input type="submit" value="check_missing" name = "submit" />
-    </form>
-
-    <form action="/deal_with_missing_value/" method="get">
-        {% csrf_token %}
-            <select name="deal_with_missing_value">
-                <option value="1">delete rows</option>
-                <option value="2">delete columns</option>
-                <option value="3">fill with missing value</option>
-                <option value="4">pad</option>
-                <option value="5">fillna</option>
-                <option value="6">mean</option>
-            </select>
-        <input type="submit" value="deal with missing value" name = "submit" />
-    </form>
-
-    <form action="/generate_a_file/" method="post">
-        {% csrf_token %}
-        <input type="submit" value="generate a file" name = "submit" />
-    </form>
-
-    {% if url %}
-        <p class="card-text" style="margin-top: 15px; margin-bottom: 15px">Result File: <a href="{{ url }}">{{ url }}</a></p>
-    {% endif %}
 
 
-    <form action="/revert/" method="post">
-        {% csrf_token %}
-        <input type="submit" value="revert" name = "submit" />
-    </form>
 
-    <table border = "1">
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+              <span data-feather="home"></span>
+                <form action="/select_rows/" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="select row" name = "submit" />
+                    <input type="text" name="row_ceiling" />
+                    <input type="text" name="row_floor" />
+                </form>
+          </li>
+          <li class="nav-item">
+              <form action="/select_rows/" method="post">
+                {% csrf_token %}
+                  <input type="submit" value="select row" name = "submit" />
+                <input type="text" name="row_ceiling" />
+                <input type="text" name="row_floor" />
+
+            </form>
+          </li>
+          <li class="nav-item">
+            <form action="/select_columns/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="select column" name = "submit" />
+                <input type="text" name="column_left" />
+                <input type="text" name="column_right" />
+
+            </form>
+          </li>
+          <li class="nav-item">
+            <form action="/de_duplication/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="de duplication" name = "submit" />
+            </form>
+          </li>
+          <li class="nav-item">
+            <form action="/detect_outlier_three_sigma/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="detect outlier three sigma" name = "submit" />
+                <input type="text" name="column_input" />
+
+            </form>
+          </li>
+          <li class="nav-item">
+            <form action="/check_missing/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="check_missing" name = "submit" />
+            </form>
+          </li>
+            <li class="nav-item">
+            <form action="/deal_with_missing_value/" method="get">
+                {% csrf_token %}
+                <input type="submit" value="deal with missing value" name = "submit" />
+                    <select name="deal_with_missing_value">
+                        <option value="1">delete rows</option>
+                        <option value="2">delete columns</option>
+                        <option value="3">fill with missing value</option>
+                        <option value="4">pad</option>
+                        <option value="5">fillna</option>
+                        <option value="6">mean</option>
+                    </select>
+
+            </form>
+          </li>
+            <li class="nav-item">
+             <form action="/generate_a_file/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="generate a file" name = "submit" />
+            </form>
+          </li>
+            <li class="nav-item">
+             <form action="/revert/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="revert" name = "submit" />
+            </form>
+          </li>
+        </ul>
+
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <table border = "1">
         {% for line in data %}
              <tr>
             {% for line_piece in line %}
-                    <td>{{ line_piece }}</td>
+                <td>{{ line_piece }}</td>
             {% endfor %}
             </tr>
         {% endfor %}
-    </table>
+      </table>
+    </main>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
