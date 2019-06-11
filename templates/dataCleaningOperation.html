@@ -8,7 +8,7 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1">Data Cleaning Tool</span>
+        <span class="navbar-brand mb-0 h1"><a href="{% url 'index' %}" style="text-decoration: none; color: black">Data Cleaning Tool</a></span>
     </nav>
 
     <form action="/select_rows/" method="post">
@@ -58,6 +58,9 @@
         {% csrf_token %}
         <input type="submit" value="generate a file" name = "submit" />
     </form>
+    {% if path %}
+        <p class="card-text" style="margin-top: 15px; margin-bottom: 15px">Result File: <a href="{{ path }}">{{ path }}</a></p>
+    {% endif %}
 
 
     <form action="/revert/" method="post">
