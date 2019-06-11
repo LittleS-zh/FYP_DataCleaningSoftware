@@ -36,6 +36,11 @@
         <input type="submit" value="detect outlier three sigma" name = "submit" />
     </form>
 
+    <form action="/deal_with_outlier/" method="post">
+        {% csrf_token %}
+        <input type="submit" value="delete rows of outlier" name = "submit" />
+    </form>
+
     <form action="/check_missing/" method="post">
         {% csrf_token %}
         <input type="submit" value="check_missing" name = "submit" />
