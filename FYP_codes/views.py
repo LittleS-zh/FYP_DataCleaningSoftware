@@ -1,13 +1,8 @@
 from data_cleaning_function.data_cleaning import DataCleaning
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
-
 from django.core.files.storage import FileSystemStorage
 
-user_list = [
-    {"user": "jack", "pwd": "abc"},
-    {"user": "tom", "pwd": "ABC"},
-]
 
 dc = DataCleaning()
 dc.read_data_file("static/DataSet_Read/1 XAGUSD_QPR.csv")
@@ -19,7 +14,7 @@ def index(request):
 
 def upload_file(request):
     context = {}
-    if request.method == "POST" and request.FILES['document']:
+    if request.method == "POST":
         uploaded_file = request.FILES['document']
         fs = FileSystemStorage()
         name = fs.save(uploaded_file.name, uploaded_file)
@@ -59,8 +54,6 @@ def detect_outlier_three_sigma(request):
         column_input = str(request.POST.get("column_input", None))
         dc.detect_outlier_three_sigma(column_input)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
-
-
 
 
 def revert(request):
