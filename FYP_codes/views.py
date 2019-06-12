@@ -64,7 +64,9 @@ def detect_outlier_three_sigma(request):
 
 
 def deal_with_outlier(request):
-    dc.deal_with_outlier()
+    if request.method == "POST":
+        column_input = str(request.POST.get("deal_with_outlier", None))
+        dc.deal_with_outlier(column_input)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 

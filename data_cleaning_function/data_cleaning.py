@@ -71,11 +71,11 @@ class DataCleaning(object):
         d = self.__current_data_frame[column_input]
         self.__current_data_frame['isOutlier'] = d > d.quantitile(0.75)
 
-    def deal_with_outlier(self):
+    def deal_with_outlier(self, column_input):
+        print(column_input)
+        self.detect_outlier_three_sigma(column_input)
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == False)]
         self.__current_data_frame = self.__current_data_frame.drop("isOutlier",axis=1)
-
-    # def deal_with_outlier(self, column_input):
 
     def check_missing(self):
         data_frame_column = np.array(self.__current_data_frame.columns)

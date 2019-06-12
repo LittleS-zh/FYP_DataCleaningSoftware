@@ -73,6 +73,11 @@
                         <form action="/deal_with_outlier/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-sm" name="submit"/>Delete Outliers</button>
+                            <select name="deal_with_outlier">
+                                {% for data_piece in data.data_header %}
+                                    <option value = "{{ data_piece }}"> {{ data_piece }} </option>
+                                {% endfor %}
+                            </select>
                         </form>
                     </li>
                     </br>
