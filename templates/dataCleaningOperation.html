@@ -18,6 +18,7 @@
                       <span>Basic Operation</span>
                     </h6>
                     <li class="nav-item">
+                        <span data-feather="home"></span>
                         <form action="/select_rows/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px;" name="submit"/>Row Select</button>
@@ -49,8 +50,12 @@
                     <li class="nav-item">
                         <form action="/detect_outlier_three_sigma/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit">Detect Outliers</button>
-                            <input class="form-control" style="margin-bottom: 5px; width: 90%;" type="text" placeholder="Enter the column to detect" name="column_input" required>
+                            <input type="submit" value="detect outlier three sigma" name="submit"/>
+                                <select name="detect_outlier_three_sigma">
+                                    {% for data_piece in data.data_header %}
+                                        <option value = "{{ data_piece }}"> {{ data_piece }} </option>
+                                    {% endfor %}
+                                </select>
                         </form>
                     </li>
                     <li class="nav-item">
@@ -87,6 +92,15 @@
                         </form>
                     </li>
 
+                    <li class="nav-item">
+                        <form action="/limit_float_point_num/" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="float_point_num"/>
+                            <input type="submit" value="float_point_number" name="submit"/>
+                        </form>
+                    </li>
+
+                    <li class="nav-item">
                         <form action="/revert/" method="post">
                             {% csrf_token %}
                             <input type="submit" value="revert" name="submit"/>
@@ -101,7 +115,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <table border="1" style="margin-top: 20px">
-                {% for line in data %}
+                {% for line in data.data_frame %}
                     <tr>
                         {% for line_piece in line %}
                             <td>{{ line_piece }}</td>
