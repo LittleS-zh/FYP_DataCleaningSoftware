@@ -33,8 +33,8 @@
                         <form action="/select_rows/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px;" name="submit"/>Row Select</button>
-                            <input type="text" class="form-control" style="margin-bottom: 5px; width: 80%;" placeholder="Enter the starting row" name="row_ceiling" required>
-                            <input type="text" class="form-control" style="width: 80%;" placeholder="Enter the ending row" name="row_floor" required>
+                            <input type="text" class="form-control form-control-sm" style="margin-bottom: 5px; width: 80%;" placeholder="Enter the starting row" name="row_ceiling" oninput = "value=value.replace(/[^\d]/g,'')" required>
+                            <input type="text" class="form-control form-control-sm" style="width: 80%;" placeholder="Enter the ending row" name="row_floor" oninput = "value=value.replace(/[^\d]/g,'')" required>
                         </form>
                     </li>
                     </br>
@@ -42,11 +42,10 @@
                         <form action="/select_columns/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>Column Select</button>
-                            <input type="text" class="form-control" style="margin-bottom: 5px; width: 85%;" placeholder="Enter the starting column" name="column_left" required>
-                            <input type="text" class="form-control" style="width: 85%;" placeholder="Enter the ending column" name="column_right" required>
+                            <input type="text" class="form-control form-control-sm" style="margin-bottom: 5px; width: 85%;" placeholder="Enter the starting column" name="column_left" oninput = "value=value.replace(/[^\d]/g,'')" required>
+                            <input type="text" class="form-control form-control-sm" style="width: 85%;" placeholder="Enter the ending column" name="column_right" oninput = "value=value.replace(/[^\d]/g,'')" required>
                         </form>
                     </li>
-                    </br>
                     </br>
                     <h6 style="text-align: left">
                       <span>Data Cleaning Method</span>
@@ -61,19 +60,20 @@
                     <li class="nav-item">
                         <form action="/detect_outlier_three_sigma/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="detect outlier three sigma" name="submit"/>
-                                <select name="detect_outlier_three_sigma">
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>Detect Outliers</button>
+                                <select class="form-control form-control-sm" name="detect_outlier_three_sigma">
                                     {% for data_piece in data.data_header %}
                                         <option value = "{{ data_piece }}"> {{ data_piece }} </option>
                                     {% endfor %}
                                 </select>
                         </form>
                     </li>
+                    </br>
                     <li class="nav-item">
                         <form action="/deal_with_outlier/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm" name="submit"/>Delete Outliers</button>
-                            <select name="deal_with_outlier">
+                            <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 5px" name="submit"/>Delete Outliers</button>
+                            <select class="form-control form-control-sm" name="deal_with_outlier">
                                 {% for data_piece in data.data_header %}
                                     <option value = "{{ data_piece }}"> {{ data_piece }} </option>
                                 {% endfor %}
@@ -87,11 +87,12 @@
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>Check Missing Value</button>
                         </form>
                     </li>
+                    </br>
                     <li class="nav-item">
                         <form action="/deal_with_missing_value/" method="get">
                             {% csrf_token %}
-                            <input type="submit" value="deal with missing value" name="submit"/>
-                            <select name="deal_with_missing_value">
+                            <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 5px" name="submit"/>deal with missing value</button>
+                            <select class="form-control form-control-sm" name="deal_with_missing_value">
                                 <option value="1">delete rows</option>
                                 <option value="2">delete columns</option>
                                 <option value="3">fill with missing value</option>
@@ -101,10 +102,11 @@
                             </select>
                         </form>
                     </li>
+                    </br>
                     <li class="nav-item">
                         <form action="/generate_a_file/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="generate a file" name="submit"/>
+                            <input type="submit"  value="generate a file" name="submit"/>
                         </form>
                     </li>
 
