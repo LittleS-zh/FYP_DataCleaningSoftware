@@ -7,11 +7,22 @@
     <meta charset="UTF-8">
     <title>首页</title>
 </head>
+<style type="text/css">
+    #box {
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        line-height: 30px;
+    }
+    #box::-webkit-scrollbar {
+        display: none;
+    }
+</style>
 <body>
 
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar" style="position: fixed">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar" style="position: fixed" id="box">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <h6 style="text-align: left; margin-top: 20px;">
