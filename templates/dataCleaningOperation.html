@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>首页</title>
+    <title>Data Cleaning Tool</title>
 </head>
 <style type="text/css">
     #box {
@@ -14,6 +14,7 @@
         overflow-y: scroll;
         line-height: 30px;
     }
+
     #box::-webkit-scrollbar {
         display: none;
     }
@@ -26,56 +27,81 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <h6 style="text-align: left; margin-top: 20px;">
-                      <span>Basic Operation</span>
+                        <span>Basic Operation</span>
                     </h6>
                     <li class="nav-item">
                         <span data-feather="home"></span>
                         <form action="/select_rows/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px;" name="submit"/>Row Select</button>
-                            <input type="text" class="form-control form-control-sm" style="margin-bottom: 5px; width: 80%;" placeholder="Enter the starting row" name="row_ceiling" oninput = "value=value.replace(/[^\d]/g,'')" required>
-                            <input type="text" class="form-control form-control-sm" style="width: 80%;" placeholder="Enter the ending row" name="row_floor" oninput = "value=value.replace(/[^\d]/g,'')" required>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px;"
+                                    name="submit"/>
+                            Row Select</button>
+                            <input type="text" class="form-control form-control-sm"
+                                   style="margin-bottom: 5px; width: 80%;" placeholder="Enter the starting row"
+                                   name="row_ceiling" oninput="value=value.replace(/[^\d]/g,'')" required>
+                            <input type="text" class="form-control form-control-sm" style="width: 80%;"
+                                   placeholder="Enter the ending row" name="row_floor"
+                                   oninput="value=value.replace(/[^\d]/g,'')" required>
                         </form>
                     </li>
                     </br>
                     <li class="nav-item">
                         <form action="/select_columns/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>Column Select</button>
-                            <input type="text" class="form-control form-control-sm" style="margin-bottom: 5px; width: 85%;" placeholder="Enter the starting column" name="column_left" oninput = "value=value.replace(/[^\d]/g,'')" required>
-                            <input type="text" class="form-control form-control-sm" style="width: 85%;" placeholder="Enter the ending column" name="column_right" oninput = "value=value.replace(/[^\d]/g,'')" required>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Column Select</button>
+                            <input type="text" class="form-control form-control-sm"
+                                   style="margin-bottom: 5px; width: 85%;" placeholder="Enter the starting column"
+                                   name="column_left" oninput="value=value.replace(/[^\d]/g,'')" required>
+                            <input type="text" class="form-control form-control-sm" style="width: 85%;"
+                                   placeholder="Enter the ending column" name="column_right"
+                                   oninput="value=value.replace(/[^\d]/g,'')" required>
+                        </form>
+                    </li>
+                    </br>
+                    <li class="nav-item">
+                        <form action="/limit_float_point_num/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Change float precision</button>
+                            <input type="text" name="float_point_num" class="form-control form-control-sm"
+                                   style="width: 85%;" placeholder="Floating Precision"
+                                   oninput="value=value.replace(/[^\d]/g,'')" required>
                         </form>
                     </li>
                     </br>
                     <h6 style="text-align: left">
-                      <span>Data Cleaning Method</span>
+                        <span>Data Cleaning Method</span>
                     </h6>
                     <li class="nav-item">
                         <form action="/de_duplication/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>De-duplication</button>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            De-duplication</button>
                         </form>
                     </li>
                     </br>
                     <li class="nav-item">
                         <form action="/detect_outlier_three_sigma/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>Detect Outliers</button>
-                                <select class="form-control form-control-sm" name="detect_outlier_three_sigma">
-                                    {% for data_piece in data.data_header %}
-                                        <option value = "{{ data_piece }}"> {{ data_piece }} </option>
-                                    {% endfor %}
-                                </select>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Detect Outliers</button>
+                            <select class="form-control form-control-sm" name="detect_outlier_three_sigma">
+                                {% for data_piece in data.data_header %}
+                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
+                                {% endfor %}
+                            </select>
                         </form>
                     </li>
-                    </br>
                     <li class="nav-item">
                         <form action="/deal_with_outlier/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 5px" name="submit"/>Delete Outliers</button>
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    style="margin-bottom: 5px; margin-top: 5px" name="submit"/>
+                            Delete Outliers</button>
                             <select class="form-control form-control-sm" name="deal_with_outlier">
                                 {% for data_piece in data.data_header %}
-                                    <option value = "{{ data_piece }}"> {{ data_piece }} </option>
+                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
                                 {% endfor %}
                             </select>
                         </form>
@@ -84,48 +110,47 @@
                     <li class="nav-item">
                         <form action="/check_missing/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>Check Missing Value</button>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Check Missing Value</button>
                         </form>
                     </li>
-                    </br>
                     <li class="nav-item">
                         <form action="/deal_with_missing_value/" method="get">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 5px" name="submit"/>deal with missing value</button>
+                            <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 5px"
+                                    name="submit"/>
+                            deal with missing value</button>
                             <select class="form-control form-control-sm" name="deal_with_missing_value">
-                                <option value="1">delete rows</option>
-                                <option value="2">delete columns</option>
-                                <option value="3">fill with missing value</option>
-                                <option value="4">pad</option>
-                                <option value="5">fillna</option>
-                                <option value="6">mean</option>
+                                <option value="1">Delete rows</option>
+                                <option value="2">Delete columns</option>
+                                <option value="3">Fill with 'missing'</option>
+                                <option value="4">Fill with the front value</option>
+                                <option value="5">Fill with the rear value</option>
+                                <option value="6">Fill with the mean value</option>
                             </select>
                         </form>
                     </li>
                     </br>
                     <li class="nav-item">
-                        <form action="/generate_a_file/" method="post">
-                            {% csrf_token %}
-                            <input type="submit"  value="generate a file" name="submit"/>
-                        </form>
-                    </li>
-
-                    <li class="nav-item">
-                        <form action="/limit_float_point_num/" method="post">
-                            {% csrf_token %}
-                            <input type="text" name="float_point_num"/>
-                            <input type="submit" value="float_point_number" name="submit"/>
-                        </form>
-                    </li>
-
-                    <li class="nav-item">
                         <form action="/revert/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="revert" name="submit"/>
+                            <button type="submit" class="btn btn-warning btn-sm" style="margin-bottom: 5px"
+                                    name="submit"/>
+                            Revert</button>
                         </form>
                     </li>
                     <li class="nav-item">
-                    <a href="{% url 'index' %}" style="text-decoration: none; color: black">Go back to index</a></span>
+                        <form action="/generate_a_file/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm" style="margin-bottom: 5px"
+                                    name="submit"/>
+                            Generate File</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary btn-sm" style="margin-bottom: 20px"><a href="{% url 'index' %}"
+                                                                                              style="text-decoration: none; color: white">Go
+                            back to index</a></span></button>
                     </li>
                 </ul>
             </div>
