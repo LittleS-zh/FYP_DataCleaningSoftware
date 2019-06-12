@@ -56,7 +56,7 @@ def data_de_duplication(request):
 
 def detect_outlier_three_sigma(request):
     if request.method == "POST":
-        column_input = str(request.POST.get("column_input", None))
+        column_input = str(request.POST.get("detect_outlier_three_sigma", None))
         dc.detect_outlier_three_sigma(column_input)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
 

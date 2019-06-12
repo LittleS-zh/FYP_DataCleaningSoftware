@@ -8,6 +8,8 @@ class DataCleaning(object):
     # this attribute is for reverting the operations
     __original_data_frame = pd.read_csv("static/DataSet_Read/basic.csv")
 
+    __data_frame_header = []
+
     def __init__(self):
         print("class initialization")
 
@@ -76,9 +78,11 @@ class DataCleaning(object):
     # def deal_with_outlier(self, column_input):
 
     def check_missing(self):
+        data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame.isnull())
         data_frame_list = data_frame_array.tolist()
-        return data_frame_list
+        data_dictionary = {'data_frame': data_frame_list, 'data_header': data_frame_column}
+        return data_dictionary
 
     def deal_with_missing_value(self, choice):
         # delete the row
@@ -100,7 +104,8 @@ class DataCleaning(object):
         data_frame_array = np.array(self.__current_data_frame)
         data_frame_list = data_frame_array.tolist()
         data_frame_list.insert(0,data_frame_column)
-        return data_frame_list
+        data_dictionary = {'data_frame': data_frame_list, 'data_header':data_frame_column}
+        return data_dictionary
 
     def revert_data_frame(self):
         self.__current_data_frame = self.__original_data_frame

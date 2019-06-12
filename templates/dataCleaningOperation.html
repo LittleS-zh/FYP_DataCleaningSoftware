@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
-    <span class="navbar-brand mb-0 h1"><a href="{% url 'index' %}" style="text-decoration: none; color: black">Data Cleaning Tool</a></span>
+    <span class="navbar-brand mb-0 h1"><a href="{% url 'index' %}" style="text-decoration: none; color: rgba(0,0,0,0)">Data Cleaning Tool</a></span>
 </nav>
 
 
@@ -46,7 +46,11 @@
                         <form action="/detect_outlier_three_sigma/" method="post">
                             {% csrf_token %}
                             <input type="submit" value="detect outlier three sigma" name="submit"/>
-                            <input type="text" name="column_input"/>
+                                <select name="detect_outlier_three_sigma">
+                                    {% for data_piece in data.data_header %}
+                                        <option value = "{{ data_piece }}"> {{ data_piece }} </option>
+                                    {% endfor %}
+                                </select>
                         </form>
                     </li>
                     <li class="nav-item">
@@ -93,7 +97,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <table border="1">
-                {% for line in data %}
+                {% for line in data.data_frame %}
                     <tr>
                         {% for line_piece in line %}
                             <td>{{ line_piece }}</td>
