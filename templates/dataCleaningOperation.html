@@ -13,70 +13,66 @@
 </nav>
 
 
-
-
 <div class="container-fluid">
-  <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-              <span data-feather="home"></span>
-                <form action="/select_rows/" method="post">
-                    {% csrf_token %}
-                    <input type="submit" value="select row" name = "submit" />
-                    <input type="text" name="row_ceiling" />
-                    <input type="text" name="row_floor" />
-                </form>
-          </li>
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <span data-feather="home"></span>
+                        <form action="/select_rows/" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="select row" name="submit"/>
+                            <input type="text" name="row_ceiling"/>
+                            <input type="text" name="row_floor"/>
+                        </form>
+                    </li>
 
-          <li class="nav-item">
-            <form action="/select_columns/" method="post">
-                {% csrf_token %}
-                <input type="submit" value="select column" name = "submit" />
-                <input type="text" name="column_left" />
-                <input type="text" name="column_right" />
-
-            </form>
-          </li>
-          <li class="nav-item">
-            <form action="/de_duplication/" method="post">
-                {% csrf_token %}
-                <input type="submit" value="de duplication" name = "submit" />
-            </form>
-          </li>
-          <li class="nav-item">
-            <form action="/detect_outlier_three_sigma/" method="post">
-                {% csrf_token %}
-                <input type="submit" value="detect outlier three sigma" name = "submit" />
-                <input type="text" name="column_input" />
-            </form>
-          </li>
-          <li class="nav-item">
-            <form action="/deal_with_outlier/" method="post">
-                {% csrf_token %}
-                <input type="submit" value="delete rows of outlier" name = "submit" />
-            </form>
-          </li>
-          <li class="nav-item">
-            <form action="/check_missing/" method="post">
-                {% csrf_token %}
-                <input type="submit" value="check_missing" name = "submit" />
-            </form>
-          </li>
-            <li class="nav-item">
-            <form action="/deal_with_missing_value/" method="get">
-                {% csrf_token %}
-                <input type="submit" value="deal with missing value" name = "submit" />
-                    <select name="deal_with_missing_value">
-                        <option value="1">delete rows</option>
-                        <option value="2">delete columns</option>
-                        <option value="3">fill with missing value</option>
-                        <option value="4">pad</option>
-                        <option value="5">fillna</option>
-                        <option value="6">mean</option>
-                    </select>
-
+                    <li class="nav-item">
+                        <form action="/select_columns/" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="select column" name="submit"/>
+                            <input type="text" name="column_left"/>
+                            <input type="text" name="column_right"/>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/de_duplication/" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="de duplication" name="submit"/>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/detect_outlier_three_sigma/" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="detect outlier three sigma" name="submit"/>
+                            <input type="text" name="column_input"/>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/deal_with_outlier/" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="delete rows of outlier" name="submit"/>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/check_missing/" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="check_missing" name="submit"/>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/deal_with_missing_value/" method="get">
+                            {% csrf_token %}
+                            <input type="submit" value="deal with missing value" name="submit"/>
+                            <select name="deal_with_missing_value">
+                                <option value="1">delete rows</option>
+                                <option value="2">delete columns</option>
+                                <option value="3">fill with missing value</option>
+                                <option value="4">pad</option>
+                                <option value="5">fillna</option>
+                                <option value="6">mean</option>
+                            </select>
                         </form>
                     </li>
                     <li class="nav-item">
