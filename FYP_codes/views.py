@@ -7,7 +7,7 @@ import os, sys
 
 dc = DataCleaning()
 global float_round
-float_round = [2]
+float_round = [20]
 
 
 def index(request):
