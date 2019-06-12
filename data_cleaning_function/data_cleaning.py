@@ -21,19 +21,26 @@ class DataCleaning(object):
         self.__current_data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input,
                                                 header=header_input)
         self.__original_data_frame = copy.deepcopy(self.__current_data_frame)
+        print(self.__current_data_frame.shape[0])
+        print(self.__current_data_frame.shape[1])
 
     # write datafile to an csv file
     def write_data_file(self, path):
         self.__current_data_frame.to_csv(path)
 
     def select_rows(self, row_start_input, row_end_input):
-        if row_start_input < row_end_input:
+        if row_start_input <= row_end_input and row_end_input <= self.__current_data_frame.shape[0] and row_start_input >= 1:
+            print(self.__current_data_frame.shape[0])
             self.__current_data_frame = self.__current_data_frame[row_start_input-1:row_end_input]
         else:
             print("invalid input")
 
     def select_column_position(self, column_start_input, column_end_input):
-        self.__current_data_frame = self.__current_data_frame.iloc[:, column_start_input-1: column_end_input]
+        if column_start_input <= column_end_input and column_end_input <= self.__current_data_frame.shape[1] and column_start_input >= 1:
+            print(self.__current_data_frame.shape[1])
+            self.__current_data_frame = self.__current_data_frame.iloc[:, column_start_input-1: column_end_input]
+        else:
+            print("invalid input")
 
     def select_column_heading(self, header_of_column_input):
         self.__current_data_frame = self.__current_data_frame[header_of_column_input]
