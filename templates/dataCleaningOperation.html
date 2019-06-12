@@ -85,12 +85,24 @@
                             <input type="submit" value="generate a file" name="submit"/>
                         </form>
                     </li>
+
+                    <li class="nav-item">
+                        <form action="/limit_float_point_num/" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="float_point_num"/>
+                            <input type="submit" value="float_point_number" name="submit"/>
+                        </form>
+                    </li>
+
                     <li class="nav-item">
                         <form action="/revert/" method="post">
                             {% csrf_token %}
                             <input type="submit" value="revert" name="submit"/>
                         </form>
                     </li>
+
+
+
                 </ul>
             </div>
         </nav>

@@ -6,6 +6,8 @@ from django.http import FileResponse
 import os, sys
 
 dc = DataCleaning()
+global float_round
+float_round = [2]
 
 
 def index(request):
@@ -30,7 +32,7 @@ def upload_file(request):
 
 
 def data_cleaning_operation(request):
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
 def select_rows(request):
@@ -38,7 +40,7 @@ def select_rows(request):
         row_ceiling = int(request.POST.get("row_ceiling", None))
         row_floor = int(request.POST.get("row_floor", None))
         dc.select_rows(row_ceiling, row_floor)
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
 def select_columns(request):
@@ -46,24 +48,24 @@ def select_columns(request):
         column_left = int(request.POST.get("column_left", None))
         column_right = int(request.POST.get("column_right", None))
         dc.select_column_position(column_left, column_right)
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
 def data_de_duplication(request):
     dc.data_de_duplication()
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
 def detect_outlier_three_sigma(request):
     if request.method == "POST":
         column_input = str(request.POST.get("detect_outlier_three_sigma", None))
         dc.detect_outlier_three_sigma(column_input)
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
 def deal_with_outlier(request):
     dc.deal_with_outlier()
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
 def check_missing(request):
@@ -74,7 +76,7 @@ def deal_with_missing_value(request):
     selection = request.GET['deal_with_missing_value']
     print(selection)
     dc.deal_with_missing_value(selection)
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
 def generate_a_file(request):
@@ -89,6 +91,13 @@ def generate_a_file(request):
     # return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()}, )
 
 
+def limit_float_point_num(request):
+    if request.method == "POST":
+        float_point_round = int(request.POST.get("float_point_num", None))
+        float_round[0] = float_point_round
+        return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
+
+
 def revert(request):
     dc.revert_data_frame()
-    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame()})
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})

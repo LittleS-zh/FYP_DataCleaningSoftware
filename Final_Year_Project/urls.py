@@ -35,6 +35,7 @@ urlpatterns = [
     path(r'check_missing/', views.check_missing, name="check_missing"),
     path(r'deal_with_missing_value/', views.deal_with_missing_value, name="deal_with_missing_value"),
     path(r'generate_a_file/', views.generate_a_file, name="generate_a_file"),
+    path(r'limit_float_point_num/', views.limit_float_point_num, name="limit_float_point_num"),
 ]
 
 if settings.DEBUG:

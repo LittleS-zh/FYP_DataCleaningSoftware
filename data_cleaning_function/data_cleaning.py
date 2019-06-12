@@ -99,9 +99,9 @@ class DataCleaning(object):
         elif choice == 6:
             self.__current_data_frame.fillna(self.__current_data_frame.mean())
 
-    def get_frame(self):
+    def get_frame(self,float_round):
         data_frame_column = np.array(self.__current_data_frame.columns)
-        data_frame_array = np.array(self.__current_data_frame)
+        data_frame_array = np.array(self.__current_data_frame.round(float_round))
         data_frame_list = data_frame_array.tolist()
         data_frame_list.insert(0,data_frame_column)
         data_dictionary = {'data_frame': data_frame_list, 'data_header':data_frame_column}
