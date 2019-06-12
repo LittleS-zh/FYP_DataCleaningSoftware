@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import copy
 
 
 class DataCleaning(object):
@@ -19,17 +20,20 @@ class DataCleaning(object):
                        header_input=0):
         self.__current_data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input,
                                                 header=header_input)
-        self.__original_data_frame = self.__current_data_frame
+        self.__original_data_frame = copy.deepcopy(self.__current_data_frame)
 
     # write datafile to an csv file
     def write_data_file(self, path):
         self.__current_data_frame.to_csv(path)
 
     def select_rows(self, row_start_input, row_end_input):
-        self.__current_data_frame = self.__current_data_frame[row_start_input:row_end_input]
+        if row_start_input < row_end_input:
+            self.__current_data_frame = self.__current_data_frame[row_start_input-1:row_end_input]
+        else:
+            print("invalid input")
 
     def select_column_position(self, column_start_input, column_end_input):
-        self.__current_data_frame = self.__current_data_frame.iloc[:, [column_start_input, column_end_input]]
+        self.__current_data_frame = self.__current_data_frame.iloc[:, column_start_input-1: column_end_input]
 
     def select_column_heading(self, header_of_column_input):
         self.__current_data_frame = self.__current_data_frame[header_of_column_input]
@@ -66,6 +70,7 @@ class DataCleaning(object):
         d = self.__current_data_frame[column_input]
         z_score = (d - d.mean()) / d.std()
         self.__current_data_frame['isOutlier'] = z_score.abs() > 3
+
 
     def detect_outlier_quantitile(self, column_input):
         d = self.__current_data_frame[column_input]
@@ -110,4 +115,4 @@ class DataCleaning(object):
         return data_dictionary
 
     def revert_data_frame(self):
-        self.__current_data_frame = self.__original_data_frame
+        self.__current_data_frame = copy.deepcopy(self.__original_data_frame)
