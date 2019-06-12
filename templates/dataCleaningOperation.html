@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -8,57 +8,62 @@
     <title>首页</title>
 </head>
 <body>
-<nav class="navbar navbar-light bg-light">
-    <span class="navbar-brand mb-0 h1"><a href="{% url 'index' %}" style="text-decoration: none; color: black">Data Cleaning Tool</a></span>
-</nav>
-
 
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar" style="position: fixed">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
+                    <h6 style="text-align: left; margin-top: 20px;">
+                      <span>Basic Operation</span>
+                    </h6>
                     <li class="nav-item">
-                        <span data-feather="home"></span>
                         <form action="/select_rows/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="select row" name="submit"/>
-                            <input type="text" name="row_ceiling"/>
-                            <input type="text" name="row_floor"/>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px;" name="submit"/>Row Select</button>
+                            <input type="text" class="form-control" style="margin-bottom: 5px; width: 80%;" placeholder="Enter the starting row" name="row_ceiling" required>
+                            <input type="text" class="form-control" style="width: 80%;" placeholder="Enter the ending row" name="row_floor" required>
                         </form>
                     </li>
-
+                    </br>
                     <li class="nav-item">
                         <form action="/select_columns/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="select column" name="submit"/>
-                            <input type="text" name="column_left"/>
-                            <input type="text" name="column_right"/>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>Column Select</button>
+                            <input type="text" class="form-control" style="margin-bottom: 5px; width: 85%;" placeholder="Enter the starting column" name="column_left" required>
+                            <input type="text" class="form-control" style="width: 85%;" placeholder="Enter the ending column" name="column_right" required>
                         </form>
                     </li>
+                    </br>
+                    </br>
+                    <h6 style="text-align: left">
+                      <span>Data Cleaning Method</span>
+                    </h6>
                     <li class="nav-item">
                         <form action="/de_duplication/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="de duplication" name="submit"/>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>De-duplication</button>
                         </form>
                     </li>
+                    </br>
                     <li class="nav-item">
                         <form action="/detect_outlier_three_sigma/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="detect outlier three sigma" name="submit"/>
-                            <input type="text" name="column_input"/>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit">Detect Outliers</button>
+                            <input class="form-control" style="margin-bottom: 5px; width: 90%;" type="text" placeholder="Enter the column to detect" name="column_input" required>
                         </form>
                     </li>
                     <li class="nav-item">
                         <form action="/deal_with_outlier/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="delete rows of outlier" name="submit"/>
+                            <button type="submit" class="btn btn-danger btn-sm" name="submit"/>Delete Outliers</button>
                         </form>
                     </li>
+                    </br>
                     <li class="nav-item">
                         <form action="/check_missing/" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="check_missing" name="submit"/>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>Check Missing Value</button>
                         </form>
                     </li>
                     <li class="nav-item">
@@ -81,18 +86,21 @@
                             <input type="submit" value="generate a file" name="submit"/>
                         </form>
                     </li>
-                    <li class="nav-item">
+
                         <form action="/revert/" method="post">
                             {% csrf_token %}
                             <input type="submit" value="revert" name="submit"/>
                         </form>
+                    </li>
+                    <li class="nav-item">
+                    <a href="{% url 'index' %}" style="text-decoration: none; color: black">Go back to index</a></span>
                     </li>
                 </ul>
             </div>
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <table border="1">
+            <table border="1" style="margin-top: 20px">
                 {% for line in data %}
                     <tr>
                         {% for line_piece in line %}
@@ -108,6 +116,7 @@
 
 
 </body>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
