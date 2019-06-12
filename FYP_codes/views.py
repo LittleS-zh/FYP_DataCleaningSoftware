@@ -74,7 +74,6 @@ def check_missing(request):
 
 def deal_with_missing_value(request):
     selection = request.GET['deal_with_missing_value']
-    print(selection)
     dc.deal_with_missing_value(selection)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 

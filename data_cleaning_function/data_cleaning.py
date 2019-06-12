@@ -86,18 +86,20 @@ class DataCleaning(object):
 
     def deal_with_missing_value(self, choice):
         # delete the row
-        if choice == 1:
-            self.__current_data_frame.dropna(axis=0)
-        elif choice == 2:
-            self.__current_data_frame.dropna(axis=1)
-        elif choice == 3:
-            self.__current_data_frame.fillna("missing")
-        elif choice == 4:
-            self.__current_data_frame.fillna(method='pad')
-        elif choice == 5:
-            self.__current_data_frame.fillna(method='bfill', limit=1)
-        elif choice == 6:
-            self.__current_data_frame.fillna(self.__current_data_frame.mean())
+        print("Choice is " + choice)
+        print(choice=="1")
+        if choice == "1":
+            self.__current_data_frame = self.__current_data_frame.dropna(axis=0)
+        elif choice == "2":
+            self.__current_data_frame = self.__current_data_frame.dropna(axis=1)
+        elif choice == "3":
+            self.__current_data_frame = self.__current_data_frame.fillna("missing")
+        elif choice == "4":
+            self.__current_data_frame = self.__current_data_frame.fillna(method='pad')
+        elif choice == "5":
+            self.__current_data_frame = self.__current_data_frame.fillna(method='bfill', limit=1)
+        elif choice == "6":
+            self.__current_data_frame = self.__current_data_frame.fillna(self.__current_data_frame.mean())
 
     def get_frame(self,float_round):
         data_frame_column = np.array(self.__current_data_frame.columns)
