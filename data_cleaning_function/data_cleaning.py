@@ -28,6 +28,7 @@ class DataCleaning(object):
     def write_data_file(self, path):
         self.__current_data_frame.to_csv(path)
 
+    # select rows for a data frame
     def select_rows(self, row_start_input, row_end_input):
         if row_start_input <= row_end_input and row_end_input <= self.__current_data_frame.shape[0] and row_start_input >= 1:
             print(self.__current_data_frame.shape[0])
@@ -35,6 +36,7 @@ class DataCleaning(object):
         else:
             print("invalid input")
 
+    # select columns for a data frame, according to the start number and the end number
     def select_column_position(self, column_start_input, column_end_input):
         if column_start_input <= column_end_input and column_end_input <= self.__current_data_frame.shape[1] and column_start_input >= 1:
             print(self.__current_data_frame.shape[1])
@@ -42,16 +44,20 @@ class DataCleaning(object):
         else:
             print("invalid input")
 
+    # select columns for a data frame, according to the header of column
     def select_column_heading(self, header_of_column_input):
         self.__current_data_frame = self.__current_data_frame[header_of_column_input]
 
+    # select row and column for the same time
     def block_selection(self, column_start_input, column_end_input, header_of_column_input):
         self.__current_data_frame = self.__current_data_frame.ix[column_start_input:column_end_input,
                                     header_of_column_input]
 
+    # create a new column according to the operation based on two previous columns
     def algorithm_operation_on_blocks(self):
         self.__current_data_frame['newColumn'] = self.__current_data_frame['Day'] * self.__current_data_frame['Return']
 
+    # filter the rows according to a specific value
     def conditional_filter(self, column_input):
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == True)]
 
@@ -65,30 +71,35 @@ class DataCleaning(object):
                 group_header).mean().sort_values(combine_name,
                                                  ascending=False)
 
+    # deduplicate data
     def data_de_duplication(self):
         self.__current_data_frame = self.__current_data_frame.drop_duplicates()
 
+    # calculate means of data
     def calculate_means(self, column_need_to_be_grouped_input, column_group_by):
         self.__current_data_frame = self.__current_data_frame[column_need_to_be_grouped_input].groupby(
             self.__current_data_frame[column_group_by])
         return self.__current_data_frame.mean()
 
+    # detect outlier using three sigma method
     def detect_outlier_three_sigma(self, column_input):
         d = self.__current_data_frame[column_input]
         z_score = (d - d.mean()) / d.std()
         self.__current_data_frame['isOutlier'] = z_score.abs() > 3
 
-
+    # detect outlier using box-plot
     def detect_outlier_quantitile(self, column_input):
         d = self.__current_data_frame[column_input]
         self.__current_data_frame['isOutlier'] = d > d.quantitile(0.75)
 
+    # delete the whole row of outlier using three sigma methods
     def deal_with_outlier(self, column_input):
         print(column_input)
         self.detect_outlier_three_sigma(column_input)
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == False)]
         self.__current_data_frame = self.__current_data_frame.drop("isOutlier",axis=1)
 
+    # check missing value
     def check_missing(self):
         data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame.isnull())
@@ -96,6 +107,7 @@ class DataCleaning(object):
         data_dictionary = {'data_frame': data_frame_list, 'data_header': data_frame_column}
         return data_dictionary
 
+    # delete missing value
     def deal_with_missing_value(self, choice):
         # delete the row
         print("Choice is " + choice)
@@ -113,6 +125,7 @@ class DataCleaning(object):
         elif choice == "6":
             self.__current_data_frame = self.__current_data_frame.fillna(self.__current_data_frame.mean())
 
+    # change the data frame into a list and return to the front end
     def get_frame(self,float_round):
         data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame.round(float_round))
@@ -121,5 +134,6 @@ class DataCleaning(object):
         data_dictionary = {'data_frame': data_frame_list, 'data_header':data_frame_column}
         return data_dictionary
 
+    # revert function
     def revert_data_frame(self):
         self.__current_data_frame = copy.deepcopy(self.__original_data_frame)
