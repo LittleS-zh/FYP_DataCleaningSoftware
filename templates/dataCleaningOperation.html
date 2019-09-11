@@ -131,12 +131,22 @@
                         </form>
                     </li>
                     </br>
+
                     <li class="nav-item">
                         <form action="/revert/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-warning btn-sm" style="margin-bottom: 5px"
                                     name="submit"/>
                             Revert</button>
+                        </form>
+                    </li>
+
+                    <li class="nav-item">
+                        <form action="/reset/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning btn-sm" style="margin-bottom: 5px"
+                                    name="submit"/>
+                            Reset</button>
                         </form>
                     </li>
                     <li class="nav-item">

@@ -6,10 +6,11 @@ import copy
 class DataCleaning(object):
     __current_data_frame = pd.read_csv("static/DataSet_Read/basic.csv")
 
-    # this attribute is for reverting the operations
+    # this attribute is for reset the operation
     __original_data_frame = pd.read_csv("static/DataSet_Read/basic.csv")
 
-    __data_frame_header = []
+    # this attribute is for revert the operation
+    __list_data_frame = []
 
     def __init__(self):
         print("class initialization")
@@ -21,6 +22,10 @@ class DataCleaning(object):
         self.__current_data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input,
                                                 header=header_input)
         self.__original_data_frame = copy.deepcopy(self.__current_data_frame)
+        self.__list_data_frame.append(self.__current_data_frame)
+
+
+        # for debug
         print(self.__current_data_frame.shape[0])
         print(self.__current_data_frame.shape[1])
 
@@ -33,6 +38,7 @@ class DataCleaning(object):
         if row_start_input <= row_end_input and row_end_input <= self.__current_data_frame.shape[0] and row_start_input >= 1:
             print(self.__current_data_frame.shape[0])
             self.__current_data_frame = self.__current_data_frame[row_start_input-1:row_end_input]
+            self.__list_data_frame.append(self.__current_data_frame)
         else:
             print("invalid input")
 
@@ -41,17 +47,20 @@ class DataCleaning(object):
         if column_start_input <= column_end_input and column_end_input <= self.__current_data_frame.shape[1] and column_start_input >= 1:
             print(self.__current_data_frame.shape[1])
             self.__current_data_frame = self.__current_data_frame.iloc[:, column_start_input-1: column_end_input]
+            self.__list_data_frame.append(self.__current_data_frame)
         else:
             print("invalid input")
 
     # select columns for a data frame, according to the header of column
     def select_column_heading(self, header_of_column_input):
         self.__current_data_frame = self.__current_data_frame[header_of_column_input]
+        self.__list_data_frame.append(self.__current_data_frame)
 
-    # select row and column for the same time
+    # select row and column at the same time
     def block_selection(self, column_start_input, column_end_input, header_of_column_input):
         self.__current_data_frame = self.__current_data_frame.ix[column_start_input:column_end_input,
                                     header_of_column_input]
+        self.__list_data_frame.append(self.__current_data_frame)
 
     # create a new column according to the operation based on two previous columns
     def algorithm_operation_on_blocks(self):
@@ -60,25 +69,31 @@ class DataCleaning(object):
     # filter the rows according to a specific value
     def conditional_filter(self, column_input):
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == True)]
+        self.__list_data_frame.append(self.__current_data_frame)
 
     def data_reduction(self, drop_header, group_header, sum_or_mean, combine_name):
         if sum_or_mean == 1:
             self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(
                 group_header).sum().sort_values(combine_name,
                                                 ascending=False)
+            self.__list_data_frame.append(self.__current_data_frame)
+
         else:
             self.__current_data_frame = self.__current_data_frame.drop(drop_header, axis=1).groupby(
                 group_header).mean().sort_values(combine_name,
                                                  ascending=False)
+            self.__list_data_frame.append(self.__current_data_frame)
 
     # deduplicate data
     def data_de_duplication(self):
         self.__current_data_frame = self.__current_data_frame.drop_duplicates()
+        self.__list_data_frame.append(self.__current_data_frame)
 
     # calculate means of data
     def calculate_means(self, column_need_to_be_grouped_input, column_group_by):
         self.__current_data_frame = self.__current_data_frame[column_need_to_be_grouped_input].groupby(
             self.__current_data_frame[column_group_by])
+        self.__list_data_frame.append(self.__current_data_frame)
         return self.__current_data_frame.mean()
 
     # detect outlier using three sigma method
@@ -98,6 +113,7 @@ class DataCleaning(object):
         self.detect_outlier_three_sigma(column_input)
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == False)]
         self.__current_data_frame = self.__current_data_frame.drop("isOutlier",axis=1)
+        self.__list_data_frame.append(self.__current_data_frame)
 
     # check missing value
     def check_missing(self):
@@ -124,9 +140,10 @@ class DataCleaning(object):
             self.__current_data_frame = self.__current_data_frame.fillna(method='bfill', limit=1)
         elif choice == "6":
             self.__current_data_frame = self.__current_data_frame.fillna(self.__current_data_frame.mean())
+        self.__list_data_frame.append(self.__current_data_frame)
 
-    # change the data frame into a list and return to the front end
-    def get_frame(self,float_round):
+    # change the data frame into a list and return to the front end for showing
+    def get_frame(self, float_round):
         data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame.round(float_round))
         data_frame_list = data_frame_array.tolist()
@@ -134,6 +151,15 @@ class DataCleaning(object):
         data_dictionary = {'data_frame': data_frame_list, 'data_header':data_frame_column}
         return data_dictionary
 
-    # revert function
-    def revert_data_frame(self):
+    # reset function
+    def reset_data_frame(self):
         self.__current_data_frame = copy.deepcopy(self.__original_data_frame)
+
+    # revert function
+    # todo: limit the times that a user can revert
+    def revert_data_frame(self):
+        self.__list_data_frame.pop()
+        self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
+
+
+
