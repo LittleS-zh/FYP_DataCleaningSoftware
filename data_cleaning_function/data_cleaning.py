@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import copy
+import tensorflow as tf
 
 
 class DataCleaning(object):
@@ -127,7 +128,7 @@ class DataCleaning(object):
     def deal_with_missing_value(self, choice):
         # delete the row
         print("Choice is " + choice)
-        print(choice=="1")
+        print(choice == "1")
         if choice == "1":
             self.__current_data_frame = self.__current_data_frame.dropna(axis=0)
         elif choice == "2":
@@ -147,7 +148,7 @@ class DataCleaning(object):
         data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame.round(float_round))
         data_frame_list = data_frame_array.tolist()
-        data_frame_list.insert(0,data_frame_column)
+        data_frame_list.insert(0, data_frame_column)
         data_dictionary = {'data_frame': data_frame_list, 'data_header':data_frame_column}
         return data_dictionary
 
@@ -161,5 +162,62 @@ class DataCleaning(object):
         self.__list_data_frame.pop()
         self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
 
+    def forecast_a_value(self,target_row,target_column):
+        # todo: add row selection and column selection here
+        # todo: this will be a huge project
+        X = self.__current_data_frame
+        X = np.array(X)
+        x_train = X.astype(float)
 
+        # didn't test it
+        x_labelForPredict = self.__current_data_frame[self.__current_data_frame.columns.difference([target_column])]
 
+        Y = self.__current_data_frame
+        Y = np.array(Y)
+        y_train = Y.astype(float)
+
+        # construct the models
+        model = tf.keras.models.Sequential()
+
+        # add a densely-connected layer with 64 units
+        model.add(tf.keras.layers.Dense(64, activation='relu'))
+
+        # add another
+        model.add(tf.keras.layers.Dense(64, activation='relu'))
+
+        # add a softmax layer with 10 output units
+        model.add(tf.keras.layers.Dense(10, activation='softmax'))
+
+        # Create a sigmoid layer:
+        tf.layers.Dense(64, activation=tf.sigmoid)
+
+        # A linear layer with L1 regularization of factor 0.01 applied to the kernel matrix:
+        tf.layers.Dense(64, kernel_regularizer=tf.keras.regularizers.l1(0.01))
+
+        # A linear layer with L2 regularization of factor 0.01 applied to the bias vector:
+        tf.layers.Dense(64, bias_regularizer=tf.keras.regularizers.l2(0.01))
+
+        # A linear layer with a kernel initialized to a random orthogonal matrix:
+        tf.layers.Dense(64, kernel_initializer='orthogonal')
+
+        # A linear layer with a bias vector initialized to 2.0s:
+        tf.layers.Dense(64, bias_initializer=tf.keras.initializers.constant(2.0))
+
+        # complie the model
+        model = tf.keras.Sequential([
+            # Adds a densely-connected layer with 64 units to the model:
+            tf.keras.layers.Dense(64, activation='relu'),
+            # Add another:
+            tf.keras.layers.Dense(64, activation='relu'),
+            # Add a softmax layer with 10 output units:
+            tf.keras.layers.Dense(10, activation='softmax')])
+
+        model.compile(optimizer=tf.train.AdamOptimizer(0.001),
+                      loss='categorical_crossentropy',
+                      metrics=['accuracy'])
+
+        # epochs: iteration times
+        # batch_size: divide the data into batch and train these batch during the training process
+        model.fit(x_train, y_train, epochs=10, batch_size=15)
+
+        prediction = model.predict(x_labelForPredict, batch_size = 1)

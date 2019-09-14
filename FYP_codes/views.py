@@ -98,9 +98,11 @@ def limit_float_point_num(request):
         float_round[0] = float_point_round
         return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
+
 def revert(request):
     dc.revert_data_frame()
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
+
 
 def reset(request):
     dc.reset_data_frame()
