@@ -169,11 +169,25 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <table border="1" style="margin-top: 20px">
                 {% for line in data.data_frame %}
-                    <tr>
-                        {% for line_piece in line %}
-                            <td>{{ line_piece }}</td>
-                        {% endfor %}
-                    </tr>
+
+{#                    Todo#}
+                    {% if not forloop.couter in Outlier %}
+
+                     <tr>
+                         <td><p>{{ forloop.counter }}</p></td>
+                         {% for line_piece in line %}
+
+                             <td bgcolor="aqua">{{ line_piece }}</td>
+                         {% endfor %}
+                     </tr>
+                    {% else %}
+                        <tr>
+                         {% for line_piece in line %}
+                             <td bgcolor="green">{{ line_piece }}</td>
+                         {% endfor %}
+                        </tr>
+                    {% endif %}
+
                 {% endfor %}
             </table>
         </main>

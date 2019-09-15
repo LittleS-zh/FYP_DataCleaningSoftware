@@ -13,6 +13,9 @@ class DataCleaning(object):
     # this attribute is for revert the operation
     __list_data_frame = []
 
+    # this attribute is for indicating the rows with outlier
+    __rowWithOutlier = []
+
     def __init__(self):
         print("class initialization")
 
@@ -102,6 +105,8 @@ class DataCleaning(object):
         d = self.__current_data_frame[column_input]
         z_score = (d - d.mean()) / d.std()
         self.__current_data_frame['isOutlier'] = z_score.abs() > 3
+        __rowWithOutlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
+        print(__rowWithOutlier)
 
     # detect outlier using box-plot
     def detect_outlier_quantitile(self, column_input):
@@ -148,8 +153,8 @@ class DataCleaning(object):
         data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame.round(float_round))
         data_frame_list = data_frame_array.tolist()
-        data_frame_list.insert(0, data_frame_column)
-        data_dictionary = {'data_frame': data_frame_list, 'data_header':data_frame_column}
+        data_frame_list.insert(0,data_frame_column)
+        data_dictionary = {'data_frame': data_frame_list, 'data_header':data_frame_column, 'outlier':self.__rowWithOutlier}
         return data_dictionary
 
     # reset function
