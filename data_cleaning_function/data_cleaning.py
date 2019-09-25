@@ -167,62 +167,55 @@ class DataCleaning(object):
         self.__list_data_frame.pop()
         self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
 
-    def forecast_a_value(self,target_row,target_column):
-        # todo: add row selection and column selection here
-        # todo: this will be a huge project
-        X = self.__current_data_frame
+    def forecast_a_value(self,target_row,target_column,norm):
+        # todo: parameters change here
+        X = self.__current_data_frame.iloc[:, 0:2]
         X = np.array(X)
-        x_train = X.astype(float)
+        X = X.astype(float)
+        X = X / norm
+        print("dataframe of X is: ")
+        print(X)
 
-        # didn't test it
-        x_labelForPredict = self.__current_data_frame[self.__current_data_frame.columns.difference([target_column])]
-
-        Y = self.__current_data_frame
+        Y = self.__current_data_frame.iloc[:, 2:3]
         Y = np.array(Y)
-        y_train = Y.astype(float)
+        Y = Y.astype(float)
+        Y = Y / norm
+        print("dataframe of Y is: ")
+        print(Y)
+
+        # get the liens before 16 as training set
+        X_train, Y_train = X[:15], Y[:15]
+        print("dataframe of x_train is: ")
+        print(X_train)
+
+        print("dataframe of y_train is: ")
+        print(Y_train)
+
+        # get the line after 16 as testing set
+        X_test, Y_test = X[15:], Y[15:]
+        print("dataframe of x_test is: ")
+        print(X_test)
+
+        print("dataframe of y_test is: ")
+        print(Y_test)
 
         # construct the models
-        model = tf.keras.models.Sequential()
+        model = tf.keras.models.Sequential(
+            [tf.keras.layers.Dense(64, activation=tf.nn.relu),
+             tf.keras.layers.Dense(64, activation=tf.nn.relu),
+             tf.keras.layers.Dense(1)
+             ])
 
-        # add a densely-connected layer with 64 units
-        model.add(tf.keras.layers.Dense(64, activation='relu'))
+        optimizer = tf.keras.optimizers.RMSprop(0.001)
 
-        # add another
-        model.add(tf.keras.layers.Dense(64, activation='relu'))
-
-        # add a softmax layer with 10 output units
-        model.add(tf.keras.layers.Dense(10, activation='softmax'))
-
-        # Create a sigmoid layer:
-        tf.layers.Dense(64, activation=tf.sigmoid)
-
-        # A linear layer with L1 regularization of factor 0.01 applied to the kernel matrix:
-        tf.layers.Dense(64, kernel_regularizer=tf.keras.regularizers.l1(0.01))
-
-        # A linear layer with L2 regularization of factor 0.01 applied to the bias vector:
-        tf.layers.Dense(64, bias_regularizer=tf.keras.regularizers.l2(0.01))
-
-        # A linear layer with a kernel initialized to a random orthogonal matrix:
-        tf.layers.Dense(64, kernel_initializer='orthogonal')
-
-        # A linear layer with a bias vector initialized to 2.0s:
-        tf.layers.Dense(64, bias_initializer=tf.keras.initializers.constant(2.0))
-
-        # complie the model
-        model = tf.keras.Sequential([
-            # Adds a densely-connected layer with 64 units to the model:
-            tf.keras.layers.Dense(64, activation='relu'),
-            # Add another:
-            tf.keras.layers.Dense(64, activation='relu'),
-            # Add a softmax layer with 10 output units:
-            tf.keras.layers.Dense(10, activation='softmax')])
-
-        model.compile(optimizer=tf.train.AdamOptimizer(0.001),
-                      loss='categorical_crossentropy',
-                      metrics=['accuracy'])
+        model.compile(loss='mean_squared_error',
+                      optimizer=optimizer,
+                      metrics=['mean_absolute_error', 'mean_squared_error'])
 
         # epochs: iteration times
         # batch_size: divide the data into batch and train these batch during the training process
-        model.fit(x_train, y_train, epochs=10, batch_size=15)
+        model.fit(X_train, Y_train, epochs=5, batch_size=15)
 
-        prediction = model.predict(x_labelForPredict, batch_size = 1)
+        prediction = model.predict(X_test, batch_size=1)
+
+        print(prediction * norm)
