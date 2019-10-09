@@ -5,34 +5,17 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.cluster import KMeans
 from collections import Counter
 
-df_text = pandas.read_csv("tfidf_test.csv")
-
-df_text = df_text['Sentences']
-
-array_text = df_text.values
-array_text2 = numpy.array(df_text)
-print(array_text2.flatten())
-vectorizer = CountVectorizer()
-
-arranged_text = vectorizer.fit_transform(array_text2.flatten())
-
-transformer = TfidfTransformer()
-arranged_text_tfidf = transformer.fit_transform(arranged_text)
-
-print(vectorizer.get_feature_names())
-print(arranged_text.toarray())
-
-print(arranged_text_tfidf.toarray())
-
-array_tfidf = arranged_text_tfidf.toarray()
+df = pandas.read_csv("testFile_withoutNaN.csv")
+df = df.iloc[:,0:4]
 
 model = KMeans(n_clusters=5)
-model.fit(array_tfidf)
-predicted_label = model.predict(array_tfidf)
-print("tfidf",predicted_label)
+model.fit(df)
+predicted_label = model.predict(df)
+print(predicted_label)
+
 count_predicted_label = Counter(predicted_label)
 count_sorted = sorted(count_predicted_label.items(), key=lambda x:x[1])
-print("Counter_sorted", count_sorted)
+print("Counter_sorted",count_sorted)
 count_sorted_values = sorted(count_predicted_label.values())
 
 items_number = 0
@@ -55,8 +38,3 @@ print(output_position)
 for elements in output_position:
     for element in elements:
         print("Outlier element",element)
-
-
-# model.fit(arranged_text)
-# predicted_label = model.predict(arranged_text)
-# print("normal",predicted_label)

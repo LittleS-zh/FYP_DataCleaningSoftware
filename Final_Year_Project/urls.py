@@ -32,12 +32,13 @@ urlpatterns = [
     path(r'reset/', views.reset, name="reset"),
     path(r'de_duplication/', views.data_de_duplication, name="de_duplication"),
     path(r'detect_outlier_three_sigma/', views.detect_outlier_three_sigma, name="detect_outlier_three_sigma"),
+    path(r'detect_outlier_text/', views.detect_outlier_text, name="detect_outlier_text"),
+    path(r'detect_outlier_all/', views.detect_outlier_all, name="detect_outlier_all"),
     path(r'deal_with_outlier/', views.deal_with_outlier, name="deal_with_outlier"),
     path(r'check_missing/', views.check_missing, name="check_missing"),
     path(r'deal_with_missing_value/', views.deal_with_missing_value, name="deal_with_missing_value"),
     path(r'generate_a_file/', views.generate_a_file, name="generate_a_file"),
     path(r'limit_float_point_num/', views.limit_float_point_num, name="limit_float_point_num"),
-
     path(r'outlier_modification/', views.outlier_modification, name="outlier_modification"),
     path(r'single_outlier_delete/', views.single_outlier_delete, name="single_outlier_delete"),
 ]

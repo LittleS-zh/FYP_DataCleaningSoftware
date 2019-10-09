@@ -62,6 +62,17 @@ def detect_outlier_three_sigma(request):
         dc.detect_outlier_three_sigma(column_input)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
+def detect_outlier_text(request):
+    if request.method == "POST":
+        column_input = str(request.POST.get("detect_outlier_text", None))
+        dc.detect_outlier_text(column_input)
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
+
+def detect_outlier_all(request):
+    if request.method == "POST":
+        dc.detect_outlier_all()
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
+
 
 # todo: finish this function
 def outlier_modification(request):

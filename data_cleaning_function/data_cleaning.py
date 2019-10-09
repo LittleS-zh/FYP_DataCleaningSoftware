@@ -136,15 +136,15 @@ class DataCleaning(object):
         d = self.__current_data_frame[column_input]
         z_score = (d - d.mean()) / d.std()
         self.__current_data_frame['isOutlier'] = z_score.abs() > 3
+
         temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
         self.__rowWithOutlier = [i + 1 for i in temp_outlier]
-
         self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc(column_input)
-
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
-        print(self.__choice_in_detect_outlier)
-        print(self.__list_data_frame)
+
+        # print(self.__choice_in_detect_outlier)
+        # print(self.__list_data_frame)
 
     # todo: finish this function, add data_frame to list_data_frame (for revert)
     def outlier_modification(self, modification_value, modification_row):
@@ -171,6 +171,8 @@ class DataCleaning(object):
             if self.__rowWithOutlier[outlier_index] > modification_row:
                 self.__rowWithOutlier[outlier_index] -= 1
         self.__rowWithOutlier.remove(modification_row)
+
+        print(self.__current_data_frame)
 
     # detect outlier using box-plot
     # todo: this function is not finished
@@ -250,7 +252,7 @@ class DataCleaning(object):
     def forecast_a_value(self,target_column_input,target_column_forecast,target_row_input,target_row_output):
         # todo: parameters change here
         X = self.__current_data_frame.iloc[:, target_column_input]
-        norm =100
+        norm = 100
         X = np.array(X)
         X = X.astype(float)
         X = X / norm
@@ -301,10 +303,12 @@ class DataCleaning(object):
 
         print(prediction * norm)
 
-    def find_outlier_of_text(self, input_column_which_is_text):
+    def detect_outlier_text(self, input_column_which_is_text):
+        temp_outlier = []
+        temp_outlier.clear()
+        self.__rowWithOutlier.clear()
 
-        #todo test this statement, this statement may have some problems
-        df_text = self.__current_data_frame.iloc[:,input_column_which_is_text]
+        df_text = self.__current_data_frame[input_column_which_is_text]
 
         array_text = df_text.values
         array_text2 = numpy.array(df_text)
@@ -326,10 +330,10 @@ class DataCleaning(object):
         model = KMeans(n_clusters=5)
         model.fit(array_tfidf)
         predicted_label = model.predict(array_tfidf)
-        print("tfidf", predicted_label)
+        # print("tfidf", predicted_label)
         count_predicted_label = Counter(predicted_label)
         count_sorted = sorted(count_predicted_label.items(), key=lambda x: x[1])
-        print("Counter_sorted", count_sorted)
+        # print("Counter_sorted", count_sorted)
         count_sorted_values = sorted(count_predicted_label.values())
 
         items_number = 0
@@ -348,5 +352,63 @@ class DataCleaning(object):
             print(count_sorted[i][0])
             target_position = numpy.argwhere(predicted_label == count_sorted[i][0])
             output_position.append(target_position[0])
-        print(output_position)
-        print(output_position[1])
+        # print(output_position)
+        # print(output_position[1])
+        self.__current_data_frame['isOutlier'] = False
+        for elements in output_position:
+            for element in elements:
+                self.__current_data_frame.loc[element, "isOutlier"] = True
+
+        temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
+        self.__rowWithOutlier = [i + 1 for i in temp_outlier]
+        self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc(input_column_which_is_text)
+        self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
+        self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
+
+
+    def similarity(self,inputWords):
+        print("Under Consideration")
+
+    def detect_outlier_all(self):
+        temp_outlier = []
+        temp_outlier.clear()
+        self.__rowWithOutlier.clear()
+
+
+        # todo: the selection part need to be changed
+        df = self.__current_data_frame
+
+        model = KMeans(n_clusters=5)
+        model.fit(df)
+        predicted_label = model.predict(df)
+        print(predicted_label)
+
+        count_predicted_label = Counter(predicted_label)
+        count_sorted = sorted(count_predicted_label.items(), key=lambda x: x[1])
+        print("Counter_sorted", count_sorted)
+        count_sorted_values = sorted(count_predicted_label.values())
+
+        items_number = 0
+        # decide get the first n element
+        while items_number < len(count_sorted_values) - 1:
+            if count_sorted_values[items_number] == count_sorted_values[items_number + 1]:
+                items_number += 1
+            else:
+                break
+
+        output_position = []
+
+        for i in range(0, items_number + 1):
+            print(count_sorted[i][0])
+            target_position = numpy.argwhere(predicted_label == count_sorted[i][0])
+            output_position.append(target_position[0])
+        self.__current_data_frame['isOutlier'] = False
+        for elements in output_position:
+            for element in elements:
+                self.__current_data_frame.loc[element, "isOutlier"] = True
+
+        temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
+        self.__rowWithOutlier = [i + 1 for i in temp_outlier]
+        self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc("第一次测验")
+        self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
+        self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
