@@ -1,62 +1,60 @@
-import jieba
-import gensim
-from gensim import corpora,models,similarities
+import pandas
+import numpy
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.cluster import KMeans
+from collections import Counter
 
-doc0 = "我不喜欢上海"
-doc1 = "上海是一个好地方"
-doc2 = "北京是一个好地方"
-doc3 = "上海好吃的在哪里"
-doc4 = "上海好玩的在哪里"
-doc5 = "上海是好地方"
-doc6 = "上海路和上海人"
-doc7 = "喜欢小吃"
-doc8 = "欸哟我的鸡巴"
-doc9 = "怪物猎人"
-doc_test="我喜欢上海的小吃"
+df_text = pandas.read_csv("tfidf_test.csv")
 
-all_doc = []
-all_doc.append(doc0)
-all_doc.append(doc1)
-all_doc.append(doc2)
-all_doc.append(doc3)
-all_doc.append(doc4)
-all_doc.append(doc5)
-all_doc.append(doc6)
-all_doc.append(doc7)
-all_doc.append(doc8)
-all_doc.append(doc9)
+df_text = df_text['Sentences']
 
-all_doc_list = []
-for doc in all_doc:
-    doc_list = [word for word in jieba.cut(doc)]
-    all_doc_list.append(doc_list)
+array_text = df_text.values
+array_text2 = numpy.array(df_text)
+print(array_text2.flatten())
+vectorizer = CountVectorizer()
 
-print(all_doc_list)
+arranged_text = vectorizer.fit_transform(array_text2.flatten())
 
-doc_test_list = [word for word in jieba.cut(doc_test)]
-print("the doc test list is: ")
-print(doc_test_list)
+transformer = TfidfTransformer()
+arranged_text_tfidf = transformer.fit_transform(arranged_text)
 
-# make a corpus
-dictionary = corpora.Dictionary(all_doc_list)
-print("the dictionary keys are: ")
-print(dictionary.keys())
-print("the relationship between token and id are: ")
-print(dictionary.token2id)
-corpus = [dictionary.doc2bow(doc) for doc in all_doc_list]
-print("The corpus is: ")
-print(corpus)
+print(vectorizer.get_feature_names())
+print(arranged_text.toarray())
+
+print(arranged_text_tfidf.toarray())
+
+array_tfidf = arranged_text_tfidf.toarray()
+
+model = KMeans(n_clusters=5)
+model.fit(array_tfidf)
+predicted_label = model.predict(array_tfidf)
+print("tfidf",predicted_label)
+count_predicted_label = Counter(predicted_label)
+count_sorted = sorted(count_predicted_label.items(), key=lambda x:x[1])
+print("Counter_sorted",count_sorted)
+count_sorted_values = sorted(count_predicted_label.values())
+
+items_number = 0
+# decide get the first n element
+while items_number < len(count_sorted_values) - 1:
+    if count_sorted_values[items_number] == count_sorted_values[items_number+1]:
+        items_number += 1
+    else:
+        break
+
+print("items_number", items_number+1)
+
+output_position = []
+
+for i in range (0,items_number+1):
+    print(count_sorted[i][0])
+    target_position = numpy.argwhere(predicted_label == count_sorted[i][0])
+    output_position.append(target_position[0])
+print(output_position)
+print(output_position[1])
 
 
-doc_test_vec = dictionary.doc2bow(doc_test_list)
-print("the test document vector is: ")
-print(doc_test_vec)
-
-# the tfidf value of each word TF: term frequency TF-IDF = TF*IDF
-tfidf = models.TfidfModel(corpus)
-print("the information of tfidf model is:")
-print(tfidf)
-
-# theme matrix, which can be trained
-print("the tfidf information of all the document is: ")
-print(tfidf[doc_test_vec])
+# model.fit(arranged_text)
+# predicted_label = model.predict(arranged_text)
+# print("normal",predicted_label)
