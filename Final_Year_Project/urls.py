@@ -37,6 +37,9 @@ urlpatterns = [
     path(r'deal_with_missing_value/', views.deal_with_missing_value, name="deal_with_missing_value"),
     path(r'generate_a_file/', views.generate_a_file, name="generate_a_file"),
     path(r'limit_float_point_num/', views.limit_float_point_num, name="limit_float_point_num"),
+
+    path(r'outlier_modification/', views.outlier_modification, name="outlier_modification"),
+    path(r'single_outlier_delete/', views.single_outlier_delete, name="single_outlier_delete"),
 ]
 
 if settings.DEBUG:

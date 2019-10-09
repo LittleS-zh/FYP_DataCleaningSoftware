@@ -167,24 +167,48 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <table border="1" style="margin-top: 20px">
+            <table style="margin-top: 20px">
                 {% for line in data.data_frame %}
 
-{#                    Todo#}
-                    {% if not forloop.couter in Outlier %}
-
+                    {% if not forloop.counter0 in data.data_outlier %}
                      <tr>
-                         <td><p>{{ forloop.counter }}</p></td>
                          {% for line_piece in line %}
-
-                             <td bgcolor="aqua">{{ line_piece }}</td>
+                             <td style="border: 1px solid;">{{ line_piece }}</td>
                          {% endfor %}
                      </tr>
+
                     {% else %}
                         <tr>
                          {% for line_piece in line %}
-                             <td bgcolor="green">{{ line_piece }}</td>
+                             {% if forloop.counter0 == data.detect_outlier_choice %}
+                                <td bgcolor="aqua" style="border: 1px solid;">{{ line_piece }}</td>
+                             {% else %}
+                                <td style="border: 1px solid;">{{ line_piece }}</td>
+                             {% endif %}
                          {% endfor %}
+
+                            <td style="border-style: none">
+                                <form action="/outlier_modification/" method="post">
+                                    {% csrf_token %}
+                                    <input type="text" class="form-control form-control-sm"
+                                           style="float:left; width:60%; margin-left: 5px;"
+                                           name="modification_value" required>
+                                    <input style="display: none;" name="modification_row" value={{ forloop.counter0 }}>
+                                    <button style="margin-left: 5px;" type="submit" class="btn btn-info btn-sm"
+                                    name="submit"/>
+                                    Modify</button>
+                                </form>
+                            </td>
+                            <td style="border-style: none;">
+                                <form action="/single_outlier_delete/" method="post">
+                                    {% csrf_token %}
+                                    <input style="display: none;" name="modification_row" value={{ forloop.counter0 }}>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                    name="submit"/>
+                                    Delete this!</button>
+                                </form>
+                            </td>
+
                         </tr>
                     {% endif %}
 
