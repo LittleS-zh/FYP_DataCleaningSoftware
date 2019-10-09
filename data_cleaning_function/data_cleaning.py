@@ -24,7 +24,6 @@ class DataCleaning(object):
 
     # this attribute is for indicating the choice in "detect outlier"
     __choice_in_detect_outlier = -1
-    __temp_choice_in_detect_outlier = -1
     __column_detect_name = ''
 
     def __init__(self):
@@ -128,6 +127,7 @@ class DataCleaning(object):
 
     # detect outlier using three sigma method
     def detect_outlier_three_sigma(self, column_input):
+        # 初始化
         temp_outlier = []
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
@@ -146,7 +146,6 @@ class DataCleaning(object):
         # print(self.__choice_in_detect_outlier)
         # print(self.__list_data_frame)
 
-    # todo: finish this function, add data_frame to list_data_frame (for revert)
     def outlier_modification(self, modification_value, modification_row):
         if modification_value.isdigit():
             self.__current_data_frame.loc[modification_row - 1, self.__column_detect_name] = float(modification_value)
@@ -158,14 +157,11 @@ class DataCleaning(object):
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
         print(self.__list_data_frame)
 
-    # todo: finish this function, add data_frame to list_data_frame (for revert)
     def single_outlier_delete(self, modification_row):
         self.__current_data_frame = self.__current_data_frame.drop(modification_row-1)
         self.__current_data_frame.index = range(len(self.__current_data_frame))
 
         self.__temp_row_with_outlier = copy.deepcopy(self.__rowWithOutlier)
-        # todo: not finished
-        self.__temp_choice_in_detect_outlier = copy.deepcopy(self.__choice_in_detect_outlier)
 
         for outlier_index in range(0, len(self.__rowWithOutlier)):
             if self.__rowWithOutlier[outlier_index] > modification_row:
