@@ -171,9 +171,10 @@ class DataCleaning(object):
         self.__list_data_frame.pop()
         self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
 
-    def forecast_a_value(self,target_row,target_column,norm):
+    def forecast_a_value(self,target_column_input,target_column_forecast,target_row_input,target_row_output):
         # todo: parameters change here
-        X = self.__current_data_frame.iloc[:, 0:2]
+        X = self.__current_data_frame.iloc[:, target_column_input]
+        norm =100
         X = np.array(X)
         X = X.astype(float)
         X = X / norm
@@ -224,10 +225,10 @@ class DataCleaning(object):
 
         print(prediction * norm)
 
-    def find_outlier_of_text(self):
+    def find_outlier_of_text(self, input_column_which_is_text):
 
-
-        df_text = self.__current_data_frame['Sentences']
+        #todo test this statement, this statement may have some problems
+        df_text = self.__current_data_frame.iloc[:,input_column_which_is_text]
 
         array_text = df_text.values
         array_text2 = numpy.array(df_text)
