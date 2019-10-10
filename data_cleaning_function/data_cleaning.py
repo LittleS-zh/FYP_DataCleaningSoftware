@@ -244,6 +244,8 @@ class DataCleaning(object):
     # revert function
     # todo: limit the times that a user can revert
     def revert_data_frame(self):
+        self.__choice_in_detect_outlier = -1
+        self.__rowWithOutlier.clear()
 
         if len(self.__list_data_frame) > 1:
             self.__list_data_frame.pop()
