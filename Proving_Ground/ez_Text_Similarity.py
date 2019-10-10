@@ -1,33 +1,19 @@
 import jieba
-import gensim
+import pandas
+import numpy
 from gensim import corpora,models,similarities
 
-doc0 = "我不喜欢上海"
-doc1 = "上海是一个好地方"
-doc2 = "北京是一个好地方"
-doc3 = "上海好吃的在哪里"
-doc4 = "上海好玩的在哪里"
-doc5 = "上海是好地方"
-doc6 = "上海路和上海人"
-doc7 = "喜欢小吃"
-doc8 = "不喜欢小吃"
-doc9 = "我也是一个广东人，所以我们是老乡"
-doc_test="我喜欢上海的小吃"
+df_text = pandas.read_csv("tfidf_test.csv")
 
-all_doc = []
-all_doc.append(doc0)
-all_doc.append(doc1)
-all_doc.append(doc2)
-all_doc.append(doc3)
-all_doc.append(doc4)
-all_doc.append(doc5)
-all_doc.append(doc6)
-all_doc.append(doc7)
-all_doc.append(doc8)
-all_doc.append(doc9)
+df_text = df_text['Sentences']
+
+doc_test="I love Shanghai"
+
+temp_array_text = numpy.array(df_text)
+array_text = temp_array_text.flatten()
 
 all_doc_list = []
-for doc in all_doc:
+for doc in array_text:
     doc_list = [word for word in jieba.cut(doc)]
     all_doc_list.append(doc_list)
 

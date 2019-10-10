@@ -27,6 +27,9 @@ class DataCleaning(object):
     __temp_choice_in_detect_outlier = -1
     __column_detect_name = ''
 
+    # this attribute is for outputting the most similarity sentences
+    __text_similarity = 0
+
     def __init__(self):
         print("class initialization")
 
@@ -366,8 +369,51 @@ class DataCleaning(object):
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
 
-    def similarity(self,inputWords):
-        print("Under Consideration")
+    def similarity(self, input_words, column_chosen):
+        import jieba
+        import pandas
+        import numpy
+        from gensim import corpora, models, similarities
+
+        df_text = self.__current_data_frame[column_chosen]
+
+        doc_test = input_words
+
+        temp_array_text = numpy.array(df_text)
+
+        array_text = temp_array_text.flatten()
+
+        all_doc_list = []
+        for doc in array_text:
+            doc_list = [word for word in jieba.cut(doc)]
+            all_doc_list.append(doc_list)
+
+        print(all_doc_list)
+
+        doc_test_list = [word for word in jieba.cut(doc_test)]
+        print(doc_test_list)
+
+        # make a corpus
+        dictionary = corpora.Dictionary(all_doc_list)
+        print(dictionary.keys())
+        print(dictionary.token2id)
+        corpus = [dictionary.doc2bow(doc) for doc in all_doc_list]
+
+        doc_test_vec = dictionary.doc2bow(doc_test_list)
+        print(doc_test_vec)
+
+        # the tfidf value of each word TF: term frequency TF-IDF = TF*IDF
+        tfidf = models.TfidfModel(corpus)
+
+        # theme matrix, which can be trained
+        print(tfidf[doc_test_vec])
+
+        index = similarities.SparseMatrixSimilarity(tfidf[corpus], num_features=len(dictionary.keys()))
+        sim = index[tfidf[doc_test_vec]]
+        print(sim)
+
+        results = sorted(enumerate(sim), key=lambda item: -item[1])
+        print(sorted(enumerate(sim), key=lambda item: -item[1]))
 
     def detect_outlier_all(self):
         temp_outlier = []
