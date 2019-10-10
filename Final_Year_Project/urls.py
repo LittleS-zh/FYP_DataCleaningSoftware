@@ -34,6 +34,7 @@ urlpatterns = [
     path(r'detect_outlier_three_sigma/', views.detect_outlier_three_sigma, name="detect_outlier_three_sigma"),
     path(r'detect_outlier_text/', views.detect_outlier_text, name="detect_outlier_text"),
     path(r'detect_outlier_all/', views.detect_outlier_all, name="detect_outlier_all"),
+    path(r'text_similarity/', views.text_similarity, name="text_similarity"),
     path(r'deal_with_outlier/', views.deal_with_outlier, name="deal_with_outlier"),
     path(r'check_missing/', views.check_missing, name="check_missing"),
     path(r'deal_with_missing_value/', views.deal_with_missing_value, name="deal_with_missing_value"),

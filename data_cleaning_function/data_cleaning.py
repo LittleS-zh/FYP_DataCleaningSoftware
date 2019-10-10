@@ -227,9 +227,11 @@ class DataCleaning(object):
         data_frame_array = np.array(self.__current_data_frame.round(float_round))
         data_frame_list = data_frame_array.tolist()
         data_frame_list.insert(0,data_frame_column)
-        data_dictionary = {'data_frame': data_frame_list, 'data_header':data_frame_column,
+        data_dictionary = {'data_frame': data_frame_list,
+                           'data_header':data_frame_column,
                            'data_outlier':self.__rowWithOutlier,
-                           'detect_outlier_choice':self.__choice_in_detect_outlier}
+                           'detect_outlier_choice':self.__choice_in_detect_outlier,
+                           'text_similarity':self.__text_similarity}
         return data_dictionary
 
     # reset function
@@ -365,7 +367,7 @@ class DataCleaning(object):
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
 
-    def similarity(self, input_words, column_chosen):
+    def text_similarity(self, input_words, column_chosen):
         import jieba
         import pandas
         import numpy
@@ -407,8 +409,9 @@ class DataCleaning(object):
         index = similarities.SparseMatrixSimilarity(tfidf[corpus], num_features=len(dictionary.keys()))
         sim = index[tfidf[doc_test_vec]]
         print(sim)
+        sorted_similarity = sorted(enumerate(sim), key=lambda item: -item[1])
 
-        results = sorted(enumerate(sim), key=lambda item: -item[1])
+        self.__text_similarity = sorted_similarity[0][0] + 1
         print(sorted(enumerate(sim), key=lambda item: -item[1]))
 
     def detect_outlier_all(self):
