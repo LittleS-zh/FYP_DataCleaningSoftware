@@ -76,7 +76,7 @@
                         <span>Data Cleaning Method</span>
                     </h6>
 
-                     <li class="nav-item">
+                    <li class="nav-item">
                         <form action="/select_by_conditions/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
@@ -88,10 +88,10 @@
                             </select>
 
                             <select class="form-control form-control-sm" name="select_by_condition_input_operator">
-                                    <option value="=="> == (equal to) </option>
-                                    <option value="!="> != (not equal to) </option>
-                                    <option value=">"> > (larger than) </option>
-                                    <option value="<"> < (less than) </option>
+                                <option value="=="> == (equal to)</option>
+                                <option value="!="> != (not equal to)</option>
+                                <option value=">"> > (larger than)</option>
+                                <option value="<"> < (less than)</option>
                             </select>
 
                             <input type="text" class="form-control form-control-sm" style="width: 85%;"
@@ -235,8 +235,9 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             {# 如果用户使用了了检测功能，就显示问题列表 #}
-            {% if data.detect_outlier_numbers %}
-                <div style="width: 100%; margin-top: 10px;">
+            {# 检测outlier的工具栏 #}
+            {% if data.detect_outlier_numbers or data.detect_outlier_text or data.detect_outlier_all_attributes %}
+                <div style="width: 100%; margin-top: 20px;">
                     {% if data.data_outlier %}
                         <h5>Outlier list: (Click to jump!)</h5>
                         {% for question_index in data.data_outlier %}
@@ -246,55 +247,103 @@
                         <h5 style="margin-top: 5px">No Outlier!</h5>
                     {% endif %}
                 </div>
+            {# 检测缺失值的工具栏 #}
+            {% elif data.check_missing_value %}
+                <div style="width: 100%; margin-top: 20px;">
+                    {% if data.missing_value_result %}
+                        <h5>Problem list: (Click to jump!)</h5>
+                        {% for question_index in data.missing_value_result %}
+                            <a href="#{{ question_index|add:-1 }}">Line: {{ question_index }}</a><br>
+                        {% endfor %}
+                    {% else %}
+                        <h5 style="margin-top: 5px">No Missing Value!</h5>
+                    {% endif %}
+                </div>
             {% endif %}
 
             {# 列表展示 #}
             <table style="margin-top: 20px">
                 {% for line in data.data_frame %}
-                    {% if not forloop.counter0 in data.data_outlier %}
-                         <tr id={{ forloop.counter0 }}>
-                             {% for line_piece in line %}
-                                 <td style="border: 1px solid;">{{ line_piece }}</td>
-                             {% endfor %}
-                         </tr>
-                    {% else %}
-                        <tr>
-                         {% if data.detect_outlier_all_attributes %}
-                             {% for line_piece in line %}
-                                <td bgcolor="aqua" style="border: 1px solid;">{{ line_piece }}</td>
-                             {% endfor %}
-                         {% else %}
-                            {% for line_piece in line %}
-                                 {% if forloop.counter0 == data.detect_outlier_choice %}
-                                     <td bgcolor="aqua" style="border: 1px solid;">{{ line_piece }}</td>
-                                 {% else %}
+                    {% if data.detect_outlier_numbers or data.detect_outlier_text or data.detect_outlier_all_attributes %}
+                        {% if not forloop.counter0 in data.data_outlier %}
+                            <tr id={{ forloop.counter0 }}>
+                                {% for line_piece in line %}
                                     <td style="border: 1px solid;">{{ line_piece }}</td>
-                                 {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% else %}
+                            <tr id={{ forloop.counter0 }}>
+                                {% if data.detect_outlier_all_attributes %}
+                                    {% for line_piece in line %}
+                                        <td bgcolor="#faebd7" style="border: 1px solid;">{{ line_piece }}</td>
+                                    {% endfor %}
+                                    <td style="border-style: none;">
+                                        <form action="/single_outlier_delete/" method="post">
+                                            {% csrf_token %}
+                                            <input style="display: none;" name="modification_row"
+                                                   value={{ forloop.counter0 }}>
+                                            <button style="margin-left: 3px;" type="submit"
+                                                    class="btn btn-danger btn-sm"
+                                                    name="submit"/>
+                                            Delete!</button>
+                                        </form>
+                                    </td>
+                                {% else %}
+                                    {% for line_piece in line %}
+                                        {% if forloop.counter0 == data.detect_outlier_choice %}
+                                            <td bgcolor="#faebd7" style="border: 1px solid;">{{ line_piece }}</td>
+                                        {% else %}
+                                            <td style="border: 1px solid;">{{ line_piece }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td style="border-style: none">
+                                        <form action="/outlier_modification/" method="post">
+                                            {% csrf_token %}
+                                            <input type="text" class="form-control form-control-sm"
+                                                   style="float:left; width:60%; margin-left: 5px;"
+                                                   name="modification_value" required>
+                                            <input style="display: none;" name="modification_row"
+                                                   value={{ forloop.counter0 }}>
+                                            <button style="margin-left: 5px;" type="submit" class="btn btn-info btn-sm"
+                                                    name="submit"/>
+                                            Modify</button>
+                                        </form>
+                                    </td>
+                                    <td style="border-style: none;">
+                                        <form action="/single_outlier_delete/" method="post">
+                                            {% csrf_token %}
+                                            <input style="display: none;" name="modification_row"
+                                                   value={{ forloop.counter0 }}>
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                    name="submit"/>
+                                            Delete!</button>
+                                        </form>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% elif data.check_missing_value %}
+                        {% if not forloop.counter0|add:-1 in data.missing_value_result %}
+                            <tr id={{ forloop.counter0|add:-1 }}>
+                                {% for line_piece in line %}
+                                    <td style="border: 1px solid;">{{ line_piece }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% else %}
+                            <tr id={{ forloop.counter0|add:-1 }}>
+                                {% for line_piece in line %}
+                                    <td bgcolor="#faebd7" style="border: 1px solid;">{{ line_piece }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                    {% else %}
+                        <tr id={{ forloop.counter0|add:-1 }}>
+                            {% for line_piece in line %}
+                                 <td style="border: 1px solid;">{{ line_piece }}</td>
                             {% endfor %}
-                            <td style="border-style: none">
-                                <form action="/outlier_modification/" method="post">
-                                    {% csrf_token %}
-                                    <input type="text" class="form-control form-control-sm"
-                                           style="float:left; width:60%; margin-left: 5px;"
-                                           name="modification_value" required>
-                                    <input style="display: none;" name="modification_row" value={{ forloop.counter0 }}>
-                                    <button style="margin-left: 5px;" type="submit" class="btn btn-info btn-sm"
-                                    name="submit"/>
-                                    Modify</button>
-                                </form>
-                            </td>
-                            <td style="border-style: none;">
-                                <form action="/single_outlier_delete/" method="post">
-                                    {% csrf_token %}
-                                    <input style="display: none;" name="modification_row" value={{ forloop.counter0 }}>
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                    name="submit"/>
-                                    Delete!</button>
-                                </form>
-                            </td>
-                         {% endif %}
                         </tr>
                     {% endif %}
+
                 {% endfor %}
             </table>
         </main>
