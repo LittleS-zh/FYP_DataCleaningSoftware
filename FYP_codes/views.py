@@ -52,7 +52,7 @@ def select_columns(request):
 
 
 def data_de_duplication(request):
-    dc.data_de_duplication()
+    dc.data_de_duplication(True)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
