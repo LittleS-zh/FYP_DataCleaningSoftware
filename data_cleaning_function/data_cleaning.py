@@ -167,6 +167,9 @@ class DataCleaning(object):
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
 
+        if "isDuplicate" in list(self.__current_data_frame.columns):
+            self.__current_data_frame.drop(["isDuplicate"],axis = 1, inplace = True)
+
         if not input_ignore_upper_case:
             self.__current_data_frame["isDuplicate"] = self.__current_data_frame.duplicated()
         elif input_ignore_upper_case:
@@ -217,6 +220,7 @@ class DataCleaning(object):
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
         self.__column_detect_name = column_input
+
 
         d = self.__current_data_frame[column_input]
         z_score = (d - d.mean()) / d.std()

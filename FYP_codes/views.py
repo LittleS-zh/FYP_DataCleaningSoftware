@@ -52,7 +52,8 @@ def select_columns(request):
 
 
 def data_de_duplication(request):
-    dc.data_de_duplication(True)
+    input_ignore_case = request.POST.get("de_duplication_ignoreCase")
+    dc.data_de_duplication(input_ignore_case)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 

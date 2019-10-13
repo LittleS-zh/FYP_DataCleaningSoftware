@@ -3,6 +3,8 @@ import copy
 
 df = pd.read_csv("testFile_WithoutNaN.csv")
 
+print(list(df.columns))
+
 df_temp = copy.deepcopy(df)
 
 number_of_column = df_temp.columns.size
