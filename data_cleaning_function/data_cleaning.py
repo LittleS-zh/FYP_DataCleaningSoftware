@@ -295,6 +295,15 @@ class DataCleaning(object):
 
         print(self.__current_data_frame)
 
+    def single_missing_value_delete(self, modification_row):
+        self.__current_data_frame = self.__current_data_frame.drop(modification_row - 1)
+        self.__current_data_frame.index = range(len(self.__current_data_frame))
+
+        for missing_value_index in range(0, len(self.__missing_value_result)):
+            if self.__missing_value_result[missing_value_index] > modification_row:
+                self.__missing_value_result[missing_value_index] -= 1
+        self.__missing_value_result.remove(modification_row - 1)
+
     # todo: this function is not finished
     def detect_outlier_quantitile(self, column_input):
         d = self.__current_data_frame[column_input]
@@ -331,6 +340,7 @@ class DataCleaning(object):
         print(self.__missing_value_result)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
+        print(self.__current_data_frame)
         # data_frame_list = data_frame_array.tolist()
         # print("data_frame_list: ", data_frame_list)
         # data_dictionary = {'data_frame': data_frame_list, 'data_header': data_frame_column}
@@ -341,10 +351,6 @@ class DataCleaning(object):
         self.__detect_outlier_numbers = False
         self.__detect_outlier_text = False
         self.__detect_outlier_all_attributes = False
-
-        # delete the row
-        print("Choice is " + choice)
-        print(choice == "1")
         if choice == "1":
             self.__current_data_frame = self.__current_data_frame.dropna(axis=0)
         elif choice == "2":
@@ -400,9 +406,9 @@ class DataCleaning(object):
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
-
         self.__choice_in_detect_outlier = -1
         self.__rowWithOutlier.clear()
+
         if len(self.__list_data_frame) > 1:
             self.__list_data_frame.pop()
             self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
