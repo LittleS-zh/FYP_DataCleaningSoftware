@@ -20,7 +20,6 @@ class DataCleaning(object):
 
     # this attribute is for indicating the rows with outlier
     __rowWithOutlier = []
-    __temp_row_with_outlier = []
 
     # this attribute is for indicating the choice in "detect outlier"
     __choice_in_detect_outlier = -1
@@ -94,8 +93,9 @@ class DataCleaning(object):
 
     # filter the rows according to a specific value
     # todo: this function is not used
-    def conditional_filter(self, column_input):
-        self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == True)]
+    def conditional_filter(self, input_column, input_condition_operator, input_condition_number):
+
+        loc = self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame[input_column] == input_condition_number)]
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
@@ -134,8 +134,8 @@ class DataCleaning(object):
         temp_outlier = []
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
-
         self.__column_detect_name = column_input
+
         d = self.__current_data_frame[column_input]
         z_score = (d - d.mean()) / d.std()
         self.__current_data_frame['isOutlier'] = z_score.abs() > 3
@@ -150,6 +150,8 @@ class DataCleaning(object):
         # print(self.__list_data_frame)
 
     def outlier_modification(self, modification_value, modification_row):
+        print(modification_value)
+        print(modification_row)
         if modification_value.isdigit():
             self.__current_data_frame.loc[modification_row - 1, self.__column_detect_name] = float(modification_value)
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
@@ -250,7 +252,6 @@ class DataCleaning(object):
         if len(self.__list_data_frame) > 1:
             self.__list_data_frame.pop()
             self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
-            self.__rowWithOutlier = copy.deepcopy(self.__temp_row_with_outlier)
 
     def forecast_a_value(self,target_column_input,target_column_forecast,target_row_input,target_row_output):
         # todo: parameters change here
@@ -310,6 +311,7 @@ class DataCleaning(object):
         temp_outlier = []
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
+        self.__column_detect_name = input_column_which_is_text
 
         df_text = self.__current_data_frame[input_column_which_is_text]
 
@@ -365,6 +367,8 @@ class DataCleaning(object):
         temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
         self.__rowWithOutlier = [i + 1 for i in temp_outlier]
         self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc(input_column_which_is_text)
+        print(input_column_which_is_text)
+        print(self.__choice_in_detect_outlier)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
@@ -456,6 +460,6 @@ class DataCleaning(object):
 
         temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
         self.__rowWithOutlier = [i + 1 for i in temp_outlier]
-        self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc("第一次测验")
+        self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc("Column A")
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
