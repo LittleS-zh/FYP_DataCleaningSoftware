@@ -221,7 +221,6 @@ class DataCleaning(object):
         self.__rowWithOutlier.clear()
         self.__column_detect_name = column_input
 
-
         d = self.__current_data_frame[column_input]
         z_score = (d - d.mean()) / d.std()
         self.__current_data_frame['isOutlier'] = z_score.abs() > 3
@@ -520,6 +519,12 @@ class DataCleaning(object):
         temp_outlier = []
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
+
+        # to check whether there is an auto-generated columns, if has, delete it.
+        if "isOutlier" in list(self.__current_data_frame.columns):
+            self.__current_data_frame.drop(["isOutlier"],axis = 1, inplace = True)
+        if "isDuplicate" in list(self.__current_data_frame.columns):
+            self.__current_data_frame.drop(["isDuplicate"],axis = 1, inplace = True)
 
         # todo: the selection part need to be changed
         df = self.__current_data_frame
