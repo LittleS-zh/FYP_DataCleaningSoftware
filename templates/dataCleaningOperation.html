@@ -119,7 +119,9 @@
                                 {% for data_piece in data.data_header %}
                                     <option value="{{ data_piece }}"> {{ data_piece }} </option>
                                 {% endfor %}
+                                <!-- <option value = "all_attributes"> All Attributes </option> -->
                             </select>
+                            <input type="checkbox" name="detect_outlier_delete_rows_automatically" value=True />Delete all rows automatically
                         </form>
                     </li>
                     </br>
@@ -160,20 +162,6 @@
                         </form>
                     </li>
                     <p> most similar text: line {{ data.text_similarity }}</p>
-                    <li class="nav-item">
-                        <form action="/deal_with_outlier/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm"
-                                    style="margin-bottom: 5px; margin-top: 5px" name="submit"/>
-                            Delete Outliers</button>
-                            <select class="form-control form-control-sm" name="deal_with_outlier">
-                                {% for data_piece in data.data_header %}
-                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
-                                {% endfor %}
-                            </select>
-                        </form>
-                    </li>
-                    </br>
                     <li class="nav-item">
                         <form action="/check_missing/" method="post">
                             {% csrf_token %}
@@ -229,6 +217,23 @@
                                                                                               style="text-decoration: none; color: white">Go
                             back to index</a></button>
                     </li>
+
+                    <h6>buttons can be removed</h6>
+                    <li class="nav-item">
+                        <form action="/deal_with_outlier/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    style="margin-bottom: 5px; margin-top: 5px" name="submit"/>
+                            Delete Outliers</button>
+                            <select class="form-control form-control-sm" name="deal_with_outlier">
+                                {% for data_piece in data.data_header %}
+                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </li>
+                    </br>
+
                 </ul>
             </div>
         </nav>

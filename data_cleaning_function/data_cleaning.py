@@ -302,7 +302,7 @@ class DataCleaning(object):
 
     # delete the whole row of outlier using three sigma methods
     def deal_with_outlier(self, column_input):
-        self.detect_outlier_three_sigma(column_input)
+        # self.detect_outlier_three_sigma(column_input)
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == False)]
         self.__current_data_frame = self.__current_data_frame.drop("isOutlier", axis=1)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)

@@ -69,6 +69,10 @@ def detect_outlier_three_sigma(request):
     if request.method == "POST":
         column_input = str(request.POST.get("detect_outlier_three_sigma", None))
         dc.detect_outlier_three_sigma(column_input)
+        input_delete_rows_automatically = request.POST.get("detect_outlier_delete_rows_automatically", None)
+        if input_delete_rows_automatically:
+            dc.deal_with_outlier(column_input)
+
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
