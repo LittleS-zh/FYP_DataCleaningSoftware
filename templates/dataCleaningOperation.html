@@ -183,6 +183,7 @@
                     <li class="nav-item">
                         <form action="/deal_with_missing_value/" method="get">
                             {% csrf_token %}
+                            <input style="display: none;" name="modification_row">
                             <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 5px"
                                     name="submit"/>
                             Deal with missing value</button>
@@ -246,7 +247,7 @@
                         <h5 style="margin-top: 5px">No Outlier!</h5>
                     {% endif %}
                 </div>
-            {# 检测缺失值的工具栏 #}
+                {# 检测缺失值的工具栏 #}
             {% elif data.check_missing_value %}
                 <div style="width: 100%; margin-top: 20px;">
                     {% if data.missing_value_result %}
@@ -263,6 +264,7 @@
             {# 列表展示 #}
             <table style="margin-top: 20px">
                 {% for line in data.data_frame %}
+                    {# 检测异常值的table显示 #}
                     {% if data.detect_outlier_numbers or data.detect_outlier_text or data.detect_outlier_all_attributes %}
                         {% if not forloop.counter0 in data.data_outlier %}
                             <tr id={{ forloop.counter0 }}>
@@ -321,6 +323,8 @@
                                 {% endif %}
                             </tr>
                         {% endif %}
+
+                    {# 检测缺失值的table显示 #}
                     {% elif data.check_missing_value %}
                         {% if not forloop.counter0|add:-1 in data.missing_value_result %}
                             <tr id={{ forloop.counter0|add:-1 }}>
@@ -333,12 +337,25 @@
                                 {% for line_piece in line %}
                                     <td bgcolor="#faebd7" style="border: 1px solid;">{{ line_piece }}</td>
                                 {% endfor %}
+                                <td style="border-style: none;">
+                                    <form action="/single_missing_value_delete/" method="post">
+                                        {% csrf_token %}
+                                        <input style="display: none;" name="modification_row"
+                                               value={{ forloop.counter0 }}>
+                                        <button style="margin-left: 3px;" type="submit"
+                                                class="btn btn-danger btn-sm"
+                                                name="submit"/>
+                                        Delete!</button>
+                                    </form>
+                                </td>
                             </tr>
                         {% endif %}
+
+                    {# 正常显示原始table #}
                     {% else %}
                         <tr id={{ forloop.counter0|add:-1 }}>
                             {% for line_piece in line %}
-                                 <td style="border: 1px solid;">{{ line_piece }}</td>
+                                <td style="border: 1px solid;">{{ line_piece }}</td>
                             {% endfor %}
                         </tr>
                     {% endif %}

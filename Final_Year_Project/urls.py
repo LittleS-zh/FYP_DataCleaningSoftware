@@ -43,6 +43,7 @@ urlpatterns = [
     path(r'limit_float_point_num/', views.limit_float_point_num, name="limit_float_point_num"),
     path(r'outlier_modification/', views.outlier_modification, name="outlier_modification"),
     path(r'single_outlier_delete/', views.single_outlier_delete, name="single_outlier_delete"),
+    path(r'single_missing_value_delete/', views.single_missing_value_delete, name="single_missing_value_delete"),
 ]
 
 if settings.DEBUG:
