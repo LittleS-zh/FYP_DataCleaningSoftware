@@ -158,7 +158,8 @@ class DataCleaning(object):
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
     # deduplicate data
-    def data_de_duplication(self):
+    def data_de_duplication(self, input_ignore_upper_case):
+        # for test only, this will be delete later
         # 初始化
         self.__detect_outlier_numbers = False
         self.__detect_outlier_text = False
@@ -166,7 +167,26 @@ class DataCleaning(object):
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
 
-        self.__current_data_frame = self.__current_data_frame.drop_duplicates()
+        if not input_ignore_upper_case:
+            self.__current_data_frame["isDuplicate"] = self.__current_data_frame.duplicated()
+        elif input_ignore_upper_case:
+            df = self.__current_data_frame
+
+            df_temp = copy.deepcopy(df)
+
+            number_of_column = df_temp.columns.size
+
+            for i in range(0, number_of_column):
+                print(i)
+                print(df_temp.iloc[:, i].dtypes)
+                if df_temp.iloc[:, i].dtypes == "float64" or df.iloc[:, i].dtypes == "int64":
+                    print("Numbers, pass")
+                elif df_temp.iloc[:, i].dtypes == "object":
+                    df_temp.iloc[:, i] = df_temp.iloc[:, i].str.lower()
+                    print("object, change to lower case")
+
+            df["isDuplicate"] = df_temp.duplicated()
+
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
