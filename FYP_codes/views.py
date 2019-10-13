@@ -115,7 +115,8 @@ def deal_with_outlier(request):
 
 
 def check_missing(request):
-    return render(request, "dataCleaningOperation.html", {"data": dc.check_missing()})
+    dc.check_missing()
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
 def deal_with_missing_value(request):
