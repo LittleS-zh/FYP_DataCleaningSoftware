@@ -19,7 +19,7 @@
         display: none;
     }
 </style>
-<body>
+<body style="font-family: Times">
 
 <div class="container-fluid">
     <div class="row">
@@ -233,33 +233,43 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div>
-            <h5>Outlier list:</h5>
-            {% for question_index in data.data_outlier %}
-                <a href="#{{ question_index|add:-1 }}">{{ question_index }}</a>
-            {% endfor %}
-        </div>
+            {# 如果用户使用了了检测功能，就显示问题列表 #}
+            {% if data.detect_outlier_numbers %}
+                <div style="width: 100%; margin-top: 10px;">
+                    {% if data.data_outlier %}
+                        <h5>Outlier list: (Click to jump!)</h5>
+                        {% for question_index in data.data_outlier %}
+                            <a href="#{{ question_index|add:-1 }}">Line: {{ question_index }}</a><br>
+                        {% endfor %}
+                    {% else %}
+                        <h5 style="margin-top: 5px">No Outlier!</h5>
+                    {% endif %}
+                </div>
+            {% endif %}
 
+            {# 列表展示 #}
             <table style="margin-top: 20px">
                 {% for line in data.data_frame %}
-
                     {% if not forloop.counter0 in data.data_outlier %}
-                     <tr id={{ forloop.counter0 }}>
-                         {% for line_piece in line %}
-                             <td style="border: 1px solid;">{{ line_piece }}</td>
-                         {% endfor %}
-                     </tr>
-
+                         <tr id={{ forloop.counter0 }}>
+                             {% for line_piece in line %}
+                                 <td style="border: 1px solid;">{{ line_piece }}</td>
+                             {% endfor %}
+                         </tr>
                     {% else %}
                         <tr>
-                         {% for line_piece in line %}
-                             {% if forloop.counter0 == data.detect_outlier_choice %}
-                                 <td bgcolor="aqua" style="border: 1px solid;">{{ line_piece }}</td>
-                             {% else %}
-                                <td style="border: 1px solid;">{{ line_piece }}</td>
-                             {% endif %}
-                         {% endfor %}
-
+                         {% if data.detect_outlier_all_attributes %}
+                             {% for line_piece in line %}
+                                <td bgcolor="aqua" style="border: 1px solid;">{{ line_piece }}</td>
+                             {% endfor %}
+                         {% else %}
+                            {% for line_piece in line %}
+                                 {% if forloop.counter0 == data.detect_outlier_choice %}
+                                     <td bgcolor="aqua" style="border: 1px solid;">{{ line_piece }}</td>
+                                 {% else %}
+                                    <td style="border: 1px solid;">{{ line_piece }}</td>
+                                 {% endif %}
+                            {% endfor %}
                             <td style="border-style: none">
                                 <form action="/outlier_modification/" method="post">
                                     {% csrf_token %}
@@ -278,13 +288,12 @@
                                     <input style="display: none;" name="modification_row" value={{ forloop.counter0 }}>
                                     <button type="submit" class="btn btn-danger btn-sm"
                                     name="submit"/>
-                                    Delete this!</button>
+                                    Delete!</button>
                                 </form>
                             </td>
-
+                         {% endif %}
                         </tr>
                     {% endif %}
-
                 {% endfor %}
             </table>
         </main>

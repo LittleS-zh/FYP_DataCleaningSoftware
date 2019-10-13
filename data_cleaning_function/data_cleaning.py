@@ -18,6 +18,14 @@ class DataCleaning(object):
     __list_data_frame = []
     __temp_data_frame_for_deepcopy = []
 
+    # indicate which operation that users are doing
+    __detect_outlier_numbers = False
+    __detect_outlier_text = False
+    __detect_outlier_all_attributes = False
+
+    # floating point
+    __floating_point = -1
+
     # this attribute is for indicating the rows with outlier
     __rowWithOutlier = []
 
@@ -52,6 +60,11 @@ class DataCleaning(object):
 
     # select rows for a data frame
     def select_rows(self, row_start_input, row_end_input):
+        # 初始化
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+        self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
 
         if row_start_input <= row_end_input and row_end_input <= self.__current_data_frame.shape[0] and row_start_input >= 1:
@@ -64,6 +77,11 @@ class DataCleaning(object):
 
     # select columns for a data frame, according to the start number and the end number
     def select_column_position(self, column_start_input, column_end_input):
+        # 初始化
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+        self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
 
         if column_start_input <= column_end_input and column_end_input <= self.__current_data_frame.shape[1] and column_start_input >= 1:
@@ -76,12 +94,26 @@ class DataCleaning(object):
 
     # select columns for a data frame, according to the header of column
     def select_column_heading(self, header_of_column_input):
+        # 初始化
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+        self.__rowWithOutlier.clear()
+        self.__choice_in_detect_outlier = -1
+
         self.__current_data_frame = self.__current_data_frame[header_of_column_input]
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
     # select row and column at the same time
     def block_selection(self, column_start_input, column_end_input, header_of_column_input):
+        # 初始化
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+        self.__rowWithOutlier.clear()
+        self.__choice_in_detect_outlier = -1
+
         self.__current_data_frame = self.__current_data_frame.ix[column_start_input:column_end_input,
                                     header_of_column_input]
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
@@ -127,12 +159,26 @@ class DataCleaning(object):
 
     # deduplicate data
     def data_de_duplication(self):
+        # 初始化
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+        self.__rowWithOutlier.clear()
+        self.__choice_in_detect_outlier = -1
+
         self.__current_data_frame = self.__current_data_frame.drop_duplicates()
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
     # calculate means of data
     def calculate_means(self, column_need_to_be_grouped_input, column_group_by):
+        # 初始化
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+        self.__rowWithOutlier.clear()
+        self.__choice_in_detect_outlier = -1
+
         self.__current_data_frame = self.__current_data_frame[column_need_to_be_grouped_input].groupby(
             self.__current_data_frame[column_group_by])
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
@@ -141,7 +187,12 @@ class DataCleaning(object):
 
     # detect outlier using three sigma method
     def detect_outlier_three_sigma(self, column_input):
-        # 初始化
+        # 初始化用户选择
+        self.__detect_outlier_numbers = True
+        self.__detect_outlier_all_attributes = False
+        self.__detect_outlier_text = False
+
+        # 初始化数组
         temp_outlier = []
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
@@ -157,12 +208,8 @@ class DataCleaning(object):
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
-        # print(self.__choice_in_detect_outlier)
-        # print(self.__list_data_frame)
-
     def outlier_modification(self, modification_value, modification_row):
-        print(modification_value)
-        print(modification_row)
+        # todo: get users' original floating point
         if modification_value.isdigit():
             self.__current_data_frame.loc[modification_row - 1, self.__column_detect_name] = float(modification_value)
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
@@ -176,8 +223,6 @@ class DataCleaning(object):
     def single_outlier_delete(self, modification_row):
         self.__current_data_frame = self.__current_data_frame.drop(modification_row-1)
         self.__current_data_frame.index = range(len(self.__current_data_frame))
-
-        self.__temp_row_with_outlier = copy.deepcopy(self.__rowWithOutlier)
 
         for outlier_index in range(0, len(self.__rowWithOutlier)):
             if self.__rowWithOutlier[outlier_index] > modification_row:
@@ -208,6 +253,10 @@ class DataCleaning(object):
 
     # check missing value
     def check_missing(self):
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+
         data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame.isnull())
         data_frame_list = data_frame_array.tolist()
@@ -216,6 +265,10 @@ class DataCleaning(object):
 
     # delete missing value
     def deal_with_missing_value(self, choice):
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+
         # delete the row
         print("Choice is " + choice)
         print(choice == "1")
@@ -239,16 +292,23 @@ class DataCleaning(object):
         data_frame_column = np.array(self.__current_data_frame.columns)
         data_frame_array = np.array(self.__current_data_frame.round(float_round))
         data_frame_list = data_frame_array.tolist()
-        data_frame_list.insert(0,data_frame_column)
+        data_frame_list.insert(0, data_frame_column)
         data_dictionary = {'data_frame': data_frame_list,
-                           'data_header':data_frame_column,
-                           'data_outlier':self.__rowWithOutlier,
-                           'detect_outlier_choice':self.__choice_in_detect_outlier,
-                           'text_similarity':self.__text_similarity}
+                           'data_header': data_frame_column,
+                           'detect_outlier_numbers': self.__detect_outlier_numbers,
+                           'detect_outlier_text': self.__detect_outlier_text,
+                           'detect_outlier_all_attributes': self.__detect_outlier_all_attributes,
+                           'data_outlier': self.__rowWithOutlier,
+                           'detect_outlier_choice': self.__choice_in_detect_outlier,
+                           'text_similarity': self.__text_similarity}
         return data_dictionary
 
     # reset function
     def reset_data_frame(self):
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+
         self.__rowWithOutlier.clear()
         self.__column_detect_name = ''
         self.__choice_in_detect_outlier = -1
@@ -257,9 +317,12 @@ class DataCleaning(object):
     # revert function
     # todo: limit the times that a user can revert
     def revert_data_frame(self):
+        self.__detect_outlier_numbers = False
+        self.__detect_outlier_text = False
+        self.__detect_outlier_all_attributes = False
+
         self.__choice_in_detect_outlier = -1
         self.__rowWithOutlier.clear()
-
         if len(self.__list_data_frame) > 1:
             self.__list_data_frame.pop()
             self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
@@ -383,10 +446,8 @@ class DataCleaning(object):
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
-
     def text_similarity(self, input_words, column_chosen):
         import jieba
-        import pandas
         import numpy
         from gensim import corpora, models, similarities
 
@@ -435,7 +496,6 @@ class DataCleaning(object):
         temp_outlier = []
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
-
 
         # todo: the selection part need to be changed
         df = self.__current_data_frame

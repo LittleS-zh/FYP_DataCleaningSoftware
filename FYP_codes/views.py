@@ -92,7 +92,6 @@ def text_similarity(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
-# todo: finish this function
 def outlier_modification(request):
     if request.method == "POST":
         modification_value = str(request.POST.get("modification_value", None))
