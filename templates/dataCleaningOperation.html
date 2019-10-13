@@ -60,6 +60,17 @@
                     </li>
                     </br>
 
+                    <li class="nav-item">
+                        <form action="/limit_float_point_num/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Change float precision</button>
+                            <input type="text" name="float_point_num" class="form-control form-control-sm"
+                                   style="width: 85%;" placeholder="Floating Precision"
+                                   oninput="value=value.replace(/[^\d]/g,'')" required>
+                        </form>
+                    </li>
+                    </br>
 
                     <h6 style="text-align: left">
                         <span>Data Cleaning Method</span>
@@ -85,18 +96,6 @@
 
                             <input type="text" class="form-control form-control-sm" style="width: 85%;"
                                    placeholder="Please enter a number" name="select_by_condition_input_number"
-                                   oninput="value=value.replace(/[^\d]/g,'')" required>
-                        </form>
-                    </li>
-                    </br>
-
-                    <li class="nav-item">
-                        <form action="/limit_float_point_num/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            Change float precision</button>
-                            <input type="text" name="float_point_num" class="form-control form-control-sm"
-                                   style="width: 85%;" placeholder="Floating Precision"
                                    oninput="value=value.replace(/[^\d]/g,'')" required>
                         </form>
                     </li>
