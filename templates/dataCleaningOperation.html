@@ -234,6 +234,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             {# 如果用户使用了了检测功能，就显示问题列表 #}
+            {# 检测outlier的工具栏 #}
             {% if data.detect_outlier_numbers or data.detect_outlier_text or data.detect_outlier_all_attributes %}
                 <div style="width: 100%; margin-top: 20px;">
                     {% if data.data_outlier %}
@@ -245,6 +246,7 @@
                         <h5 style="margin-top: 5px">No Outlier!</h5>
                     {% endif %}
                 </div>
+            {# 检测缺失值的工具栏 #}
             {% elif data.check_missing_value %}
                 <div style="width: 100%; margin-top: 20px;">
                     {% if data.missing_value_result %}

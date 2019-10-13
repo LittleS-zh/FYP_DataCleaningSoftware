@@ -59,7 +59,6 @@ class DataCleaning(object):
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
-
         # for debug
         print(self.__current_data_frame.shape[0])
         print(self.__current_data_frame.shape[1])
@@ -79,9 +78,10 @@ class DataCleaning(object):
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
 
-        if row_start_input <= row_end_input and row_end_input <= self.__current_data_frame.shape[0] and row_start_input >= 1:
+        if row_start_input <= row_end_input and row_end_input <= self.__current_data_frame.shape[
+            0] and row_start_input >= 1:
             print(self.__current_data_frame.shape[0])
-            self.__current_data_frame = self.__current_data_frame[row_start_input-1:row_end_input]
+            self.__current_data_frame = self.__current_data_frame[row_start_input - 1:row_end_input]
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
         else:
@@ -98,9 +98,10 @@ class DataCleaning(object):
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
 
-        if column_start_input <= column_end_input and column_end_input <= self.__current_data_frame.shape[1] and column_start_input >= 1:
+        if column_start_input <= column_end_input and column_end_input <= self.__current_data_frame.shape[
+            1] and column_start_input >= 1:
             print(self.__current_data_frame.shape[1])
-            self.__current_data_frame = self.__current_data_frame.iloc[:, column_start_input-1: column_end_input]
+            self.__current_data_frame = self.__current_data_frame.iloc[:, column_start_input - 1: column_end_input]
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
         else:
@@ -249,6 +250,8 @@ class DataCleaning(object):
         self.__detect_outlier_numbers = True
         self.__detect_outlier_all_attributes = False
         self.__detect_outlier_text = False
+        self.__check_missing_value = False
+        self.__missing_value_result.clear()
 
         # 初始化数组
         temp_outlier = []
@@ -279,7 +282,7 @@ class DataCleaning(object):
         print(self.__list_data_frame)
 
     def single_outlier_delete(self, modification_row):
-        self.__current_data_frame = self.__current_data_frame.drop(modification_row-1)
+        self.__current_data_frame = self.__current_data_frame.drop(modification_row - 1)
         self.__current_data_frame.index = range(len(self.__current_data_frame))
 
         for outlier_index in range(0, len(self.__rowWithOutlier)):
@@ -289,7 +292,6 @@ class DataCleaning(object):
 
         print(self.__current_data_frame)
 
-    # detect outlier using box-plot
     # todo: this function is not finished
     def detect_outlier_quantitile(self, column_input):
         d = self.__current_data_frame[column_input]
@@ -299,7 +301,7 @@ class DataCleaning(object):
     def deal_with_outlier(self, column_input):
         self.detect_outlier_three_sigma(column_input)
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == False)]
-        self.__current_data_frame = self.__current_data_frame.drop("isOutlier",axis=1)
+        self.__current_data_frame = self.__current_data_frame.drop("isOutlier", axis=1)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
@@ -314,7 +316,6 @@ class DataCleaning(object):
         self.__detect_outlier_numbers = False
         self.__detect_outlier_text = False
         self.__detect_outlier_all_attributes = False
-
         self.__check_missing_value = True
         self.__missing_value_result.clear()
 
@@ -322,7 +323,8 @@ class DataCleaning(object):
         # print("data_frame_column: ", data_frame_column)
         # data_frame_array = np.array(self.__current_data_frame.isnull())
         # print("data_frame_array: ", data_frame_array)
-        self.__missing_value_result = self.__current_data_frame[self.__current_data_frame.isnull().values == True].index.tolist()
+        self.__missing_value_result = self.__current_data_frame[
+            self.__current_data_frame.isnull().values == True].index.tolist()
         print(self.__missing_value_result)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
@@ -352,6 +354,8 @@ class DataCleaning(object):
             self.__current_data_frame = self.__current_data_frame.fillna(method='bfill', limit=1)
         elif choice == "6":
             self.__current_data_frame = self.__current_data_frame.fillna(self.__current_data_frame.mean())
+
+        self.__missing_value_result.clear()
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
@@ -378,10 +382,12 @@ class DataCleaning(object):
         self.__detect_outlier_numbers = False
         self.__detect_outlier_text = False
         self.__detect_outlier_all_attributes = False
-
+        self.__check_missing_value = False
+        self.__missing_value_result.clear()
         self.__rowWithOutlier.clear()
-        self.__column_detect_name = ''
         self.__choice_in_detect_outlier = -1
+
+        self.__column_detect_name = ''
         self.__current_data_frame = copy.deepcopy(self.__original_data_frame)
 
     # revert function
@@ -389,6 +395,8 @@ class DataCleaning(object):
         self.__detect_outlier_numbers = False
         self.__detect_outlier_text = False
         self.__detect_outlier_all_attributes = False
+        self.__check_missing_value = False
+        self.__missing_value_result.clear()
 
         self.__choice_in_detect_outlier = -1
         self.__rowWithOutlier.clear()
@@ -396,7 +404,7 @@ class DataCleaning(object):
             self.__list_data_frame.pop()
             self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
 
-    def forecast_a_value(self,target_column_input,target_column_forecast,target_row_input,target_row_output):
+    def forecast_a_value(self, target_column_input, target_column_forecast, target_row_input, target_row_output):
         # todo: parameters change here
         X = self.__current_data_frame.iloc[:, target_column_input]
         norm = 100
