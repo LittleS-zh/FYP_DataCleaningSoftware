@@ -59,6 +59,37 @@
                         </form>
                     </li>
                     </br>
+
+
+                    <h6 style="text-align: left">
+                        <span>Data Cleaning Method</span>
+                    </h6>
+
+                     <li class="nav-item">
+                        <form action="/select_by_conditions/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Select rows by a condition</button>
+                            <select class="form-control form-control-sm" name="select_by_condition_input_column">
+                                {% for data_piece in data.data_header %}
+                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
+                                {% endfor %}
+                            </select>
+
+                            <select class="form-control form-control-sm" name="select_by_condition_input_operator">
+                                    <option value="=="> == (equal to) </option>
+                                    <option value="!="> != (not equal to) </option>
+                                    <option value=">"> > (larger than) </option>
+                                    <option value="<"> < (less than) </option>
+                            </select>
+
+                            <input type="text" class="form-control form-control-sm" style="width: 85%;"
+                                   placeholder="Please enter a number" name="select_by_condition_input_number"
+                                   oninput="value=value.replace(/[^\d]/g,'')" required>
+                        </form>
+                    </li>
+                    </br>
+
                     <li class="nav-item">
                         <form action="/limit_float_point_num/" method="post">
                             {% csrf_token %}
@@ -70,9 +101,7 @@
                         </form>
                     </li>
                     </br>
-                    <h6 style="text-align: left">
-                        <span>Data Cleaning Method</span>
-                    </h6>
+
                     <li class="nav-item">
                         <form action="/de_duplication/" method="post">
                             {% csrf_token %}

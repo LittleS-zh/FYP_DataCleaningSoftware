@@ -28,6 +28,7 @@ urlpatterns = [
     path(r'dataCleaningOperation/', views.data_cleaning_operation, name="dataCleaningOperation"),
     path(r'select_rows/', views.select_rows, name="select_rows"),
     path(r'select_columns/', views.select_columns, name="select_columns"),
+    path(r'select_by_conditions/', views.select_by_conditions, name="select_by_conditions"),
     path(r'revert/', views.revert, name="revert"),
     path(r'reset/', views.reset, name="reset"),
     path(r'de_duplication/', views.data_de_duplication, name="de_duplication"),

@@ -92,10 +92,21 @@ class DataCleaning(object):
         self.__current_data_frame['newColumn'] = self.__current_data_frame['Day'] * self.__current_data_frame['Return']
 
     # filter the rows according to a specific value
-    # todo: this function is not used
-    def conditional_filter(self, input_column, input_condition_operator, input_condition_number):
+    # the algorithms need to be optimized
+    def select_rows_by_conditions(self, input_column, input_condition_operator, input_condition_number):
+        if input_condition_operator == "==":
+            self.__current_data_frame = self.__current_data_frame[
+                (self.__current_data_frame[input_column] == input_condition_number)]
+        elif input_condition_operator == "!=":
+            self.__current_data_frame = self.__current_data_frame[
+                (self.__current_data_frame[input_column] != input_condition_number)]
+        elif input_condition_operator == ">":
+            self.__current_data_frame = self.__current_data_frame[
+                (self.__current_data_frame[input_column] > input_condition_number)]
+        elif input_condition_operator == "<":
+            self.__current_data_frame = self.__current_data_frame[
+                (self.__current_data_frame[input_column] < input_condition_number)]
 
-        loc = self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame[input_column] == input_condition_number)]
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 

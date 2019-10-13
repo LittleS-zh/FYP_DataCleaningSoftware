@@ -56,6 +56,14 @@ def data_de_duplication(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
+def select_by_conditions(request):
+    input_column = str(request.POST.get("select_by_condition_input_column", None))
+    input_condition_operator = str(request.POST.get("select_by_condition_input_operator", None))
+    input_condition_number = float(request.POST.get("select_by_condition_input_number", None))
+    dc.select_rows_by_conditions(input_column, input_condition_operator, input_condition_number)
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
+
+
 def detect_outlier_three_sigma(request):
     if request.method == "POST":
         column_input = str(request.POST.get("detect_outlier_three_sigma", None))
@@ -74,6 +82,7 @@ def detect_outlier_all(request):
     if request.method == "POST":
         dc.detect_outlier_all()
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
+
 
 def text_similarity(request):
     if request.method == "POST":
