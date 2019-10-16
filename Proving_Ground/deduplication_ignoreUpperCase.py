@@ -12,7 +12,7 @@ number_of_column = df_temp.columns.size
 for i in range(0, number_of_column):
     print(i)
     print(df_temp.iloc[:, i].dtypes)
-    if df_temp.iloc[:, i].dtypes == "float64" or df.iloc[:, i].dtypes == "int64":
+    if df_temp.iloc[:, i].dtypes == "float64" or df_temp.iloc[:, i].dtypes == "int64":
         print("Numbers, pass")
     elif df_temp.iloc[:, i].dtypes == "object":
         df_temp.iloc[:, i] = df_temp.iloc[:, i].str.lower()

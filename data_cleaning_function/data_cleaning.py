@@ -249,28 +249,36 @@ class DataCleaning(object):
 
     # detect outlier using three sigma method
     def detect_outlier_three_sigma(self, column_input):
-        # 初始化用户选择
-        self.__detect_outlier_numbers = True
-        self.__detect_outlier_all_attributes = False
-        self.__detect_outlier_text = False
-        self.__check_missing_value = False
-        self.__missing_value_result.clear()
+        # print(self.__current_data_frame[column_input].dtype)
+        # print(self.__current_data_frame[column_input].dtypes)
+        if self.__current_data_frame[column_input].dtypes == "float64" or self.__current_data_frame[
+            column_input].dtypes == "int64":
 
-        # 初始化数组
-        temp_outlier = []
-        temp_outlier.clear()
-        self.__rowWithOutlier.clear()
-        self.__column_detect_name = column_input
+            # 初始化用户选择
+            self.__detect_outlier_numbers = True
+            self.__detect_outlier_all_attributes = False
+            self.__detect_outlier_text = False
+            self.__check_missing_value = False
+            self.__missing_value_result.clear()
 
-        d = self.__current_data_frame[column_input]
-        z_score = (d - d.mean()) / d.std()
-        self.__current_data_frame['isOutlier'] = z_score.abs() > 3
+            # 初始化数组
+            temp_outlier = []
+            temp_outlier.clear()
+            self.__rowWithOutlier.clear()
+            self.__column_detect_name = column_input
 
-        temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
-        self.__rowWithOutlier = [i + 1 for i in temp_outlier]
-        self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc(column_input)
-        self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
-        self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
+            d = self.__current_data_frame[column_input]
+            z_score = (d - d.mean()) / d.std()
+            self.__current_data_frame['isOutlier'] = z_score.abs() > 3
+
+            temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
+            self.__rowWithOutlier = [i + 1 for i in temp_outlier]
+            self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc(column_input)
+            self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
+            self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
+
+        elif self.__current_data_frame[column_input].dtypes == "object":
+            self.detect_outlier_text(column_input)
 
     def outlier_modification(self, modification_value, modification_row):
         # todo: get users' original floating point
@@ -312,6 +320,8 @@ class DataCleaning(object):
     # delete the whole row of outlier using three sigma methods
     def deal_with_outlier(self, column_input):
         # self.detect_outlier_three_sigma(column_input)
+
+        # this code delete the outlier, which means
         self.__current_data_frame = self.__current_data_frame[(self.__current_data_frame['isOutlier'] == False)]
         self.__current_data_frame = self.__current_data_frame.drop("isOutlier", axis=1)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
