@@ -172,7 +172,7 @@ class DataCleaning(object):
                 (self.__current_data_frame[input_column] < input_condition_number)]
 
         self.__current_data_frame.index = range(len(self.__current_data_frame))
-        print(self.__current_data_frame)
+        # print(self.__current_data_frame)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
