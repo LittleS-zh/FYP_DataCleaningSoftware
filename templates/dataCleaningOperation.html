@@ -119,20 +119,13 @@
                                 {% for data_piece in data.data_header %}
                                     <option value="{{ data_piece }}"> {{ data_piece }} </option>
                                 {% endfor %}
-                                <!-- <option value = "all_attributes"> --All Attributes-- </option> -->
+                                <option value = "all_attributes"> --All Attributes-- </option>
                             </select>
                             <input type="checkbox" name="detect_outlier_delete_rows_automatically" value=True />Delete outliers automatically
                         </form>
                     </li>
                     </br>
-                    <li class="nav-item">
-                        <form action="/detect_outlier_all/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            Detect Outlier With All Attributes</button>
-                        </form>
-                    </li>
-                    </br>
+
                     <li class="nav-item">
                         <form action="/text_similarity/" method="post">
                             {% csrf_token %}
@@ -232,6 +225,15 @@
                                     <option value="{{ data_piece }}"> {{ data_piece }} </option>
                                 {% endfor %}
                             </select>
+                        </form>
+                    </li>
+                    </br>
+
+                    <li class="nav-item">
+                        <form action="/detect_outlier_all/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Detect Outlier With All Attributes</button>
                         </form>
                     </li>
                     </br>

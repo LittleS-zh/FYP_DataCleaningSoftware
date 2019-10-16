@@ -251,6 +251,10 @@ class DataCleaning(object):
     def detect_outlier_three_sigma(self, column_input):
         # print(self.__current_data_frame[column_input].dtype)
         # print(self.__current_data_frame[column_input].dtypes)
+        if column_input == "all_attributes":
+            self.detect_outlier_all()
+            return
+
         if self.__current_data_frame[column_input].dtypes == "float64" or self.__current_data_frame[
             column_input].dtypes == "int64":
 
@@ -604,14 +608,74 @@ class DataCleaning(object):
         if "isDuplicate" in list(self.__current_data_frame.columns):
             self.__current_data_frame.drop(["isDuplicate"],axis = 1, inplace = True)
 
-        # todo: the selection part need to be changed
         df = self.__current_data_frame
 
-        model = KMeans(n_clusters=5)
-        model.fit(df)
-        predicted_label = model.predict(df)
-        print(predicted_label)
+        # check whether there is an empty value begin
+        header = df.columns.values
+        print(header)
+        for element in header:
+            # print(df[element].isnull().sum())
+            if df[element].isnull().sum() != 0:
+                print("this dataframe has an null value, the program will delete the rows of automatically"
+                      "if you want to keep your rows, please click revert button")
+        # check whether there is an empty value ends
 
+        df_temp = copy.deepcopy(df)
+
+        # deal with missing values
+        df_temp.fillna(df_temp.mean(), inplace=True)
+        # deal with missing values
+
+        number_of_column = df_temp.columns.size
+        number_of_deleted_column = 0
+
+        for i in range(0, number_of_column):
+            if df.iloc[:, i].dtypes == "float64" or df.iloc[:, i].dtypes == "int64":
+                print("it is a number, pass")
+            elif df.iloc[:, i].dtypes == "object":
+                print("it is an object, change it into matrix and add it into the last column")
+                df_text = df.iloc[:, i]
+
+                # text vectorazation begins
+                array_text = df_text.values
+                array_text2 = numpy.array(df_text)
+                # print(array_text2.flatten())
+                vectorizer = CountVectorizer()
+
+                arranged_text = vectorizer.fit_transform(array_text2.flatten())
+
+                transformer = TfidfTransformer()
+                arranged_text_tfidf = transformer.fit_transform(arranged_text)
+
+                # print(vectorizer.get_feature_names())
+                # print(arranged_text.toarray())
+
+                # print(arranged_text_tfidf.toarray())
+
+                array_tfidf = arranged_text_tfidf.toarray()
+                # text categorization ends
+
+                # drop the original column begins
+                df_temp.drop(df.columns[i - number_of_deleted_column], axis=1, inplace=True)
+
+                number_of_deleted_column += 1
+                # drop the original column ends
+
+                # add the array_tfidf to the back of the dataframe begins
+                dataframe_tfidf = pd.DataFrame(array_tfidf)
+                # print(dataframe_tfidf)
+
+                new_column = dataframe_tfidf.columns.values
+                # print(new_column)
+                df_temp[new_column] = dataframe_tfidf
+                # print(df_temp)
+                # add the array_tfidf to the back of the dataframe ends
+
+        # use unsupervised categorization algorithms to find the outlier begins
+        model = KMeans(n_clusters=5)
+        model.fit(df_temp)
+        predicted_label = model.predict(df_temp)
+        print("tfidf", predicted_label)
         count_predicted_label = Counter(predicted_label)
         count_sorted = sorted(count_predicted_label.items(), key=lambda x: x[1])
         print("Counter_sorted", count_sorted)

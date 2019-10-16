@@ -9,9 +9,13 @@ from collections import Counter
 df = pd.read_csv("testFile_WithoutNaN.csv")
 
 # check whether there is an empty value begin
-if True == True:
-    print("this dataframe has an null value, the program will delete the rows of automatically"
-          "if you want to keep your rows, please click revert button")
+header = df.columns.values
+print(header)
+for element in header:
+    # print(df[element].isnull().sum())
+    if df[element].isnull().sum() != 0:
+        print("this dataframe has an null value, the program will delete the rows of automatically"
+              "if you want to keep your rows, please click revert button")
 # check whether there is an empty value ends
 
 df_temp = copy.deepcopy(df)
