@@ -106,7 +106,7 @@
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
                             De-duplication</button>
-                            <input type="checkbox" name="de_duplication_ignoreCase" value=True />Ignore Case
+                            <input type="checkbox" name="de_duplication_ignoreCase" value=True/>Ignore Case
                         </form>
                     </li>
                     </br>
@@ -119,13 +119,34 @@
                                 {% for data_piece in data.data_header %}
                                     <option value="{{ data_piece }}"> {{ data_piece }} </option>
                                 {% endfor %}
-                                <option value = "all_attributes"> --All Attributes-- </option>
+                                <!-- <option value = "all_attributes"> All Attributes </option> -->
                             </select>
-                            <input type="checkbox" name="detect_outlier_delete_rows_automatically" value=True />Delete outliers automatically
+                            <input type="checkbox" name="detect_outlier_delete_rows_automatically" value=True/>Delete
+                            all rows automatically
                         </form>
                     </li>
                     </br>
-
+                    <li class="nav-item">
+                        <form action="/detect_outlier_text/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Detect Text Outlier</button>
+                            <select class="form-control form-control-sm" name="detect_outlier_text">
+                                {% for data_piece in data.data_header %}
+                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </li>
+                    </br>
+                    <li class="nav-item">
+                        <form action="/detect_outlier_all/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Detect Outlier With All Attributes</button>
+                        </form>
+                    </li>
+                    </br>
                     <li class="nav-item">
                         <form action="/text_similarity/" method="post">
                             {% csrf_token %}
@@ -215,28 +236,6 @@
                     </li>
                     </br>
 
-                    <li class="nav-item">
-                        <form action="/detect_outlier_text/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            Detect Text Outlier</button>
-                            <select class="form-control form-control-sm" name="detect_outlier_text">
-                                {% for data_piece in data.data_header %}
-                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
-                                {% endfor %}
-                            </select>
-                        </form>
-                    </li>
-                    </br>
-
-                    <li class="nav-item">
-                        <form action="/detect_outlier_all/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            Detect Outlier With All Attributes</button>
-                        </form>
-                    </li>
-                    </br>
                 </ul>
             </div>
         </nav>
@@ -332,7 +331,7 @@
                             </tr>
                         {% endif %}
 
-                    {# 检测缺失值的table显示 #}
+                        {# 检测缺失值的table显示 #}
                     {% elif data.check_missing_value %}
                         {% if not forloop.counter0|add:-1 in data.missing_value_result %}
                             <tr id={{ forloop.counter0|add:-1 }}>
@@ -359,7 +358,7 @@
                             </tr>
                         {% endif %}
 
-                    {# 正常显示原始table #}
+                        {# 正常显示原始table #}
                     {% else %}
                         <tr id={{ forloop.counter0|add:-1 }}>
                             {% for line_piece in line %}

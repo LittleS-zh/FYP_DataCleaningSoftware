@@ -78,8 +78,7 @@ class DataCleaning(object):
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
 
-        if row_start_input <= row_end_input and row_end_input <= self.__current_data_frame.shape[
-            0] and row_start_input >= 1:
+        if row_start_input <= row_end_input and row_end_input <= self.__current_data_frame.shape[0] and row_start_input >= 1:
             print(self.__current_data_frame.shape[0])
             self.__current_data_frame = self.__current_data_frame[row_start_input - 1:row_end_input]
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
@@ -98,8 +97,7 @@ class DataCleaning(object):
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
 
-        if column_start_input <= column_end_input and column_end_input <= self.__current_data_frame.shape[
-            1] and column_start_input >= 1:
+        if column_start_input <= column_end_input and column_end_input <= self.__current_data_frame.shape[1] and column_start_input >= 1:
             print(self.__current_data_frame.shape[1])
             self.__current_data_frame = self.__current_data_frame.iloc[:, column_start_input - 1: column_end_input]
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
@@ -306,6 +304,10 @@ class DataCleaning(object):
         self.__rowWithOutlier.remove(modification_row)
 
         print(self.__current_data_frame)
+
+    def single_missing_value_modification(self, modification_row, modification_column):
+        print(modification_row)
+        print(modification_column)
 
     def single_missing_value_delete(self, modification_row):
         self.__current_data_frame = self.__current_data_frame.drop(modification_row - 1)
