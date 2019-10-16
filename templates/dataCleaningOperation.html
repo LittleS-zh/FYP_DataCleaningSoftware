@@ -37,10 +37,10 @@
                                     name="submit"/>
                             Row Select</button>
                             <input type="text" class="form-control form-control-sm"
-                                   style="margin-bottom: 5px; width: 80%;" placeholder="Enter the starting row"
+                                   style="margin-bottom: 5px; width: 80%;" placeholder="Starting row"
                                    name="row_ceiling" oninput="value=value.replace(/[^\d]/g,'')" required>
                             <input type="text" class="form-control form-control-sm" style="width: 80%;"
-                                   placeholder="Enter the ending row" name="row_floor"
+                                   placeholder="Ending row" name="row_floor"
                                    oninput="value=value.replace(/[^\d]/g,'')" required>
                         </form>
                     </li>
@@ -51,10 +51,10 @@
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
                             Column Select</button>
                             <input type="text" class="form-control form-control-sm"
-                                   style="margin-bottom: 5px; width: 85%;" placeholder="Enter the starting column"
+                                   style="margin-bottom: 5px; width: 85%;" placeholder="Starting column"
                                    name="column_left" oninput="value=value.replace(/[^\d]/g,'')" required>
                             <input type="text" class="form-control form-control-sm" style="width: 85%;"
-                                   placeholder="Enter the ending column" name="column_right"
+                                   placeholder="Ending column" name="column_right"
                                    oninput="value=value.replace(/[^\d]/g,'')" required>
                         </form>
                     </li>
@@ -86,14 +86,12 @@
                                     <option value="{{ data_piece }}"> {{ data_piece }} </option>
                                 {% endfor %}
                             </select>
-
                             <select class="form-control form-control-sm" name="select_by_condition_input_operator">
                                 <option value="=="> == (equal to)</option>
                                 <option value="!="> != (not equal to)</option>
                                 <option value=">"> > (larger than)</option>
                                 <option value="<"> < (less than)</option>
                             </select>
-
                             <input type="text" class="form-control form-control-sm" style="width: 85%;"
                                    placeholder="Please enter a number" name="select_by_condition_input_number"
                                    oninput="value=value.replace(/[^\d]/g,'')" required>
@@ -105,8 +103,8 @@
                         <form action="/de_duplication/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            De-duplication</button>
-                            <input type="checkbox" name="de_duplication_ignoreCase" value=True />Ignore Case
+                            De-duplication</button><br/>
+                            <input type="checkbox" name="de_duplication_ignoreCase" value=True/> Ignore Case
                         </form>
                     </li>
                     </br>
@@ -119,9 +117,10 @@
                                 {% for data_piece in data.data_header %}
                                     <option value="{{ data_piece }}"> {{ data_piece }} </option>
                                 {% endfor %}
-                                <option value = "all_attributes"> --All Attributes-- </option>
+                                <option value="all_attributes"> All Attributes</option>
                             </select>
-                            <input type="checkbox" name="detect_outlier_delete_rows_automatically" value=True />Delete outliers automatically
+                            <input type="checkbox" name="detect_outlier_delete_rows_automatically" value=True/> Delete
+                            Outlier's Row
                         </form>
                     </li>
                     </br>
@@ -199,44 +198,6 @@
                             back to index</a></button>
                     </li>
 
-                    <h6>buttons can be removed</h6>
-                    <li class="nav-item">
-                        <form action="/deal_with_outlier/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm"
-                                    style="margin-bottom: 5px; margin-top: 5px" name="submit"/>
-                            Delete Outliers</button>
-                            <select class="form-control form-control-sm" name="deal_with_outlier">
-                                {% for data_piece in data.data_header %}
-                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
-                                {% endfor %}
-                            </select>
-                        </form>
-                    </li>
-                    </br>
-
-                    <li class="nav-item">
-                        <form action="/detect_outlier_text/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            Detect Text Outlier</button>
-                            <select class="form-control form-control-sm" name="detect_outlier_text">
-                                {% for data_piece in data.data_header %}
-                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
-                                {% endfor %}
-                            </select>
-                        </form>
-                    </li>
-                    </br>
-
-                    <li class="nav-item">
-                        <form action="/detect_outlier_all/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            Detect Outlier With All Attributes</button>
-                        </form>
-                    </li>
-                    </br>
                 </ul>
             </div>
         </nav>
@@ -244,7 +205,7 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             {# 如果用户使用了了检测功能，就显示问题列表 #}
             {# 检测outlier的工具栏 #}
-            {% if data.detect_outlier_numbers or data.detect_outlier_text or data.detect_outlier_all_attributes %}
+            {% if data.detect_outlier_single_format or data.detect_outlier_all_attributes %}
                 <div style="width: 100%; margin-top: 20px;">
                     {% if data.data_outlier %}
                         <h5>Outlier list: (Click to jump!)</h5>
@@ -273,7 +234,7 @@
             <table style="margin-top: 20px">
                 {% for line in data.data_frame %}
                     {# 检测异常值的table显示 #}
-                    {% if data.detect_outlier_numbers or data.detect_outlier_text or data.detect_outlier_all_attributes %}
+                    {% if data.detect_outlier_single_format or data.detect_outlier_all_attributes %}
                         {% if not forloop.counter0 in data.data_outlier %}
                             <tr id={{ forloop.counter0 }}>
                                 {% for line_piece in line %}
@@ -332,7 +293,7 @@
                             </tr>
                         {% endif %}
 
-                    {# 检测缺失值的table显示 #}
+                        {# 检测缺失值的table显示 #}
                     {% elif data.check_missing_value %}
                         {% if not forloop.counter0|add:-1 in data.missing_value_result %}
                             <tr id={{ forloop.counter0|add:-1 }}>
@@ -359,7 +320,7 @@
                             </tr>
                         {% endif %}
 
-                    {# 正常显示原始table #}
+                        {# 正常显示原始table #}
                     {% else %}
                         <tr id={{ forloop.counter0|add:-1 }}>
                             {% for line_piece in line %}

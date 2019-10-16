@@ -44,6 +44,7 @@ urlpatterns = [
     path(r'outlier_modification/', views.outlier_modification, name="outlier_modification"),
     path(r'single_outlier_delete/', views.single_outlier_delete, name="single_outlier_delete"),
     path(r'single_missing_value_delete/', views.single_missing_value_delete, name="single_missing_value_delete"),
+    path(r'single_missing_value_modification/', views.single_missing_value_modification, name="single_missing_value_modification"),
 ]
 
 if settings.DEBUG:

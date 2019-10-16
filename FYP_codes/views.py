@@ -112,6 +112,14 @@ def single_outlier_delete(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
+def single_missing_value_modification(request):
+    if request.method == "POST":
+        modification_row = int(request.POST.get("modification_row", None))
+        modification_column = int(request.POST.get("modification_column", None))
+        dc.single_outlier_modification(modification_row, modification_column)
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
+
+
 def single_missing_value_delete(request):
     if request.method == "POST":
         modification_row = int(request.POST.get("modification_row", None))
