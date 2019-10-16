@@ -238,7 +238,7 @@ class DataCleaning(object):
                     print("Numbers, pass")
                 elif df_temp.iloc[:, i].dtypes == "object":
                     df_temp.iloc[:, i] = df_temp.iloc[:, i].str.lower()
-                    print("object, change to lower case")
+                    # print("object, change to lower case")
 
             df["isDuplicate"] = df_temp.duplicated()
 
@@ -307,7 +307,7 @@ class DataCleaning(object):
             self.__current_data_frame.loc[modification_row - 1, self.__column_detect_name] = modification_value
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
-        print(self.__list_data_frame)
+        # print(self.__list_data_frame)
 
     def single_outlier_delete(self, modification_row):
         self.__current_data_frame = self.__current_data_frame.drop(modification_row - 1)
@@ -318,7 +318,7 @@ class DataCleaning(object):
                 self.__rowWithOutlier[outlier_index] -= 1
         self.__rowWithOutlier.remove(modification_row)
 
-        print(self.__current_data_frame)
+        # print(self.__current_data_frame)
 
     def single_missing_value_delete(self, modification_row):
         self.__current_data_frame = self.__current_data_frame.drop(modification_row - 1)
@@ -345,7 +345,7 @@ class DataCleaning(object):
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
         self.__current_data_frame.index = range(len(self.__current_data_frame))
-        print(self.__current_data_frame)
+        # print(self.__current_data_frame)
 
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
@@ -364,10 +364,10 @@ class DataCleaning(object):
         # print("data_frame_array: ", data_frame_array)
         self.__missing_value_result = self.__current_data_frame[
             self.__current_data_frame.isnull().values == True].index.tolist()
-        print(self.__missing_value_result)
+        # print(self.__missing_value_result)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
-        print(self.__current_data_frame)
+        # print(self.__current_data_frame)
         # data_frame_list = data_frame_array.tolist()
         # print("data_frame_list: ", data_frame_list)
         # data_dictionary = {'data_frame': data_frame_list, 'data_header': data_frame_column}
@@ -447,31 +447,31 @@ class DataCleaning(object):
         X = np.array(X)
         X = X.astype(float)
         X = X / norm
-        print("dataframe of X is: ")
-        print(X)
+        # print("dataframe of X is: ")
+        # print(X)
 
         Y = self.__current_data_frame.iloc[:, 2:3]
         Y = np.array(Y)
         Y = Y.astype(float)
         Y = Y / norm
-        print("dataframe of Y is: ")
-        print(Y)
+        # print("dataframe of Y is: ")
+        # print(Y)
 
         # get the liens before 16 as training set
         X_train, Y_train = X[:15], Y[:15]
-        print("dataframe of x_train is: ")
-        print(X_train)
+        # print("dataframe of x_train is: ")
+        # print(X_train)
 
-        print("dataframe of y_train is: ")
-        print(Y_train)
+        # print("dataframe of y_train is: ")
+        # print(Y_train)
 
         # get the line after 16 as testing set
         X_test, Y_test = X[15:], Y[15:]
-        print("dataframe of x_test is: ")
-        print(X_test)
+        # print("dataframe of x_test is: ")
+        # print(X_test)
 
-        print("dataframe of y_test is: ")
-        print(Y_test)
+        # print("dataframe of y_test is: ")
+        # print(Y_test)
 
         # construct the models
         model = tf.keras.models.Sequential(
@@ -492,7 +492,7 @@ class DataCleaning(object):
 
         prediction = model.predict(X_test, batch_size=1)
 
-        print(prediction * norm)
+        # print(prediction * norm)
 
     def detect_outlier_text(self, input_column_which_is_text):
         temp_outlier = []
@@ -504,7 +504,7 @@ class DataCleaning(object):
 
         array_text = df_text.values
         array_text2 = numpy.array(df_text)
-        print(array_text2.flatten())
+        # print(array_text2.flatten())
         vectorizer = CountVectorizer()
 
         arranged_text = vectorizer.fit_transform(array_text2.flatten())
@@ -512,10 +512,10 @@ class DataCleaning(object):
         transformer = TfidfTransformer()
         arranged_text_tfidf = transformer.fit_transform(arranged_text)
 
-        print(vectorizer.get_feature_names())
-        print(arranged_text.toarray())
+        # print(vectorizer.get_feature_names())
+        # print(arranged_text.toarray())
 
-        print(arranged_text_tfidf.toarray())
+        # print(arranged_text_tfidf.toarray())
 
         array_tfidf = arranged_text_tfidf.toarray()
 
@@ -536,7 +536,7 @@ class DataCleaning(object):
             else:
                 break
 
-        print("items_number", items_number + 1)
+        # print("items_number", items_number + 1)
 
         output_position = []
 
