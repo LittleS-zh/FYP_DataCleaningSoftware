@@ -19,8 +19,7 @@ class DataCleaning(object):
     __temp_data_frame_for_deepcopy = []
 
     # indicate which operation that users are doing
-    __detect_outlier_numbers = False
-    __detect_outlier_text = False
+    __detect_outlier_single_format = False
     __detect_outlier_all_attributes = False
     __check_missing_value = False
 
@@ -45,9 +44,8 @@ class DataCleaning(object):
     def read_data_file(self, file_location,
                        delimiter_input=",", encoding_input="utf-8",
                        header_input=0):
-        # Initialization
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        # 初始化
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__rowWithOutlier.clear()
@@ -83,8 +81,7 @@ class DataCleaning(object):
     # select rows for a data frame
     def select_rows(self, row_start_input, row_end_input):
         # 初始化
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -102,8 +99,7 @@ class DataCleaning(object):
     # select columns for a data frame, according to the start number and the end number
     def select_column_position(self, column_start_input, column_end_input):
         # 初始化
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -121,8 +117,7 @@ class DataCleaning(object):
     # select columns for a data frame, according to the header of column
     def select_column_heading(self, header_of_column_input):
         # 初始化
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -136,8 +131,7 @@ class DataCleaning(object):
     # select row and column at the same time
     def block_selection(self, column_start_input, column_end_input, header_of_column_input):
         # 初始化
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -157,8 +151,7 @@ class DataCleaning(object):
     # the algorithms need to be optimized
     def select_rows_by_conditions(self, input_column, input_condition_operator, input_condition_number):
         # 初始化
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -178,13 +171,14 @@ class DataCleaning(object):
             self.__current_data_frame = self.__current_data_frame[
                 (self.__current_data_frame[input_column] < input_condition_number)]
 
+        self.__current_data_frame.index = range(len(self.__current_data_frame))
+        print(self.__current_data_frame)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
     def data_reduction(self, drop_header, group_header, sum_or_mean, combine_name):
         # 初始化
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -209,8 +203,7 @@ class DataCleaning(object):
     def data_de_duplication(self, input_ignore_upper_case):
         # for test only, this will be delete later
         # 初始化
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -246,8 +239,7 @@ class DataCleaning(object):
     # calculate means of data
     def calculate_means(self, column_need_to_be_grouped_input, column_group_by):
         # 初始化
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
@@ -270,9 +262,8 @@ class DataCleaning(object):
             column_input].dtypes == "int64":
 
             # 初始化用户选择
-            self.__detect_outlier_numbers = True
+            self.__detect_outlier_single_format = True
             self.__detect_outlier_all_attributes = False
-            self.__detect_outlier_text = False
             self.__check_missing_value = False
             self.__missing_value_result.clear()
 
@@ -289,6 +280,8 @@ class DataCleaning(object):
             temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
             self.__rowWithOutlier = [i + 1 for i in temp_outlier]
             self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc(column_input)
+
+            self.__current_data_frame = self.__current_data_frame.drop('isOutlier', axis=1)
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
@@ -305,7 +298,7 @@ class DataCleaning(object):
             self.__current_data_frame.loc[modification_row - 1, self.__column_detect_name] = modification_value
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
-        print(self.__list_data_frame)
+        print("haha ", self.__current_data_frame)
 
     def single_outlier_delete(self, modification_row):
         self.__current_data_frame = self.__current_data_frame.drop(modification_row - 1)
@@ -354,8 +347,7 @@ class DataCleaning(object):
 
     # check missing value
     def check_missing(self):
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = True
         self.__missing_value_result.clear()
@@ -377,8 +369,7 @@ class DataCleaning(object):
 
     # delete missing value
     def deal_with_missing_value(self, choice):
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         if choice == "1":
             self.__current_data_frame = self.__current_data_frame.dropna(axis=0)
@@ -405,8 +396,7 @@ class DataCleaning(object):
         data_frame_list.insert(0, data_frame_column)
         data_dictionary = {'data_frame': data_frame_list,
                            'data_header': data_frame_column,
-                           'detect_outlier_numbers': self.__detect_outlier_numbers,
-                           'detect_outlier_text': self.__detect_outlier_text,
+                           'detect_outlier_single_format': self.__detect_outlier_single_format,
                            'detect_outlier_all_attributes': self.__detect_outlier_all_attributes,
                            'data_outlier': self.__rowWithOutlier,
                            'detect_outlier_choice': self.__choice_in_detect_outlier,
@@ -417,8 +407,7 @@ class DataCleaning(object):
 
     # reset function
     def reset_data_frame(self):
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -430,8 +419,7 @@ class DataCleaning(object):
 
     # revert function
     def revert_data_frame(self):
-        self.__detect_outlier_numbers = False
-        self.__detect_outlier_text = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -497,6 +485,9 @@ class DataCleaning(object):
         print(prediction * norm)
 
     def detect_outlier_text(self, input_column_which_is_text):
+        self.__detect_outlier_all_attributes = False
+        self.__check_missing_value = False
+        self.__detect_outlier_single_format = True
         temp_outlier = []
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
@@ -556,8 +547,9 @@ class DataCleaning(object):
         temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
         self.__rowWithOutlier = [i + 1 for i in temp_outlier]
         self.__choice_in_detect_outlier = self.__current_data_frame.columns.get_loc(input_column_which_is_text)
-        print(input_column_which_is_text)
-        print(self.__choice_in_detect_outlier)
+        # print(input_column_which_is_text)
+        # print(self.__choice_in_detect_outlier)
+        self.__current_data_frame = self.__current_data_frame.drop('isOutlier', axis=1)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
@@ -609,7 +601,7 @@ class DataCleaning(object):
 
     def detect_outlier_all(self):
         # 初始化用户选择
-        self.__detect_outlier_numbers = False
+        self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = True
         self.__detect_outlier_text = False
 
@@ -619,9 +611,9 @@ class DataCleaning(object):
 
         # to check whether there is an auto-generated columns, if has, delete it.
         if "isOutlier" in list(self.__current_data_frame.columns):
-            self.__current_data_frame.drop(["isOutlier"],axis = 1, inplace = True)
+            self.__current_data_frame.drop(["isOutlier"], axis=1, inplace=True)
         if "isDuplicate" in list(self.__current_data_frame.columns):
-            self.__current_data_frame.drop(["isDuplicate"],axis = 1, inplace = True)
+            self.__current_data_frame.drop(["isDuplicate"], axis=1, inplace=True)
 
         df = self.__current_data_frame
 
