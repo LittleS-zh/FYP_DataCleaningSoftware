@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Data Cleaning Tool</title>
+    <title>Question Search</title>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
@@ -15,16 +15,20 @@
         <b>Question Search</b>
     </a>
     <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Enter Your Question" aria-label="Search">
+        <input class="form-control mr-sm-2" type="search" style="width: 400px;" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
-    <button class="btn btn-primary btn-sm" style="margin-bottom: 20px"><a href="{% url 'index' %}"
-                                                                          style="text-decoration: none; color: white">Go
-        back to index</a></button>
+    <a class="btn btn-primary" href="{% url 'index' %}" role="button">Go back to index</a>
 </nav>
 
 <div class="container">
-</div> <!-- /container -->
+    <div class="alert alert-success" role="alert" style="margin-top: 50px; text-align: center;">
+        <h4 class="alert-heading">Nice to meet you!</h4><br>
+        <p>Enter your Question in the textarea at navigation bar, and we will find the similar question for you!</p>
+        <br><hr>
+        <p class="mb-0">Andy & Max</p>
+    </div>
+</div>
 
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
