@@ -38,13 +38,14 @@ class DataCleaning(object):
     __text_similarity = 0
 
     def __init__(self):
-        print("class initialization")
+        print("BackEnd Started succesfully")
+
 
     # read datafile from csv
     def read_data_file(self, file_location,
                        delimiter_input=",", encoding_input="utf-8",
                        header_input=0):
-        # 初始化
+        # Initialization
         self.__detect_outlier_numbers = False
         self.__detect_outlier_text = False
         self.__detect_outlier_all_attributes = False
@@ -53,15 +54,27 @@ class DataCleaning(object):
         self.__missing_value_result.clear()
         self.__choice_in_detect_outlier = -1
 
+        # read the datafiles the user uploaded
         self.__current_data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input,
                                                 header=header_input)
+
+        # change all int number to float so that it can be more beautiful when showing to users.
+        print("Changing all int type to float")
+        number_of_column = self.__current_data_frame.columns.size
+        print(number_of_column)
+        for i in range(0, number_of_column):
+            print(self.__current_data_frame.iloc[:, i].dtypes)
+            if self.__current_data_frame.iloc[:, i].dtypes == "int64":
+                self.__current_data_frame.iloc[:, i] = self.__current_data_frame.iloc[:, i].astype("float64")
+                print("int type, change it to float type")
+
         self.__original_data_frame = copy.deepcopy(self.__current_data_frame)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
-        # for debug
-        print(self.__current_data_frame.shape[0])
-        print(self.__current_data_frame.shape[1])
+        # for debugging
+        # print(self.__current_data_frame.shape[0])
+        # print(self.__current_data_frame.shape[1])
 
     # write datafile to an csv file
     def write_data_file(self, path):
