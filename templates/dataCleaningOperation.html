@@ -245,7 +245,7 @@
                             <tr id={{ forloop.counter0 }}>
                                 {% if data.detect_outlier_all_attributes %}
                                     {% for line_piece in line %}
-                                        <td bgcolor="#faebd7" style="border: 1px solid;">{{ line_piece }}</td>
+                                        <td bgcolor="#faebd7" style="border: 1px solid;" >{{ line_piece }}</td>
                                     {% endfor %}
                                     <td style="border-style: none;">
                                         <form action="/single_outlier_delete/" method="post">
@@ -274,9 +274,19 @@
                                                    name="modification_value" required>
                                             <input style="display: none;" name="modification_row"
                                                    value={{ forloop.counter0 }}>
-                                            <button style="margin-left: 5px;" type="submit" class="btn btn-info btn-sm"
+                                            <button style="margin-left: 5px;" type="submit" class="btn btn-primary btn-sm"
                                                     name="submit"/>
                                             Modify</button>
+                                        </form>
+                                    </td>
+                                    <td style="border-style: none;">
+                                        <form action="/fill_blank/" method="post">
+                                            {% csrf_token %}
+                                            <input style="display: none;" name="modification_row"
+                                                   value={{ forloop.counter0 }}>
+                                            <button type="submit" class="btn btn-dark btn-sm"
+                                                    name="submit"/>
+                                            Fill</button>
                                         </form>
                                     </td>
                                     <td style="border-style: none;">

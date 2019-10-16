@@ -288,6 +288,10 @@ class DataCleaning(object):
         elif self.__current_data_frame[column_input].dtypes == "object":
             self.detect_outlier_text(column_input)
 
+    def fill_blank(self, modification_row):
+        print(self.__column_detect_name)
+        print(modification_row)
+
     def outlier_modification(self, modification_value, modification_row):
         # todo: get users' original floating point
         if modification_value.isdigit():
@@ -311,9 +315,9 @@ class DataCleaning(object):
 
         # print(self.__current_data_frame)
 
-    # def single_missing_value_modification(self, modification_row, modification_column):
-        # print(modification_row)
-        # print(modification_column)
+    def single_missing_value_modification(self, modification_row, modification_column):
+        print(modification_row)
+        print(modification_column)
 
     def single_missing_value_delete(self, modification_row):
         self.__current_data_frame = self.__current_data_frame.drop(modification_row - 1)
