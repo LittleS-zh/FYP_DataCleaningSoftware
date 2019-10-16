@@ -9,36 +9,23 @@
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
-    <span class="navbar-brand mb-0 h1">Data Cleaning Tool</span>
+    <a class="navbar-brand">
+        <img src="/static/images/questionSearch.svg" width="30" height="30" class="d-inline-block align-top"
+             alt="">
+        <b>Question Search</b>
+    </a>
+    <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Enter Your Question" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <button class="btn btn-primary btn-sm" style="margin-bottom: 20px"><a href="{% url 'index' %}"
+                                                                          style="text-decoration: none; color: white">Go
+        back to index</a></button>
 </nav>
 
-<div class="jumbotron">
-    <div class="container">
-        <h1 class="display-3">Welcome!</h1>
-        <p>This is a template for a simple data cleaning tool website. It includes amounts of data cleaning methods for
-            you to modify your data set.</p>
-        <p><a class="btn btn-primary btn-lg" href="{% url 'uploadFile' %}" role="button">Upload File &raquo;</a></p>
-    </div>
-</div>
-
 <div class="container">
-    <!-- Example row of columns -->
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Basic Function</h2>
-            <p>merging, deleting, tec...</p>
-        </div>
-        <div class="col-md-4">
-            <h2>Data Cleaning Function</h2>
-            <p>Implement basic data cleaning function</p>
-        </div>
-        <div class="col-md-4">
-            <h2>Others Function</h2>
-            <p><a class="btn btn-primary btn-lg" href="{% url 'question_search' %}" role="button">Question Search &raquo;</a></p>
-        </div>
-    </div>
-    <hr>
 </div> <!-- /container -->
+
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

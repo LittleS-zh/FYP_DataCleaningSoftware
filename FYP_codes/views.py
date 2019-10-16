@@ -31,6 +31,10 @@ def upload_file(request):
     return render(request, "uploadFile.html", context)
 
 
+def question_search(request):
+    return render(request, "questionSearch.html")
+
+
 def data_cleaning_operation(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
@@ -96,6 +100,12 @@ def text_similarity(request):
         dc.text_similarity(input_words, column_input)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
+
+def fill_blank(request):
+    if request.method == "POST":
+        modification_row = int(request.POST.get("modification_row", None))
+        dc.fill_blank(modification_row)
+    return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 def outlier_modification(request):
     if request.method == "POST":

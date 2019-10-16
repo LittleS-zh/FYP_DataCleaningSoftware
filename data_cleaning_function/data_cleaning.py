@@ -288,6 +288,10 @@ class DataCleaning(object):
         elif self.__current_data_frame[column_input].dtypes == "object":
             self.detect_outlier_text(column_input)
 
+    def fill_blank(self, modification_row):
+        print(self.__column_detect_name)
+        print(modification_row)
+
     def outlier_modification(self, modification_value, modification_row):
         # todo: get users' original floating point
         if modification_value.isdigit():
@@ -298,7 +302,7 @@ class DataCleaning(object):
             self.__current_data_frame.loc[modification_row - 1, self.__column_detect_name] = modification_value
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
-        print("haha ", self.__current_data_frame)
+        print(self.__current_data_frame)
 
     def single_outlier_delete(self, modification_row):
         self.__current_data_frame = self.__current_data_frame.drop(modification_row - 1)
