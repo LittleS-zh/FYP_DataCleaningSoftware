@@ -17,17 +17,20 @@ def index(request):
 def upload_file(request):
     context = {}
     if request.method == "POST":
-        uploaded_file = request.FILES['document']
-        fs = FileSystemStorage()
-        name = fs.save(uploaded_file.name, uploaded_file)
-        url = fs.url(name)
-        # context['url'] = url
-        context['name'] = uploaded_file.name
-        global file_name
-        file_name = uploaded_file.name
-        path = "static/DataSet_Read/" + file_name
-        dc.read_data_file(path)
-        os.remove(path)
+        try:
+            uploaded_file = request.FILES['document']
+            fs = FileSystemStorage()
+            name = fs.save(uploaded_file.name, uploaded_file)
+            url = fs.url(name)
+            # context['url'] = url
+            context['name'] = uploaded_file.name
+            global file_name
+            file_name = uploaded_file.name
+            path = "static/DataSet_Read/" + file_name
+            dc.read_data_file(path)
+            os.remove(path)
+        except:
+            print("Error happen in upload file.")
     return render(request, "uploadFile.html", context)
 
 

@@ -213,7 +213,9 @@
                             <a href="#{{ question_index|add:-1 }}">Line: {{ question_index }}</a><br>
                         {% endfor %}
                     {% else %}
-                        <h5 style="margin-top: 5px">No Outlier!</h5>
+                        {% if not data.wrong_in_python %}
+                            <h5 style="margin-top: 5px">No Outlier!</h5>
+                        {% endif %}
                     {% endif %}
                 </div>
                 {# 检测缺失值的工具栏 #}
