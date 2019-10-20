@@ -35,6 +35,7 @@ def upload_file(request):
 
 
 def question_search(request):
+    dc.read_data_file("static/DataSet_Read/stackoverflow_dataset.csv")
     return render(request, "questionSearch.html")
 
 
@@ -104,11 +105,19 @@ def text_similarity(request):
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
 
+def text_similarity_for_stack_overflow(request):
+    if request.method == "POST":
+        input_question = str(request.POST.get("input_text", None))
+        dc.text_similarity_for_stack_overflow(input_question, "title")
+    return render(request, "questionSearch.html", {"data": dc.get_frame(float_round[0])})
+
+
 def fill_blank(request):
     if request.method == "POST":
         modification_row = int(request.POST.get("modification_row", None))
         dc.fill_blank(modification_row)
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
+
 
 def outlier_modification(request):
     if request.method == "POST":

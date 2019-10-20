@@ -39,6 +39,15 @@ class DataCleaning(object):
     # this attribute is for outputting the most similarity sentences
     __text_similarity = 0
 
+    # these variable is used in Quesiton Search page
+    __start_searching = False
+    __link_to_answer_page = ''
+    __match_question = False
+    __sorted_similarity = ''
+    __question_title = ''
+    __question_description = ''
+    __question_date = ''
+
     def __init__(self):
         print("BackEnd Started succesfully")
 
@@ -427,7 +436,8 @@ class DataCleaning(object):
         self.__wrong_in_python = False
         try:
             if modification_value.isdigit():
-                self.__current_data_frame.loc[modification_row - 1, self.__column_detect_name] = float(modification_value)
+                self.__current_data_frame.loc[modification_row - 1, self.__column_detect_name] = float(
+                    modification_value)
                 self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
                 self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
             else:
@@ -552,7 +562,13 @@ class DataCleaning(object):
                            'detect_outlier_choice': self.__choice_in_detect_outlier,
                            'check_missing_value': self.__check_missing_value,
                            'missing_value_result': self.__missing_value_result,
-                           'text_similarity': self.__text_similarity}
+                           'text_similarity': self.__text_similarity,
+                           'start_searching': self.__start_searching,
+                           'match_question': self.__match_question,
+                           'question_title': self.__question_title,
+                           'question_description': self.__question_description,
+                           'question_date': self.__question_date,
+                           'link_to_answer_page': self.__link_to_answer_page}
         return data_dictionary
 
     # reset function
@@ -707,6 +723,7 @@ class DataCleaning(object):
         import jieba
         import numpy
         from gensim import corpora, models, similarities
+        self.__sorted_similarity = ''
 
         df_text = self.__current_data_frame[column_chosen]
 
@@ -744,10 +761,25 @@ class DataCleaning(object):
         index = similarities.SparseMatrixSimilarity(tfidf[corpus], num_features=len(dictionary.keys()))
         sim = index[tfidf[doc_test_vec]]
         print(sim)
-        sorted_similarity = sorted(enumerate(sim), key=lambda item: -item[1])
+        self.__sorted_similarity = sorted(enumerate(sim), key=lambda item: -item[1])
 
-        self.__text_similarity = sorted_similarity[0][0] + 1
-        print(sorted(enumerate(sim), key=lambda item: -item[1]))
+        self.__text_similarity = self.__sorted_similarity[0][0] + 1
+        print(self.__sorted_similarity)
+
+    def text_similarity_for_stack_overflow(self, input_words, column_chosen):
+        self.__start_searching = True
+        self.__link_to_answer_page = ''
+        self.text_similarity(input_words, column_chosen)
+        print(self.__sorted_similarity[0][1] != 0.0)
+        if self.__sorted_similarity[0][1] != 0.0:
+            self.__match_question = True
+            self.__link_to_answer_page = "https://stackoverflow.com/questions/" + str(
+                int(self.__current_data_frame.loc[self.__text_similarity - 1, "id"]))
+            self.__question_title = self.__current_data_frame.loc[self.__text_similarity - 1, "title"]
+            self.__question_description = self.__current_data_frame.loc[self.__text_similarity - 1, "body"]
+            self.__question_date = self.__current_data_frame.loc[self.__text_similarity - 1, "creation_date"]
+        else:
+            self.__match_question = False
 
     def detect_outlier_all(self):
         # 初始化用户选择
@@ -856,7 +888,6 @@ class DataCleaning(object):
         for elements in output_position:
             for element in elements:
                 self.__current_data_frame.loc[element, "isOutlier"] = True
-
 
         temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
         self.__rowWithOutlier = [i + 1 for i in temp_outlier]

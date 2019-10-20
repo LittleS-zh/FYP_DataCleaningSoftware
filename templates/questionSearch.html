@@ -14,20 +14,52 @@
              alt="">
         <b>Question Search</b>
     </a>
-    <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" style="width: 400px;" aria-label="Search">
+
+    <form class="form-inline" action="/text_similarity_for_stack_overflow/" method="post">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="text" name="input_text" style="width: 400px;">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
     <a class="btn btn-primary" href="{% url 'index' %}" role="button">Go back to index</a>
 </nav>
 
 <div class="container">
-    <div class="alert alert-success" role="alert" style="margin-top: 50px; text-align: center;">
-        <h4 class="alert-heading">Nice to meet you!</h4><br>
-        <p>Enter your Question in the textarea at navigation bar, and we will find the similar question for you!</p>
-        <br><hr>
-        <p class="mb-0">Andy & Max</p>
-    </div>
+    {% if not data.start_searching %}
+        <div class="alert alert-success" role="alert" style="margin-top: 50px; text-align: center;">
+            <h4 class="alert-heading">Nice to meet you!</h4><br>
+            <p>Enter your Question in the textarea at navigation bar, and we will find the similar question for you!</p>
+            <br>
+            <hr>
+            <p class="mb-0">Andy & Max</p>
+        </div>
+    {% endif %}
+
+    {% if data.start_searching %}
+        {% if data.match_question %}
+            <div style="margin-top: 50px">
+                <div class="card text-center">
+                    <div class="card-header">
+                        Here is the most similar question with your question
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ data.question_title }}</h5>
+                        <p class="card-text">{{ data.question_description }}</p>
+                        <a target="_blank" href={{ data.link_to_answer_page }}>Click here to see the answer</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Question created at {{ data.question_date }}
+                    </div>
+                </div>
+
+            </div>
+        {% else %}
+            <div class="alert alert-danger" role="alert" style="margin-top: 100px; text-align: center;">
+                <h4>No Question Match</h4>
+                <br>
+                <p>Please check your question</p>
+            </div>
+        {% endif %}
+    {% endif %}
 </div>
 
 </body>
