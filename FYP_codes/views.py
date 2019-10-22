@@ -76,7 +76,8 @@ def select_by_conditions(request):
 def detect_outlier_three_sigma(request):
     if request.method == "POST":
         column_input = str(request.POST.get("detect_outlier_three_sigma", None))
-        dc.detect_outlier_three_sigma(column_input)
+        level_of_detecting = str(request.POST.get("level_of_detecting_outlier", None))
+        dc.detect_outlier_three_sigma(column_input, level_of_detecting)
         input_delete_rows_automatically = request.POST.get("detect_outlier_delete_rows_automatically", None)
         if input_delete_rows_automatically:
             dc.deal_with_outlier(column_input)

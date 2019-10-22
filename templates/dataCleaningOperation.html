@@ -119,6 +119,11 @@
                                 {% endfor %}
                                 <option value="all_attributes"> All Attributes</option>
                             </select>
+                            <select class="form-control form-control-sm" name="level_of_detecting_outlier">
+                                <option value= "light"> light </option>
+                                <option value= "medium"> medium </option>
+                                <option value= "heavy"> heavy </option>
+                            </select>
                             <input type="checkbox" name="detect_outlier_delete_rows_automatically" value=True/> Delete
                             Outlier's Row
                         </form>

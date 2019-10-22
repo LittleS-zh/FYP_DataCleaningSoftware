@@ -272,13 +272,16 @@ class DataCleaning(object):
         return self.__current_data_frame.mean()
 
     # detect outlier using three sigma method
-    def detect_outlier_three_sigma(self, column_input):
+    # not only using three sigma functions now, maybe need to change the function name later
+    def detect_outlier_three_sigma(self, column_input, level_of_detecting):
         self.__wrong_in_python = False
         # print(self.__current_data_frame[column_input].dtype)
         # print(self.__current_data_frame[column_input].dtypes)
+        print(level_of_detecting)
+
         if column_input == "all_attributes":
             try:
-                self.detect_outlier_all()
+                self.detect_outlier_all(level_of_detecting)
                 return
             except:
                 print("Error happen in detecting all attribute.")
@@ -781,7 +784,9 @@ class DataCleaning(object):
         else:
             self.__match_question = False
 
-    def detect_outlier_all(self):
+    def detect_outlier_all(self, level_of_detecting):
+        print(level_of_detecting)
+
         # 初始化用户选择
         self.__detect_outlier_single_format = False
         self.__detect_outlier_all_attributes = True
@@ -860,8 +865,23 @@ class DataCleaning(object):
                 # print(df_temp)
                 # add the array_tfidf to the back of the dataframe ends
 
+        # decide the level of detecting outlier according to the input
+        if level_of_detecting == "light":
+            number_of_clusters = 2
+        elif level_of_detecting == "medium":
+            number_of_clusters = 5
+        elif level_of_detecting == "heavy":
+            number_of_clusters = 10
+
+        if df_temp.shape[0] <= 10:
+            number_of_clusters = 2
+
+        if df_temp.shape[0] == 1:
+            number_of_clusters = 1
+
+        print(number_of_clusters)
         # use unsupervised categorization algorithms to find the outlier begins
-        model = KMeans(n_clusters=5)
+        model = KMeans(n_clusters= number_of_clusters)
         model.fit(df_temp)
         predicted_label = model.predict(df_temp)
         print("tfidf", predicted_label)
