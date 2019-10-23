@@ -3,11 +3,11 @@ import pandas
 import numpy
 from gensim import corpora,models,similarities
 
-df_text = pandas.read_csv("tfidf_test.csv")
+df_text = pandas.read_csv("SQuAD2.0.csv")
 
-df_text = df_text['Sentences']
+df_text = df_text['questions']
 
-doc_test="I love Shanghai"
+doc_test="When did Beyonce start becoming popular"
 
 temp_array_text = numpy.array(df_text)
 array_text = temp_array_text.flatten()

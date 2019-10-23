@@ -304,7 +304,14 @@ class DataCleaning(object):
 
                 d = self.__current_data_frame[column_input]
                 z_score = (d - d.mean()) / d.std()
-                self.__current_data_frame['isOutlier'] = z_score.abs() > 3
+
+                if level_of_detecting == "light":
+                    threshold = 5
+                elif level_of_detecting == "medium":
+                    threshold = 3
+                elif level_of_detecting == "heavy":
+                    threshold = 1
+                self.__current_data_frame['isOutlier'] = z_score.abs() > threshold
 
                 temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
                 self.__rowWithOutlier = [i + 1 for i in temp_outlier]
@@ -320,7 +327,7 @@ class DataCleaning(object):
 
         elif self.__current_data_frame[column_input].dtypes == "object":
             try:
-                self.detect_outlier_text(column_input)
+                self.detect_outlier_text(column_input, level_of_detecting)
             except:
                 print("Error happen in detecting text outlier.")
                 self.__wrong_in_python = True
@@ -653,7 +660,7 @@ class DataCleaning(object):
 
         # print(prediction * norm)
 
-    def detect_outlier_text(self, input_column_which_is_text):
+    def detect_outlier_text(self, input_column_which_is_text,level_of_detecting):
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__detect_outlier_single_format = True
@@ -681,7 +688,14 @@ class DataCleaning(object):
 
         array_tfidf = arranged_text_tfidf.toarray()
 
-        model = KMeans(n_clusters=5)
+        if level_of_detecting == "light":
+            number_of_cluster = 2
+        elif level_of_detecting == "medium":
+            number_of_cluster = 5
+        elif level_of_detecting == "heavy":
+            number_of_cluster = 10
+
+        model = KMeans(n_clusters=number_of_cluster)
         model.fit(array_tfidf)
         predicted_label = model.predict(array_tfidf)
         # print("tfidf", predicted_label)
