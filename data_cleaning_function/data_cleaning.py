@@ -49,7 +49,7 @@ class DataCleaning(object):
     __question_date = ''
 
     def __init__(self):
-        print("BackEnd Started succesfully")
+        print("BackEnd Started successfully")
 
     # read datafile from csv
     def read_data_file(self, file_location,
@@ -62,6 +62,7 @@ class DataCleaning(object):
         self.__rowWithOutlier.clear()
         self.__missing_value_result.clear()
         self.__choice_in_detect_outlier = -1
+        self.__list_data_frame.clear()
 
         # read the datafiles the user uploaded
         self.__current_data_frame = pd.read_csv(file_location, delimiter=delimiter_input, encoding=encoding_input,
@@ -323,7 +324,6 @@ class DataCleaning(object):
             except:
                 print("Error happen in detecting number outlier.")
                 self.__wrong_in_python = True
-
 
         elif self.__current_data_frame[column_input].dtypes == "object":
             try:
@@ -740,48 +740,51 @@ class DataCleaning(object):
         import jieba
         import numpy
         from gensim import corpora, models, similarities
-        self.__sorted_similarity = ''
+        try:
+            self.__sorted_similarity = ''
 
-        df_text = self.__current_data_frame[column_chosen]
+            df_text = self.__current_data_frame[column_chosen]
 
-        doc_test = input_words
+            doc_test = input_words
 
-        temp_array_text = numpy.array(df_text)
+            temp_array_text = numpy.array(df_text)
 
-        array_text = temp_array_text.flatten()
+            array_text = temp_array_text.flatten()
 
-        all_doc_list = []
-        for doc in array_text:
-            doc_list = [word for word in jieba.cut(doc)]
-            all_doc_list.append(doc_list)
+            all_doc_list = []
+            for doc in array_text:
+                doc_list = [word for word in jieba.cut(doc)]
+                all_doc_list.append(doc_list)
 
-        print(all_doc_list)
+            print(all_doc_list)
 
-        doc_test_list = [word for word in jieba.cut(doc_test)]
-        print(doc_test_list)
+            doc_test_list = [word for word in jieba.cut(doc_test)]
+            print(doc_test_list)
 
-        # make a corpus
-        dictionary = corpora.Dictionary(all_doc_list)
-        print(dictionary.keys())
-        print(dictionary.token2id)
-        corpus = [dictionary.doc2bow(doc) for doc in all_doc_list]
+            # make a corpus
+            dictionary = corpora.Dictionary(all_doc_list)
+            print(dictionary.keys())
+            print(dictionary.token2id)
+            corpus = [dictionary.doc2bow(doc) for doc in all_doc_list]
 
-        doc_test_vec = dictionary.doc2bow(doc_test_list)
-        print(doc_test_vec)
+            doc_test_vec = dictionary.doc2bow(doc_test_list)
+            print(doc_test_vec)
 
-        # the tfidf value of each word TF: term frequency TF-IDF = TF*IDF
-        tfidf = models.TfidfModel(corpus)
+            # the tfidf value of each word TF: term frequency TF-IDF = TF*IDF
+            tfidf = models.TfidfModel(corpus)
 
-        # theme matrix, which can be trained
-        print(tfidf[doc_test_vec])
+            # theme matrix, which can be trained
+            print(tfidf[doc_test_vec])
 
-        index = similarities.SparseMatrixSimilarity(tfidf[corpus], num_features=len(dictionary.keys()))
-        sim = index[tfidf[doc_test_vec]]
-        print(sim)
-        self.__sorted_similarity = sorted(enumerate(sim), key=lambda item: -item[1])
+            index = similarities.SparseMatrixSimilarity(tfidf[corpus], num_features=len(dictionary.keys()))
+            sim = index[tfidf[doc_test_vec]]
+            print(sim)
+            self.__sorted_similarity = sorted(enumerate(sim), key=lambda item: -item[1])
 
-        self.__text_similarity = self.__sorted_similarity[0][0] + 1
-        print(self.__sorted_similarity)
+            self.__text_similarity = self.__sorted_similarity[0][0] + 1
+            print(self.__sorted_similarity)
+        except:
+            print("Error occur in text similarity.")
 
     def text_similarity_for_stack_overflow(self, input_words, column_chosen):
         self.__start_searching = True
