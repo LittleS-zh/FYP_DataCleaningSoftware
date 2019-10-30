@@ -243,8 +243,8 @@ class DataCleaning(object):
             number_of_column = df_temp.columns.size
 
             for i in range(0, number_of_column):
-                print(i)
-                print(df_temp.iloc[:, i].dtypes)
+                # print(i)
+                # print(df_temp.iloc[:, i].dtypes)
                 if df_temp.iloc[:, i].dtypes == "float64" or df.iloc[:, i].dtypes == "int64":
                     print("Numbers, pass")
                 elif df_temp.iloc[:, i].dtypes == "object":
@@ -253,6 +253,9 @@ class DataCleaning(object):
 
             df["isDuplicate"] = df_temp.duplicated()
 
+        temp_duplicate = self.__current_data_frame[self.__current_data_frame['isDuplicate'] == True].index.tolist()
+        for i in temp_duplicate:
+            self.__current_data_frame = self.__current_data_frame.drop(i)
         self.__current_data_frame = self.__current_data_frame.drop('isDuplicate', axis=1)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
