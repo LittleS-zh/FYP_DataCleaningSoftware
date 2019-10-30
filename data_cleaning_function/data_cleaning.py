@@ -256,7 +256,9 @@ class DataCleaning(object):
         temp_duplicate = self.__current_data_frame[self.__current_data_frame['isDuplicate'] == True].index.tolist()
         for i in temp_duplicate:
             self.__current_data_frame = self.__current_data_frame.drop(i)
+
         self.__current_data_frame = self.__current_data_frame.drop('isDuplicate', axis=1)
+        self.__current_data_frame.index = range(len(self.__current_data_frame))
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
