@@ -308,6 +308,8 @@ class DataCleaning(object):
 
                 d = self.__current_data_frame[column_input]
                 z_score = (d - d.mean()) / d.std()
+                print("the z-score is:")
+                print(z_score)
 
                 if level_of_detecting == "light":
                     threshold = 5
@@ -692,7 +694,7 @@ class DataCleaning(object):
         array_tfidf = arranged_text_tfidf.toarray()
 
         if level_of_detecting == "light":
-            number_of_cluster = 2
+            number_of_cluster = 3
         elif level_of_detecting == "medium":
             number_of_cluster = 5
         elif level_of_detecting == "heavy":
