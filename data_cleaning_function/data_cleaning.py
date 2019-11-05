@@ -325,11 +325,11 @@ class DataCleaning(object):
 
                 elif method == "boxplot":
                     if level_of_detecting == "light":
-                        threshold = 1
+                        threshold = 3.0
                     elif level_of_detecting == "medium":
                         threshold = 1.5
                     elif level_of_detecting == "heavy":
-                        threshold = 3.0
+                        threshold = 1
 
                     IQR = d.quantile(0.75) - d.quantile(0.25)
                     print(IQR)
