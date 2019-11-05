@@ -279,7 +279,7 @@ class DataCleaning(object):
 
     # detect outlier using three sigma method
     # not only using three sigma functions now, maybe need to change the function name later
-    def detect_outlier_three_sigma(self, column_input, level_of_detecting):
+    def detect_outlier_three_sigma(self, column_input, level_of_detecting, method):
         self.__wrong_in_python = False
         # print(self.__current_data_frame[column_input].dtype)
         # print(self.__current_data_frame[column_input].dtypes)
@@ -307,19 +307,33 @@ class DataCleaning(object):
                 temp_outlier.clear()
                 self.__rowWithOutlier.clear()
                 self.__column_detect_name = column_input
-
                 d = self.__current_data_frame[column_input]
-                z_score = (d - d.mean()) / d.std()
-                print("the z-score is:")
-                print(z_score)
 
-                if level_of_detecting == "light":
-                    threshold = 5
-                elif level_of_detecting == "medium":
-                    threshold = 3
-                elif level_of_detecting == "heavy":
-                    threshold = 1
-                self.__current_data_frame['isOutlier'] = z_score.abs() > threshold
+                if method == "normalDistribution":
+
+                    z_score = (d - d.mean()) / d.std()
+                    print("the z-score is:")
+                    print(z_score)
+
+                    if level_of_detecting == "light":
+                        threshold = 5
+                    elif level_of_detecting == "medium":
+                        threshold = 3
+                    elif level_of_detecting == "heavy":
+                        threshold = 1
+                    self.__current_data_frame['isOutlier'] = z_score.abs() > threshold
+
+                elif method == "boxplot":
+                    if level_of_detecting == "light":
+                        threshold = 1
+                    elif level_of_detecting == "medium":
+                        threshold = 1.5
+                    elif level_of_detecting == "heavy":
+                        threshold = 3.0
+
+                    IQR = d.quantile(0.75) - d.quantile(0.25)
+                    print(IQR)
+                    self.__current_data_frame['isOutlier'] = d > d.quantile(0.75) + threshold * IQR
 
                 temp_outlier = self.__current_data_frame[self.__current_data_frame['isOutlier'] == True].index.tolist()
                 self.__rowWithOutlier = [i + 1 for i in temp_outlier]
@@ -500,10 +514,7 @@ class DataCleaning(object):
             print("wrong in single_outlier_delete")
             self.__wrong_in_python = True
 
-    # todo: this function is not finished
-    def detect_outlier_quantitile(self, column_input):
-        d = self.__current_data_frame[column_input]
-        self.__current_data_frame['isOutlier'] = d > d.quantitile(0.75)
+
 
     # delete the whole row of outlier using three sigma methods
     def deal_with_outlier(self, column_input):
