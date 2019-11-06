@@ -281,7 +281,7 @@
                                         <form action="/outlier_modification/" method="post">
                                             {% csrf_token %}
                                             <input type="text" class="form-control form-control-sm"
-                                                   style="float:left; width:69%; margin-left: 5px;"
+                                                   style="float:left; width:67%; margin-left: 5px;"
                                                    name="modification_value" required>
                                             <input style="display: none;" name="modification_row"
                                                    value={{ forloop.counter0 }}>
@@ -297,7 +297,7 @@
                                                    value={{ forloop.counter0 }}>
                                             <button type="submit" class="btn btn-dark btn-sm"
                                                     name="submit"/>
-                                            Fill</button>
+                                            Smooth</button>
                                         </form>
                                     </td>
                                     <td style="border-style: none;">

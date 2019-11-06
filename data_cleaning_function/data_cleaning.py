@@ -457,8 +457,15 @@ class DataCleaning(object):
 
         print("The output is: ", prediction_result * norm)
 
-        self.__current_data_frame.loc[position_fillin_value_row - 1, position_fillin_value_column] = float(
-            prediction_result)
+        d = df_temp[position_fillin_value_column]
+        IQR = d.quantile(0.75) - d.quantile(0.25)
+        print(IQR)
+        if prediction_result > d.quantile(0.75) + 1.5 * IQR or prediction_result < d.quantile(0.25) - 1.5 * IQR:
+            self.__current_data_frame.loc[position_fillin_value_row - 1, position_fillin_value_column] = float(
+                d.mean())
+        else:
+            self.__current_data_frame.loc[position_fillin_value_row - 1, position_fillin_value_column] = float(
+                prediction_result)
         self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
         self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
 
