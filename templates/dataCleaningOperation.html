@@ -281,6 +281,7 @@
                                         </form>
                                     </td>
                                 {% else %}
+
                                     {% for line_piece in line %}
                                         {% if forloop.counter0 == data.detect_outlier_choice %}
                                             <td bgcolor="#faebd7" style="border: 1px solid;">{{ line_piece }}</td>
@@ -302,16 +303,22 @@
                                             Modify</button>
                                         </form>
                                     </td>
-                                    <td style="border-style: none;">
-                                        <form action="/fill_blank/" method="post">
-                                            {% csrf_token %}
-                                            <input style="display: none;" name="modification_row"
-                                                   value={{ forloop.counter0 }}>
-                                            <button type="submit" class="btn btn-dark btn-sm"
-                                                    name="submit"/>
-                                            Smooth</button>
-                                        </form>
-                                    </td>
+
+                                    {% if not data.if_text %}
+
+                                        <td style="border-style: none;">
+                                            <form action="/fill_blank/" method="post">
+                                                {% csrf_token %}
+                                                <input style="display: none;" name="modification_row"
+                                                       value={{ forloop.counter0 }}>
+                                                <button type="submit" class="btn btn-dark btn-sm"
+                                                        name="submit"/>
+                                                Smooth</button>
+                                            </form>
+                                        </td>
+
+                                    {% endif %}
+
                                     <td style="border-style: none;">
                                         <form action="/single_outlier_delete/" method="post">
                                             {% csrf_token %}
@@ -322,6 +329,7 @@
                                             Delete!</button>
                                         </form>
                                     </td>
+
                                 {% endif %}
                             </tr>
                         {% endif %}

@@ -25,6 +25,7 @@ class DataCleaning(object):
     __detect_outlier_single_format = False
     __detect_outlier_all_attributes = False
     __check_missing_value = False
+    __if_text_outlier = False
 
     # this attribute is for check missing value
     __missing_value_result = []
@@ -57,6 +58,7 @@ class DataCleaning(object):
                        header_input=0):
         # 初始化
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__rowWithOutlier.clear()
@@ -95,6 +97,7 @@ class DataCleaning(object):
         # 初始化
         self.__wrong_in_python = False
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -115,6 +118,7 @@ class DataCleaning(object):
         # 初始化
         self.__wrong_in_python = False
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -135,6 +139,7 @@ class DataCleaning(object):
         # 初始化
         self.__wrong_in_python = False
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -150,6 +155,7 @@ class DataCleaning(object):
         # 初始化
         self.__wrong_in_python = False
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -171,6 +177,7 @@ class DataCleaning(object):
         # 初始化
         self.__wrong_in_python = False
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -198,6 +205,7 @@ class DataCleaning(object):
     def data_reduction(self, drop_header, group_header, sum_or_mean, combine_name):
         # 初始化
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -224,6 +232,7 @@ class DataCleaning(object):
         # 初始化
         self.__wrong_in_python = False
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -267,6 +276,7 @@ class DataCleaning(object):
         # 初始化
         self.__wrong_in_python = False
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__rowWithOutlier.clear()
         self.__choice_in_detect_outlier = -1
@@ -298,6 +308,7 @@ class DataCleaning(object):
             try:
                 # 初始化用户选择
                 self.__detect_outlier_single_format = True
+                self.__if_text_outlier = False
                 self.__detect_outlier_all_attributes = False
                 self.__check_missing_value = False
                 self.__missing_value_result.clear()
@@ -540,6 +551,7 @@ class DataCleaning(object):
     # check missing value
     def check_missing(self):
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = True
         self.__missing_value_result.clear()
@@ -562,6 +574,7 @@ class DataCleaning(object):
     # delete missing value
     def deal_with_missing_value(self, choice):
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         if choice == "1":
             self.__current_data_frame = self.__current_data_frame.dropna(axis=0)
@@ -590,6 +603,7 @@ class DataCleaning(object):
                            'data_header': data_frame_column,
                            'wrong_in_python': self.__wrong_in_python,
                            'detect_outlier_single_format': self.__detect_outlier_single_format,
+                           'if_text': self.__if_text_outlier,
                            'detect_outlier_all_attributes': self.__detect_outlier_all_attributes,
                            'data_outlier': self.__rowWithOutlier,
                            'detect_outlier_choice': self.__choice_in_detect_outlier,
@@ -607,6 +621,7 @@ class DataCleaning(object):
     # reset function
     def reset_data_frame(self):
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -619,6 +634,7 @@ class DataCleaning(object):
     # revert function
     def revert_data_frame(self):
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -632,6 +648,7 @@ class DataCleaning(object):
     # revert function
     def refresh(self):
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__missing_value_result.clear()
@@ -698,6 +715,7 @@ class DataCleaning(object):
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__detect_outlier_single_format = True
+        self.__if_text_outlier = True
         temp_outlier = []
         temp_outlier.clear()
         self.__rowWithOutlier.clear()
@@ -840,8 +858,8 @@ class DataCleaning(object):
 
         # 初始化用户选择
         self.__detect_outlier_single_format = False
+        self.__if_text_outlier = False
         self.__detect_outlier_all_attributes = True
-        self.__detect_outlier_text = False
 
         temp_outlier = []
         temp_outlier.clear()
