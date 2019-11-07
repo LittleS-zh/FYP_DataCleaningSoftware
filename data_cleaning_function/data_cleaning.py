@@ -521,8 +521,6 @@ class DataCleaning(object):
             print("wrong in single_outlier_delete")
             self.__wrong_in_python = True
 
-
-
     # delete the whole row of outlier using three sigma methods
     def deal_with_outlier(self, column_input):
         # self.detect_outlier_three_sigma(column_input)
@@ -631,6 +629,17 @@ class DataCleaning(object):
             self.__list_data_frame.pop()
             self.__current_data_frame = copy.deepcopy(self.__list_data_frame[-1])
 
+    # revert function
+    def refresh(self):
+        self.__detect_outlier_single_format = False
+        self.__detect_outlier_all_attributes = False
+        self.__check_missing_value = False
+        self.__missing_value_result.clear()
+        self.__choice_in_detect_outlier = -1
+        self.__rowWithOutlier.clear()
+
+        self.__column_detect_name = ''
+
     def forecast_a_value(self, target_column_input, target_column_forecast, target_row_input, target_row_output):
         # todo: parameters change here
         X = self.__current_data_frame.iloc[:, target_column_input]
@@ -685,7 +694,7 @@ class DataCleaning(object):
 
         # print(prediction * norm)
 
-    def detect_outlier_text(self, input_column_which_is_text,level_of_detecting):
+    def detect_outlier_text(self, input_column_which_is_text, level_of_detecting):
         self.__detect_outlier_all_attributes = False
         self.__check_missing_value = False
         self.__detect_outlier_single_format = True
@@ -923,7 +932,7 @@ class DataCleaning(object):
 
         print(number_of_clusters)
         # use unsupervised categorization algorithms to find the outlier begins
-        model = KMeans(n_clusters= number_of_clusters)
+        model = KMeans(n_clusters=number_of_clusters)
         model.fit(df_temp)
         predicted_label = model.predict(df_temp)
         print("tfidf", predicted_label)

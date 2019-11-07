@@ -100,15 +100,6 @@
                     </br>
 
                     <li class="nav-item">
-                        <form action="/de_duplication/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            De-duplication</button><br/>
-                            <input type="checkbox" name="de_duplication_ignoreCase" value=True/> Ignore Case
-                        </form>
-                    </li>
-                    </br>
-                    <li class="nav-item">
                         <form action="/detect_outlier_three_sigma/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
@@ -120,13 +111,13 @@
                                 <option value="all_attributes"> All Attributes</option>
                             </select>
                             <select class="form-control form-control-sm" name="methods_for_detecting_outlier">
-                                <option value= "normalDistribution"> Normal Distribution </option>
-                                <option value= "boxplot"> BoxPlot </option>
+                                <option value="normalDistribution"> Normal Distribution</option>
+                                <option value="boxplot"> BoxPlot</option>
                             </select>
                             <select class="form-control form-control-sm" name="level_of_detecting_outlier">
-                                <option value= "medium"> medium </option>
-                                <option value= "light"> return less outlier </option>
-                                <option value= "heavy"> return more outlier </option>
+                                <option value="medium"> medium</option>
+                                <option value="light"> return less outlier</option>
+                                <option value="heavy"> return more outlier</option>
                             </select>
                             <input type="checkbox" name="detect_outlier_delete_rows_automatically" value=True/> Delete
                             Outlier's Row
@@ -135,21 +126,16 @@
                     </br>
 
                     <li class="nav-item">
-                        <form action="/text_similarity/" method="post">
+                        <form action="/de_duplication/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            Most Similar Text</button>
-                            <select class="form-control form-control-sm" name="text_similarity">
-                                {% for data_piece in data.data_header %}
-                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
-                                {% endfor %}
-                            </select>
-                            <input type="text" class="form-control form-control-sm"
-                                   style="margin-bottom: 5px; width: 80%;" placeholder="Enter a text"
-                                   name="input_text">
+                            De-duplication</button><br/>
+                            <input type="checkbox" name="de_duplication_ignoreCase" value=True/> Ignore Case
                         </form>
                     </li>
-                    <p> most similar text: line {{ data.text_similarity }}</p>
+                    </br>
+
+
                     <li class="nav-item">
                         <form action="/check_missing/" method="post">
                             {% csrf_token %}
@@ -175,7 +161,32 @@
                         </form>
                     </li>
                     </br>
+                    <li class="nav-item">
+                        <form action="/text_similarity/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Most Similar Text</button>
+                            <select class="form-control form-control-sm" name="text_similarity">
+                                {% for data_piece in data.data_header %}
+                                    <option value="{{ data_piece }}"> {{ data_piece }} </option>
+                                {% endfor %}
+                            </select>
+                            <input type="text" class="form-control form-control-sm"
+                                   style="margin-bottom: 5px; width: 80%;" placeholder="Enter a text"
+                                   name="input_text">
+                        </form>
+                    </li>
+                    <p> most similar text: line {{ data.text_similarity }}</p>
+                    </br>
 
+                    <li class="nav-item">
+                        <form action="/refresh/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm" style="margin-bottom: 5px"
+                                    name="submit"/>
+                            Refresh</button>
+                        </form>
+                    </li>
                     <li class="nav-item">
                         <form action="/revert/" method="post">
                             {% csrf_token %}
@@ -256,7 +267,7 @@
                             <tr id={{ forloop.counter0 }}>
                                 {% if data.detect_outlier_all_attributes %}
                                     {% for line_piece in line %}
-                                        <td bgcolor="#faebd7" style="border: 1px solid;" >{{ line_piece }}</td>
+                                        <td bgcolor="#faebd7" style="border: 1px solid;">{{ line_piece }}</td>
                                     {% endfor %}
                                     <td style="border-style: none;">
                                         <form action="/single_outlier_delete/" method="post">
@@ -285,7 +296,8 @@
                                                    name="modification_value" required>
                                             <input style="display: none;" name="modification_row"
                                                    value={{ forloop.counter0 }}>
-                                            <button style="margin-left: 5px;" type="submit" class="btn btn-primary btn-sm"
+                                            <button style="float:right; width:35%;" type="submit"
+                                                    class="btn btn-primary btn-sm"
                                                     name="submit"/>
                                             Modify</button>
                                         </form>
