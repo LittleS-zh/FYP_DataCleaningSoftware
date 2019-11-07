@@ -79,9 +79,9 @@ def detect_outlier_three_sigma(request):
         level_of_detecting = str(request.POST.get("level_of_detecting_outlier", None))
         method = str(request.POST.get("methods_for_detecting_outlier", None))
         dc.detect_outlier_three_sigma(column_input, level_of_detecting, method)
-        input_delete_rows_automatically = request.POST.get("detect_outlier_delete_rows_automatically", None)
-        if input_delete_rows_automatically:
-            dc.deal_with_outlier(column_input)
+        # input_delete_rows_automatically = request.POST.get("detect_outlier_delete_rows_automatically", None)
+        # if input_delete_rows_automatically:
+        #     dc.deal_with_outlier(column_input)
 
     return render(request, "dataCleaningOperation.html", {"data": dc.get_frame(float_round[0])})
 
