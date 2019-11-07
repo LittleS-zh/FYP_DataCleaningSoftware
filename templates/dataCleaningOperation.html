@@ -100,6 +100,32 @@
                     </br>
 
                     <li class="nav-item">
+                        <form action="/check_missing/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
+                            Check Missing Value</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/deal_with_missing_value/" method="get">
+                            {% csrf_token %}
+                            <input style="display: none;" name="modification_row">
+                            <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 5px"
+                                    name="submit"/>
+                            Deal with missing value</button>
+                            <select class="form-control form-control-sm" name="deal_with_missing_value">
+                                <option value="1">Delete rows</option>
+                                <option value="2">Delete columns</option>
+                                <option value="3">Fill with 'missing'</option>
+                                <option value="4">Fill with the value above</option>
+                                <option value="5">Fill with the value below</option>
+                                <option value="6">Fill with mean</option>
+                            </select>
+                        </form>
+                    </li>
+                    </br>
+
+                    <li class="nav-item">
                         <form action="/detect_outlier_three_sigma/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
@@ -136,31 +162,7 @@
                     </br>
 
 
-                    <li class="nav-item">
-                        <form action="/check_missing/" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm" style="margin-bottom: 5px" name="submit"/>
-                            Check Missing Value</button>
-                        </form>
-                    </li>
-                    <li class="nav-item">
-                        <form action="/deal_with_missing_value/" method="get">
-                            {% csrf_token %}
-                            <input style="display: none;" name="modification_row">
-                            <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 5px"
-                                    name="submit"/>
-                            Deal with missing value</button>
-                            <select class="form-control form-control-sm" name="deal_with_missing_value">
-                                <option value="1">Delete rows</option>
-                                <option value="2">Delete columns</option>
-                                <option value="3">Fill with 'missing'</option>
-                                <option value="4">Fill with the value above</option>
-                                <option value="5">Fill with the value below</option>
-                                <option value="6">Fill with mean</option>
-                            </select>
-                        </form>
-                    </li>
-                    </br>
+
                     <li class="nav-item">
                         <form action="/text_similarity/" method="post">
                             {% csrf_token %}
