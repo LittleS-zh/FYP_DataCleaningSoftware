@@ -108,6 +108,7 @@ class DataCleaning(object):
             0] and row_start_input >= 1:
             print(self.__current_data_frame.shape[0])
             self.__current_data_frame = self.__current_data_frame[row_start_input - 1:row_end_input]
+            self.__current_data_frame.index = range(len(self.__current_data_frame))
             self.__temp_data_frame_for_deepcopy = copy.deepcopy(self.__current_data_frame)
             self.__list_data_frame.append(self.__temp_data_frame_for_deepcopy)
         else:
